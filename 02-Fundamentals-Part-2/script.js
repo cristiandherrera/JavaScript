@@ -38,11 +38,14 @@
 
 // // Creating funciton named 'juiceProcessor' with 2 arguments 'apples' and 'oranges'.
 // function juiceProcessor(apples, oranges) {
+
 //   // creating variable 'juice' with a string value.
 //   // passing in the function arguments with tempaerate literals.
 //   const juice = `Juice with ${apples} apples and ${oranges} oranges.`
+
 //   // returning value of variable 'juice' to the function caller 'juiceProcessor'. 
 //   return juice; 
+
 //   // can now use the value of 'juice' ANYWHERE in our code!
 // }
 // console.log(juiceProcessor(3 , 2));
@@ -99,6 +102,29 @@
 // }
 // console.log(yearsUntilRetirement(1995, 'cristian'));
 // console.log(yearsUntilRetirement(1989, 'justin'));
+
+// ===================================================================================== //
+
+// *********************************
+// Functions Calling Other Functions
+// *********************************
+
+// // function cutFruit(fruit){
+// //   return fruit * 4;
+// // }
+// const cutFruit = fruit => fruit * 4;
+
+// function juiceProcessor(apples, oranges) {
+//   /* calling the 'cutFruit' function inside 'juiceProcessor' function
+//   and passing in the parameters of 'juiceProcessor' into 'cutFruit' paramters 
+//   and storing it into variables  */
+//   const applePieces = cutFruit(apples);
+//   const orangePieces = cutFruit(oranges);
+
+//   const juice = `Juice with ${applePieces} apple pieces and ${orangePieces} orange pieces.`
+//   return juice; 
+// }
+// console.log(juiceProcessor(3 , 2));
 
 // ===================================================================================== //
 

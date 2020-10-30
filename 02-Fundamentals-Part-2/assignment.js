@@ -53,3 +53,40 @@
 // console.log(usa, china, india);
 
 // ===================================================================================== //
+
+// *********************************
+// Functions Calling Other Functions
+// *********************************
+
+// // DECLARATION FUNCTION
+// function percentageOfWorld(percentPop) {
+//   return (percentPop / 7900) * 100;
+// } 
+// function describePopulation(country, population) {
+//   const percent = percentageOfWorld(population);
+//   return `${country} has ${population} people which is ${percent}% of the world.`
+// }
+// /////////////////////////////
+
+// // EXPRESSION FUNCTION
+// const percentageOfWorld = function(percentPop){
+//   return (percentPop / 7900) * 100;
+// }
+// const describePopulation = function(country, population) {
+//   const percent = percentageOfWorld(population);
+//   return `${country} has ${population} people which is ${percent}% of the world.`
+// }
+// ///////////////////////////
+
+// // // ARROW FUNCTION
+// const percentageOfWorld = percentPop => (percentPop / 7900) * 100;
+// const describePopulation  = (country, population) => {
+//   const percent = percentageOfWorld(population);
+//   return `${country} has ${population} people which is ${percent}% of the world.`
+// }
+
+// console.log(describePopulation('USA', 331));
+// console.log(describePopulation('China', 1441));
+// console.log(describePopulation('India', 1380));
+
+// ===================================================================================== //
