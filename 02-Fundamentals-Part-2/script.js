@@ -18,3 +18,40 @@
 // // const private = 534;
 
 // ===================================================================================== //
+
+// *********
+// Functions
+// *********
+
+// // Functions allow us to write reusable pieces of code!
+
+// // The 'return' statement ends the funcion execution and returns a value.
+
+// function me() {
+//   console.log('My name is Cristian');
+// }
+
+// // 'Calling' function bellow with 'fucntion_name()' 
+// me();
+// me();
+// me();
+
+// // Creating funciton named 'juiceProcessor' with 2 arguments 'apples' and 'oranges'.
+// function juiceProcessor(apples, oranges) {
+//   // creating variable 'juice' with a string value.
+//   // passing in the function arguments with tempaerate literals.
+//   const juice = `Juice with ${apples} apples and ${oranges} oranges.`
+//   // returning value of variable 'juice' to the function caller 'juiceProcessor'. 
+//   return juice; 
+//   // can now use the value of 'juice' ANYWHERE in our code!
+// }
+// console.log(juiceProcessor(3 , 2));
+
+
+// const appleJuice = juiceProcessor(5, 0);
+// console.log(appleJuice);
+
+// const appleOrangeJuice = juiceProcessor(2, 4);
+// console.log(appleOrangeJuice);\
+
+// ===================================================================================== //
