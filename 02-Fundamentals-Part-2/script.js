@@ -62,6 +62,7 @@
 
 // // Function Declarations
 // // declarations are hoisted on top of the code 
+
 // const age1 = calcAge1(1995);
 // function calcAge1(birthYear) {
 //   return 2037 - birthYear;
@@ -69,9 +70,35 @@
 
 // // Function Expression
 // // can be stored in variable
+
 // const calcAge2 = function(birthYear) {
 //   return 2037 - birthYear;
 // }
 // const age2 = calcAge2(1995);
 
 // console.log(age1, age2);
+
+// ===================================================================================== //
+
+// ***************
+// Arrow Funcitons 
+// ***************
+
+// // CANNOT use 'this' keyword with arrow functions
+
+// //   |variable|  |paramater|  |function block|
+// const calcAge3 = birthyear => 2020 - birthyear;
+// const age3 = calcAge3(1995);
+// console.log(calcAge3(1995));
+
+// const yearsUntilRetirement = (birthyear, name) => {
+//   const age = 2020 - birthyear;
+//   const retirement = 65 - age;
+//   // return retirement;
+//   return `${name} retires in ${retirement} years!`
+// }
+// console.log(yearsUntilRetirement(1995, 'cristian'));
+// console.log(yearsUntilRetirement(1989, 'justin'));
+
+// ===================================================================================== //
+

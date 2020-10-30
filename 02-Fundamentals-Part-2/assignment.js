@@ -39,3 +39,17 @@
 // const india2 = percentageOfWorld2(1380);
 // console.log(usa2, china2, india2);
 
+// ===================================================================================== //
+
+// ***************
+// Arrow Funcitons 
+// ***************
+
+// const percentageOfWorld3 = population => (population / 7900) * 100;
+
+// const usa = percentageOfWorld3(331);
+// const china = percentageOfWorld3(1441);
+// const india = percentageOfWorld3(1380);
+// console.log(usa, china, india);
+
+// ===================================================================================== //
