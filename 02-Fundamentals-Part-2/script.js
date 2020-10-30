@@ -128,3 +128,28 @@
 
 // ===================================================================================== //
 
+// *******************
+// Reviewing Functions 
+// *******************
+
+// // Functions allow us to write reusable pieces of code!
+
+
+// Declaration functions are statements so does not directly output a value
+// can be used before declared; called being "hoisted".
+
+// Expresson functions are expressions so they directly output a value 
+// can be used directly with template literals
+// can be stored in a variable.
+
+// Arrow functions are great for quick one line, usually one paramater, code.
+// also an expression 
+// also stored in variable
+// but CANNOT use 'this' keyword
+
+// All still very similar, all CAN input, transform, or output data.
+
+// Return statements outputs a value from the function and then TERMINATES the function.
+
+// ===================================================================================== //
+
