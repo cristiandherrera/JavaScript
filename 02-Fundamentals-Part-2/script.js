@@ -55,3 +55,23 @@
 // console.log(appleOrangeJuice);\
 
 // ===================================================================================== //
+
+// *************************************
+// Function Declarations vs. Expressions
+// *************************************
+
+// // Function Declarations
+// // declarations are hoisted on top of the code 
+// const age1 = calcAge1(1995);
+// function calcAge1(birthYear) {
+//   return 2037 - birthYear;
+// }
+
+// // Function Expression
+// // can be stored in variable
+// const calcAge2 = function(birthYear) {
+//   return 2037 - birthYear;
+// }
+// const age2 = calcAge2(1995);
+
+// console.log(age1, age2);

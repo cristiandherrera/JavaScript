@@ -18,6 +18,24 @@
 
 // ===================================================================================== //
 
+// *************************************
+// Function Declarations vs. Expressions
+// *************************************
+
+// function percentageOfWorld1(population) {
+//   return (population / 7900) * 100;
+// } 
+// const usa = percentageOfWorld1(331);
+// const china = percentageOfWorld1(1441);
+// const india = percentageOfWorld1(1380);
+// console.log(usa, china, india);
 
 
+// const percentageOfWorld2 = function(population) {
+//   return (population / 7900) * 100;
+// }
+// const usa2 = percentageOfWorld2(331);
+// const china2 = percentageOfWorld2(1441);
+// const india2 = percentageOfWorld2(1380);
+// console.log(usa2, china2, india2);
 
