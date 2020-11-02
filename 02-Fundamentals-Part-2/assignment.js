@@ -90,3 +90,24 @@
 // console.log(describePopulation('India', 1380));
 
 // ===================================================================================== //
+
+// **********************
+// Introduction to Arrays
+// **********************
+
+// const populations = [331, 1441, 1380, 52];
+
+// if(populations.length === 4) {
+//   console.log(true)
+// } else { 
+//   console.log(false);
+// }
+
+// const percentageOfWorld = function(percentPop){
+//   return (percentPop / 7900) * 100;
+// }
+
+// const percentages = [percentageOfWorld(populations[0]), percentageOfWorld(populations[1]), percentageOfWorld(populations[2]), percentageOfWorld(populations[populations.length-1])];
+// console.log(percentages);
+
+// ===================================================================================== //

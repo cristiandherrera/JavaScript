@@ -55,7 +55,7 @@
 // console.log(appleJuice);
 
 // const appleOrangeJuice = juiceProcessor(2, 4);
-// console.log(appleOrangeJuice);\
+// console.log(appleOrangeJuice);
 
 // ===================================================================================== //
 
@@ -153,3 +153,46 @@
 
 // ===================================================================================== //
 
+// **********************
+// Introduction to Arrays
+// **********************
+
+// // Is a data stucture. A big container. 
+// // Retrieve or add element from array? use square brackets. array[anyexpression]
+
+// // first way to wrte an array (less common)
+// const years = new Array(1995, 2001, 2009, 2010, 2013);
+// // Second way to write an array (most common)
+// const friends = ['Casey', 'Nick', 'Justin', 'Jeremy', 'Burg'];
+
+// console.log(friends);
+// console.log(friends[0]);
+// console.log(friends[2]);
+
+// console.log(friends.length);
+// console.log(friends[friends.length - 1]);
+
+// friends[4] = 'Brown';
+// console.log(friends);
+// // CANNOT completely reassign 'const' variables ONLY manipultate
+// // friends = ['Billy', 'Johnny'] //<< ERROR
+
+// const firstName = 'Cristian';
+// const cristian = [firstName, 'Herrera', 2020 - 1995, friends]
+// console.log(cristian);
+
+// // Exercise
+// const calcAge = function (birthYear) {
+//    return 2037 - birthYear;
+// }
+// const calcYears = [1995, 2001, 1984, 1989, 2020]
+
+// const age1 = calcAge(calcYears[0]);
+// const age2 = calcAge(calcYears[3]);
+// const age3 = calcAge(calcYears[calcYears.length-1]);
+// console.log(age1, age2, age3);
+
+// const ages = [calcAge(calcYears[0]), calcAge(calcYears[3]), calcAge(calcYears[calcYears.length-1])];
+// console.log(ages);
+
+// ===================================================================================== //
