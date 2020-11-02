@@ -158,7 +158,8 @@
 // **********************
 
 // // Is a data stucture. A big container. 
-// // Retrieve or add element from array? use square brackets. array[anyexpression]
+
+// An index is a 0 based value counting system (starts from 0) and is marked with [x] at the end of an array.
 
 // // first way to wrte an array (less common)
 // const years = new Array(1995, 2001, 2009, 2010, 2013);
@@ -201,8 +202,39 @@
 // Basic Array Operations(Methods)
 // *******************************
 
+// // Methods are essentially just pre-written fucntions that are called on with a '.' before the method name. example - console.log
 
+// const friends = ['Casey', 'Nick', 'Justin', 'Jeremy', 'Brown'];
 
+// // add elements 
+// const newLength = friends.push ('Malinowski'); // '.push' adds element to the end
+// console.log(friends);
+// console.log(newLength);
+
+// friends.unshift('Andrea'); // '.unshift' adds to element to beginning
+// console.log(friends);
+
+// // remove elements
+// friends.pop(); // '.pop' removes the last element
+// const popped = friends.pop();
+// console.log(popped);
+// console.log(friends);
+
+// friends.shift(); // removes the first element
+// console.log(friends);
+
+// // more usefull methods
+// console.log(friends.indexOf('Casey')); // .'indexOf' checks index count
+// console.log(friends.indexOf('Bob')); // << this is false so will return '-1'
+
+// friends.push(23);
+// console.log(friends.includes('Casey')); // '.includes' checks if true or false
+// console.log(friends.includes('23')); // << FALSE - '.includes' does NOT perform type coercion 
+
+// // example of most used case of '.includes'
+// if (friends.includes('Casey')) {
+//   console.log("You have a friend named Casey");
+// }
 
 // ===================================================================================== //
 

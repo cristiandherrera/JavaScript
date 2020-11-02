@@ -116,8 +116,24 @@
 // Basic Array Operations(Methods)
 // *******************************
 
+// const neigbours = ['Mexico', 'Canada'];
+// console.log(neigbours);
 
+// neigbours.push('Utopia');
+// console.log(neigbours);
 
+// neigbours.pop();
+// console.log(neigbours);
+
+// if(neigbours.includes('Germany')) {
+//   console.log('Probably a centeral European country.');
+// } else {
+//   console.log('Probably not a centeral European country!');
+// }
+ 
+// console.log(neigbours.indexOf('Mexico'));
+// neigbours[0] = 'The Country of Mexico';
+// console.log(neigbours[0]);
 
 // ===================================================================================== //
 
