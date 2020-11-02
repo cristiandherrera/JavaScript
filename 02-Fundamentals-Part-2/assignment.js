@@ -107,7 +107,11 @@
 //   return (percentPop / 7900) * 100;
 // }
 
-// const percentages = [percentageOfWorld(populations[0]), percentageOfWorld(populations[1]), percentageOfWorld(populations[2]), percentageOfWorld(populations[populations.length-1])];
+//  const percentages = [
+//    percentageOfWorld(populations[0]), 
+//    percentageOfWorld(populations[1]), 
+//    percentageOfWorld(populations[2]), 
+//    percentageOfWorld(populations[populations.length-1])];
 // console.log(percentages);
 
 // ===================================================================================== //
@@ -141,7 +145,13 @@
 // Introduction to Objects 
 // ***********************
 
-
+// const myCountry = {
+//   country: 'U.S.A',
+//   capital: 'Washington D.C',
+//   language: 'English',
+//   population: 331,
+//   neighbours: ['Mexico', 'Canada']
+// };
 
 // ===================================================================================== //
 

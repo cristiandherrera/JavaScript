@@ -242,7 +242,29 @@
 // Introduction to Objects 
 // ***********************
 
+// // Like 'arrays' we use variabes to group together content 
 
+// // With 'objects' we use key value pairs to connect specific data with variables
+
+// // The key value pair variables inside of the objects are 'Properties'
+
+// // The order of 'objects' does NOT matter when we want to retrieve them
+
+// const cristianArray = [
+//   'Cristian',
+//   'Herrera', 
+//   2020 - 1995,
+//   'Programmer', 
+//   ['Michael', 'Peter', 'Steven']
+// ];
+
+// const cristianObject = {
+//   firstName: 'Cristian',
+//   lastName: 'Herrera',
+//   age: 2020 - 1995,
+//   job: Programmer,
+//   friends: ['Michael', 'Peter', 'Steven']
+// };
 
 // ===================================================================================== //
 
