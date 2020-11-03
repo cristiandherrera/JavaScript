@@ -159,7 +159,21 @@
 // Dot vs. Bracket Notation 
 // ************************
 
+// const myCountry = {
+//   country: 'U.S.A',
+//   capital: 'Washington D.C',
+//   language: 'english',
+//   population: 331,
+//   neighbours: ['Mexico', 'Canada']
+// };
 
+// myCountry.population -= 2;
+// console.log(myCountry.population);
+
+// myCountry['population'] += 2;
+// console.log(myCountry['population']);
+
+// console.log(`${myCountry.country} has ${myCountry.population} million ${myCountry.language}-speaking people, ${myCountry.neighbours.length} countries and a capital named ${myCountry.capital}.`);
 
 
 // ===================================================================================== //

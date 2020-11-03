@@ -262,7 +262,7 @@
 //   firstName: 'Cristian',
 //   lastName: 'Herrera',
 //   age: 2020 - 1995,
-//   job: Programmer,
+//   job: 'Programmer',
 //   friends: ['Michael', 'Peter', 'Steven']
 // };
 
@@ -272,8 +272,47 @@
 // Dot vs. Bracket Notation 
 // ************************
 
+// // Both used to add or retrieve an element to/from an object 
 
+// // If we need to compute the property name with an expression USE bracket notation
 
+// // Otherwise use dot notation, its cleaner and faster to use
+
+// const cristianObject = {
+//   firstName: 'Cristian',
+//   lastName: 'Herrera',
+//   age: 2020 - 1995,
+//   job: 'Programmer',
+//   friends: ['Michael', 'Peter', 'Steven']
+// };
+// console.log(cristianObject);
+
+// // Dot notation
+// console.log(cristianObject.lastName);
+
+// // Bracket notation
+// console.log(cristianObject['lastName']);
+
+// const nameKey = 'Name';
+// console.log(cristianObject[`first${nameKey}`]);
+// console.log(cristianObject['last' + nameKey]);
+
+// // console.log(jonas.'last' + nameKey) //<ERROR- with dot notation: can only use final property name
+
+// const interestedIn = prompt('What do you want to know about Cristian? Choose between firstName, lastName, age, job, and friends.');
+
+// if (cristianObject[interestedIn]) {
+//   console.log(cristianObject[interestedIn]);
+// } else {
+//   console.log('Wrong request! Choose between firstName, lastName, age, job, and friends.');
+// }
+
+// cristianObject.country = 'America';
+// cristianObject['state'] = 'California' ;
+// console.log(cristianObject);
+
+// // Challenge
+// console.log(`${cristianObject['firstName']} has ${cristianObject.friends.length} friends and his best friend is called ${cristianObject.friends[0]}`); 
 
 // ===================================================================================== //
 
