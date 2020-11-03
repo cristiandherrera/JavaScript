@@ -219,7 +219,16 @@
 // Looping Arrays, Breaking and Continuing 
 // ***************************************
 
+// const populations = [331, 1441, 1380, 52];
+// const percentages = [];
 
+// for (let i = 0; i < populations.length; i++) {
+//   const percentageOfWorld = function(percentPop){
+//     return (percentPop / 7900) * 100;
+//   }
+//   percentages.push(percentageOfWorld(populations[i]));
+// }
+// console.log(percentages);
 
 
 // ===================================================================================== //

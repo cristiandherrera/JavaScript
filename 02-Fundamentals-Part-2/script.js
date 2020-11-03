@@ -159,7 +159,7 @@
 
 // // Is a data stucture. A big container. 
 
-// An index is a 0 based value counting system (starts from 0) and is marked with [x] at the end of an array.
+// // An index is a 0 based value counting system (starts from 0) and is marked with [x] at the end of an array.
 
 // // first way to wrte an array (less common)
 // const years = new Array(1995, 2001, 2009, 2010, 2013);
@@ -173,7 +173,7 @@
 // console.log(friends.length);
 // console.log(friends[friends.length - 1]);
 
-// friends[4] = 'Brown';
+// friends[4] = 'Brown'; // reassigned index[4] from 'burg' to 'brown'
 // console.log(friends);
 // // CANNOT completely reassign 'const' variables ONLY manipultate
 // // friends = ['Billy', 'Johnny'] //<< ERROR
@@ -386,8 +386,49 @@
 // Looping Arrays, Breaking and Continuing 
 // ***************************************
 
+// const cristian = [
+//   'Cristian',
+//   'Herrera', 
+//   2020 - 1995,
+//   'Programmer', 
+//   ['Michael', 'Peter', 'Steven']
+// ];
 
+// const types = [];
 
+// for(let i = 0; i < cristian.length; i++) {
+//   // reading out array
+//   console.log(cristian[i], typeof cristian[i]);
+
+//   // looping through 'cristian' array and pushing typeof into 'types'
+//   types.push(typeof cristian[i]);
+// }
+// console.log(types);
+
+// const now = 2020;
+// const years = [1995, 1989, 1998, 1974];
+// const ages = [];
+
+// for(let i = 0; i < years.length; i++) {
+//   ages.push(now - years[i]);
+// }
+// console.log(ages);
+
+// // 'continue' stops current loop and skips to next in the loop
+// console.log('--- ONLY STRINGS ---');
+// for (let i = 0; i < cristian.length; i++) {
+//   if (typeof cristian[i] !== 'string') continue;
+
+//   console.log(cristian[i], typeof cristian[i]);
+// }
+
+// // 'break' compeletely terminates the whole loop
+// console.log('--- BREAK WITH NUMBER ---')
+// for (let i = 0; i < cristian.length; i++) {
+//   if (typeof cristian[i] === 'number') break;
+
+//   console.log(cristian[i], typeof cristian[i]);
+// }
 
 // ===================================================================================== //
 
