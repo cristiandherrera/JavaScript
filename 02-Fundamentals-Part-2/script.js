@@ -367,8 +367,18 @@
 // Iteration: The for Loop
 // ***********************
 
+// // Allow us to automate repetive tasks. DRY CODE.
 
+// // A conctrol structure like if/else statements
 
+// // Exist in every programming language.
+
+// // Loops keep running UNTIL checked as false; set by the conditional.
+
+// // |set value| |condition| |increase value|
+// for(let rep = 1; rep <= 10; rep = rep + 1) {
+//   console.log(`Lifting weights repitition ${rep}`);
+// }
 
 // ===================================================================================== //
 
