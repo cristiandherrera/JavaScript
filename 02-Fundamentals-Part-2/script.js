@@ -320,8 +320,46 @@
 // Object Methods
 // **************
 
+// // Any function attched to an object is considered a 'method'.
 
+// // The 'this' keyword is a method that is equal to the object that calls it.
 
+// // 'this' can be used to help write clean dry code! Don't repeat yourself!!
+
+// const cristian = {
+//   firstName: 'Cristian',
+//   lastName: 'Herrera',
+//   birthYear: 1995,
+//   job: 'Programmer',
+//   friends: ['Michael', 'Peter', 'Steven'],
+//   hasDriversLicense: true,
+
+//   // calcAge: function (birthYear) {
+//   //   return 2020 - birthYear;
+//   // }
+
+//   // calcAge: function () {
+//   //   return 2020 - this.birthYear; // 'this' is equal to the object 'cristian'
+//   // }
+
+//   calcAge: function () {
+//     this.age = 2020 - 1995; // creating new property in the object 'cristian' with the method 'this'.
+//     return this.age;
+//   },
+
+//   getSummary: function () {
+//       return (`${this.firstName} is a ${this.calcAge()}-old ${this.job}, and he has ${this.hasDriversLicense ? 'a' : 'no'} divers license.`);
+//   }
+// }; 
+// console.log(cristian);
+
+// console.log(cristian.calcAge());
+// console.log(cristian.age);
+// console.log(cristian.age);
+
+// // Challenge 
+// // Jonas is a 46-year old teacher, and he has a/no driver's license
+// console.log(cristian.getSummary());
 
 // ===================================================================================== //
 

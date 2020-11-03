@@ -175,15 +175,33 @@
 
 // console.log(`${myCountry.country} has ${myCountry.population} million ${myCountry.language}-speaking people, ${myCountry.neighbours.length} countries and a capital named ${myCountry.capital}.`);
 
-
 // ===================================================================================== //
 
 // **************
 // Object Methods
 // **************
 
+// const myCountry = {
+//   country: 'U.S.A',
+//   capital: 'Washington D.C',
+//   language: 'english',
+//   population: 331,
+//   neighbours: ['Mexico', 'Canada'],
 
+//   describe: function () {
+//      console.log(`${this.country} has ${this.population} million ${this.language}-speaking people, ${this.neighbours.length} countries and a capital named ${this.capital}.`);
+//   },
 
+//   checkIsland: function () {
+//     // !this.neighbours ? this.isIsland = true : this.isIsland = false; // my answer
+//     this.isIsland = this.neighbours.length === 0 ? 'true' : 'false';
+//     // this.isIsland = !Boolean(this.neigbours.length)
+//   }
+// };
+// myCountry.checkIsland();
+// myCountry.describe();
+// console.log(myCountry.isIsland);
+// console.log(myCountry);
 
 // ===================================================================================== //
 
