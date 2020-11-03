@@ -255,7 +255,17 @@
 // The while Loop
 // **************
 
+// const populations = [331, 1441, 1380, 52];
+// const percentages = [];
 
-
+// let i = 0;
+// while (i < populations.length) {
+//   const percentageOfWorld = function(percentPop){
+//     return (percentPop / 7900) * 100;
+//   }
+//   percentages.push(percentageOfWorld(populations[i]));
+//   i++;
+// }
+// console.log(percentages);
 
 // ===================================================================================== //

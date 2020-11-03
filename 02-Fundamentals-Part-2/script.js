@@ -464,7 +464,28 @@
 // The while Loop
 // **************
 
+// // While loop does NOT depend on a counter varaible
 
+// // Use while loop when you dont know how many iterations the loop will have
 
+// // |counter| |condition| |+ or - value|
+// for(let rep = 1; rep <= 10; rep = rep + 1) {
+//   console.log(`Lifting weights repitition ${rep}`);
+// }
+
+// let rep = 1;
+// // only can specify a condition 
+// while (rep <= 10) {
+//   console.log(`WHILE: Lifting weights repitition ${rep}`);
+//   rep++;
+// }
+
+// let dice = Math.trunc(Math.random() * 6) + 1;
+
+// while(dice !== 6) {
+//   console.log(`You rolled a ${dice}`);
+//   dice = Math.trunc(Math.random() * 6) + 1;
+//   if (dice === 6) console.log('Loop is ending...');
+// }
 
 // ===================================================================================== //
