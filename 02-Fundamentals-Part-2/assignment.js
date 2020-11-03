@@ -237,8 +237,17 @@
 // Looping Backwards and Loops in Loops
 // ************************************
 
+// const listOfNeigbors = [
+//   ['Canada', 'Mexico'],
+//   ['Spain'],
+//   ['Norway', 'Sweeden', 'Russia']
+// ];
 
-
+// for (let i = 0; i < listOfNeigbors.length; i++) {
+//   for (let x = 0; x < listOfNeigbors[i].length; x++) {
+//     console.log(`Neighbor: ${listOfNeigbors[i][x]}`);
+//   }
+// }
 
 // ===================================================================================== //
 

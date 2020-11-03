@@ -436,8 +436,27 @@
 // Looping Backwards and Loops in Loops
 // ************************************
 
+// const cristian = [
+//   'Cristian',
+//   'Herrera', 
+//   2020 - 1995,
+//   'Programmer', 
+//   ['Michael', 'Peter', 'Steven']
+// ];
 
+// // looping backwards through the array 'cristian'
+// for (let i = cristian.length - 1; i >= 0; i--) {
+//   console.log(cristian[i]);
+// }
 
+// // looping inside another loop! 
+// for (let exercise = 1; exercise <= 3; exercise++) {
+//   console.log(`------ Exercise ${exercise} `);
+
+//   for (let reps = 1; reps <= 5; reps++) {
+//     console.log(`Lifting weights: repitions ${reps}`);
+//   }
+// }
 
 // ===================================================================================== //
 
