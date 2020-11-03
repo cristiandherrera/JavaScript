@@ -158,7 +158,8 @@
 // **********************
 
 // // Is a data stucture. A big container. 
-// // Retrieve or add element from array? use square brackets. array[anyexpression]
+
+// An index is a 0 based value counting system (starts from 0) and is marked with [x] at the end of an array.
 
 // // first way to wrte an array (less common)
 // const years = new Array(1995, 2001, 2009, 2010, 2013);
@@ -194,5 +195,206 @@
 
 // const ages = [calcAge(calcYears[0]), calcAge(calcYears[3]), calcAge(calcYears[calcYears.length-1])];
 // console.log(ages);
+
+// ===================================================================================== //
+
+// *******************************
+// Basic Array Operations(Methods)
+// *******************************
+
+// // Methods are essentially just pre-written fucntions that are called on with a '.' before the method name. example - console.log
+
+// const friends = ['Casey', 'Nick', 'Justin', 'Jeremy', 'Brown'];
+
+// // add elements 
+// const newLength = friends.push ('Malinowski'); // '.push' adds element to the end
+// console.log(friends);
+// console.log(newLength);
+
+// friends.unshift('Andrea'); // '.unshift' adds to element to beginning
+// console.log(friends);
+
+// // remove elements
+// friends.pop(); // '.pop' removes the last element
+// const popped = friends.pop();
+// console.log(popped);
+// console.log(friends);
+
+// friends.shift(); // removes the first element
+// console.log(friends);
+
+// // more usefull methods
+// console.log(friends.indexOf('Casey')); // .'indexOf' checks index count
+// console.log(friends.indexOf('Bob')); // << this is false so will return '-1'
+
+// friends.push(23);
+// console.log(friends.includes('Casey')); // '.includes' checks if true or false
+// console.log(friends.includes('23')); // << FALSE - '.includes' does NOT perform type coercion 
+
+// // example of most used case of '.includes'
+// if (friends.includes('Casey')) {
+//   console.log("You have a friend named Casey");
+// }
+
+// ===================================================================================== //
+
+// ***********************
+// Introduction to Objects 
+// ***********************
+
+// // Like 'arrays' we use variabes to group together content 
+
+// // With 'objects' we use key value pairs to connect specific data with variables
+
+// // The key value pair variables inside of the objects are 'Properties'
+
+// // The order of 'objects' does NOT matter when we want to retrieve them
+
+// const cristianArray = [
+//   'Cristian',
+//   'Herrera', 
+//   2020 - 1995,
+//   'Programmer', 
+//   ['Michael', 'Peter', 'Steven']
+// ];
+
+// const cristianObject = {
+//   firstName: 'Cristian',
+//   lastName: 'Herrera',
+//   age: 2020 - 1995,
+//   job: 'Programmer',
+//   friends: ['Michael', 'Peter', 'Steven']
+// };
+
+// ===================================================================================== //
+
+// ************************
+// Dot vs. Bracket Notation 
+// ************************
+
+// // Both used to add or retrieve an element to/from an object 
+
+// // If we need to compute the property name with an expression USE bracket notation
+
+// // Otherwise use dot notation, its cleaner and faster to use
+
+// const cristianObject = {
+//   firstName: 'Cristian',
+//   lastName: 'Herrera',
+//   age: 2020 - 1995,
+//   job: 'Programmer',
+//   friends: ['Michael', 'Peter', 'Steven']
+// };
+// console.log(cristianObject);
+
+// // Dot notation
+// console.log(cristianObject.lastName);
+
+// // Bracket notation
+// console.log(cristianObject['lastName']);
+
+// const nameKey = 'Name';
+// console.log(cristianObject[`first${nameKey}`]);
+// console.log(cristianObject['last' + nameKey]);
+
+// // console.log(jonas.'last' + nameKey) //<ERROR- with dot notation: can only use final property name
+
+// const interestedIn = prompt('What do you want to know about Cristian? Choose between firstName, lastName, age, job, and friends.');
+
+// if (cristianObject[interestedIn]) {
+//   console.log(cristianObject[interestedIn]);
+// } else {
+//   console.log('Wrong request! Choose between firstName, lastName, age, job, and friends.');
+// }
+
+// cristianObject.country = 'America';
+// cristianObject['state'] = 'California' ;
+// console.log(cristianObject);
+
+// // Challenge
+// console.log(`${cristianObject['firstName']} has ${cristianObject.friends.length} friends and his best friend is called ${cristianObject.friends[0]}`); 
+
+// ===================================================================================== //
+
+// **************
+// Object Methods
+// **************
+
+// // Any function attched to an object is considered a 'method'.
+
+// // The 'this' keyword is a method that is equal to the object that calls it.
+
+// // 'this' can be used to help write clean dry code! Don't repeat yourself!!
+
+// const cristian = {
+//   firstName: 'Cristian',
+//   lastName: 'Herrera',
+//   birthYear: 1995,
+//   job: 'Programmer',
+//   friends: ['Michael', 'Peter', 'Steven'],
+//   hasDriversLicense: true,
+
+//   // calcAge: function (birthYear) {
+//   //   return 2020 - birthYear;
+//   // }
+
+//   // calcAge: function () {
+//   //   return 2020 - this.birthYear; // 'this' is equal to the object 'cristian'
+//   // }
+
+//   calcAge: function () {
+//     this.age = 2020 - 1995; // creating new property in the object 'cristian' with the method 'this'.
+//     return this.age;
+//   },
+
+//   getSummary: function () {
+//       return (`${this.firstName} is a ${this.calcAge()}-old ${this.job}, and he has ${this.hasDriversLicense ? 'a' : 'no'} divers license.`);
+//   }
+// }; 
+// console.log(cristian);
+
+// console.log(cristian.calcAge());
+// console.log(cristian.age);
+// console.log(cristian.age);
+
+// // Challenge 
+// // Jonas is a 46-year old teacher, and he has a/no driver's license
+// console.log(cristian.getSummary());
+
+// ===================================================================================== //
+
+// ***********************
+// Iteration: The for Loop
+// ***********************
+
+
+
+
+// ===================================================================================== //
+
+// ***************************************
+// Looping Arrays, Breaking and Continuing 
+// ***************************************
+
+
+
+
+// ===================================================================================== //
+
+// ************************************
+// Looping Backwards and Loops in Loops
+// ************************************
+
+
+
+
+// ===================================================================================== //
+
+// **************
+// The while Loop
+// **************
+
+
+
 
 // ===================================================================================== //

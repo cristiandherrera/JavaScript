@@ -107,7 +107,136 @@
 //   return (percentPop / 7900) * 100;
 // }
 
-// const percentages = [percentageOfWorld(populations[0]), percentageOfWorld(populations[1]), percentageOfWorld(populations[2]), percentageOfWorld(populations[populations.length-1])];
+//  const percentages = [
+//    percentageOfWorld(populations[0]), 
+//    percentageOfWorld(populations[1]), 
+//    percentageOfWorld(populations[2]), 
+//    percentageOfWorld(populations[populations.length-1])];
 // console.log(percentages);
+
+// ===================================================================================== //
+
+// *******************************
+// Basic Array Operations(Methods)
+// *******************************
+
+// const neigbours = ['Mexico', 'Canada'];
+// console.log(neigbours);
+
+// neigbours.push('Utopia');
+// console.log(neigbours);
+
+// neigbours.pop();
+// console.log(neigbours);
+
+// if(neigbours.includes('Germany')) {
+//   console.log('Probably a centeral European country.');
+// } else {
+//   console.log('Probably not a centeral European country!');
+// }
+ 
+// console.log(neigbours.indexOf('Mexico'));
+// neigbours[0] = 'The Country of Mexico';
+// console.log(neigbours[0]);
+
+// ===================================================================================== //
+
+// ***********************
+// Introduction to Objects 
+// ***********************
+
+// const myCountry = {
+//   country: 'U.S.A',
+//   capital: 'Washington D.C',
+//   language: 'English',
+//   population: 331,
+//   neighbours: ['Mexico', 'Canada']
+// };
+
+// ===================================================================================== //
+
+// ************************
+// Dot vs. Bracket Notation 
+// ************************
+
+// const myCountry = {
+//   country: 'U.S.A',
+//   capital: 'Washington D.C',
+//   language: 'english',
+//   population: 331,
+//   neighbours: ['Mexico', 'Canada']
+// };
+
+// myCountry.population -= 2;
+// console.log(myCountry.population);
+
+// myCountry['population'] += 2;
+// console.log(myCountry['population']);
+
+// console.log(`${myCountry.country} has ${myCountry.population} million ${myCountry.language}-speaking people, ${myCountry.neighbours.length} countries and a capital named ${myCountry.capital}.`);
+
+// ===================================================================================== //
+
+// **************
+// Object Methods
+// **************
+
+// const myCountry = {
+//   country: 'U.S.A',
+//   capital: 'Washington D.C',
+//   language: 'english',
+//   population: 331,
+//   neighbours: ['Mexico', 'Canada'],
+
+//   describe: function () {
+//      console.log(`${this.country} has ${this.population} million ${this.language}-speaking people, ${this.neighbours.length} countries and a capital named ${this.capital}.`);
+//   },
+
+//   checkIsland: function () {
+//     // !this.neighbours ? this.isIsland = true : this.isIsland = false; // my answer
+//     this.isIsland = this.neighbours.length === 0 ? 'true' : 'false';
+//     // this.isIsland = !Boolean(this.neigbours.length)
+//   }
+// };
+// myCountry.checkIsland();
+// myCountry.describe();
+// console.log(myCountry.isIsland);
+// console.log(myCountry);
+
+// ===================================================================================== //
+
+// ***********************
+// Iteration: The for Loop
+// ***********************
+
+
+
+
+// ===================================================================================== //
+
+// ***************************************
+// Looping Arrays, Breaking and Continuing 
+// ***************************************
+
+
+
+
+// ===================================================================================== //
+
+// ************************************
+// Looping Backwards and Loops in Loops
+// ************************************
+
+
+
+
+// ===================================================================================== //
+
+// **************
+// The while Loop
+// **************
+
+
+
 
 // ===================================================================================== //
