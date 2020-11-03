@@ -49,3 +49,38 @@
 // console.log(bills, tips, total);
 
 // ===================================================================================== //
+
+// *******************
+// Coding Challenge #3.
+// *******************
+
+// const mark = {
+//   fullName: 'Mark Miller',
+//   mass: 78,
+//   height: 1.69, 
+
+//   calcBMI: function() {
+//     this.marksBMI = this.mass / this.height **2;
+//     return this.marksBMI;
+//   }
+// };
+
+// const john = {
+//   fullName: 'John Smith',
+//   mass: 92,
+//   height: 1.95, 
+
+//   calcBMI: function() {
+//     this.johnsBMI = this.mass / this.height **2;
+//     return this.johnsBMI;
+//   }
+// };
+
+// console.log(mark.calcBMI());
+// console.log(john.calcBMI());
+
+// if(mark.marksBMI > john.johnsBMI) {
+//   console.log(`${mark.fullName}'s BMI(${mark.marksBMI}) is higher than ${john.fullName}'s(${john.johnsBMI}).`);
+// } else {
+//   console.log(`${john.fullName}'s BMI(${john.marksBMI}) is higher than ${mark.fullName}'s(${mark.johnsBMI}).`);
+// }
