@@ -159,7 +159,7 @@
 
 // // Is a data stucture. A big container. 
 
-// An index is a 0 based value counting system (starts from 0) and is marked with [x] at the end of an array.
+// // An index is a 0 based value counting system (starts from 0) and is marked with [x] at the end of an array.
 
 // // first way to wrte an array (less common)
 // const years = new Array(1995, 2001, 2009, 2010, 2013);
@@ -173,7 +173,7 @@
 // console.log(friends.length);
 // console.log(friends[friends.length - 1]);
 
-// friends[4] = 'Brown';
+// friends[4] = 'Brown'; // reassigned index[4] from 'burg' to 'brown'
 // console.log(friends);
 // // CANNOT completely reassign 'const' variables ONLY manipultate
 // // friends = ['Billy', 'Johnny'] //<< ERROR
@@ -367,8 +367,18 @@
 // Iteration: The for Loop
 // ***********************
 
+// // Allow us to automate repetive tasks. DRY CODE.
 
+// // A conctrol structure like if/else statements
 
+// // Exist in every programming language.
+
+// // Loops keep running UNTIL checked as false; set by the conditional.
+
+// // |set value| |condition| |increase value|
+// for(let rep = 1; rep <= 10; rep = rep + 1) {
+//   console.log(`Lifting weights repitition ${rep}`);
+// }
 
 // ===================================================================================== //
 
@@ -376,8 +386,49 @@
 // Looping Arrays, Breaking and Continuing 
 // ***************************************
 
+// const cristian = [
+//   'Cristian',
+//   'Herrera', 
+//   2020 - 1995,
+//   'Programmer', 
+//   ['Michael', 'Peter', 'Steven']
+// ];
 
+// const types = [];
 
+// for(let i = 0; i < cristian.length; i++) {
+//   // reading out array
+//   console.log(cristian[i], typeof cristian[i]);
+
+//   // looping through 'cristian' array and pushing typeof into 'types'
+//   types.push(typeof cristian[i]);
+// }
+// console.log(types);
+
+// const now = 2020;
+// const years = [1995, 1989, 1998, 1974];
+// const ages = [];
+
+// for(let i = 0; i < years.length; i++) {
+//   ages.push(now - years[i]);
+// }
+// console.log(ages);
+
+// // 'continue' stops current loop and skips to next in the loop
+// console.log('--- ONLY STRINGS ---');
+// for (let i = 0; i < cristian.length; i++) {
+//   if (typeof cristian[i] !== 'string') continue;
+
+//   console.log(cristian[i], typeof cristian[i]);
+// }
+
+// // 'break' compeletely terminates the whole loop
+// console.log('--- BREAK WITH NUMBER ---')
+// for (let i = 0; i < cristian.length; i++) {
+//   if (typeof cristian[i] === 'number') break;
+
+//   console.log(cristian[i], typeof cristian[i]);
+// }
 
 // ===================================================================================== //
 
@@ -385,8 +436,27 @@
 // Looping Backwards and Loops in Loops
 // ************************************
 
+// const cristian = [
+//   'Cristian',
+//   'Herrera', 
+//   2020 - 1995,
+//   'Programmer', 
+//   ['Michael', 'Peter', 'Steven']
+// ];
 
+// // looping backwards through the array 'cristian'
+// for (let i = cristian.length - 1; i >= 0; i--) {
+//   console.log(cristian[i]);
+// }
 
+// // looping inside another loop! 
+// for (let exercise = 1; exercise <= 3; exercise++) {
+//   console.log(`------ Exercise ${exercise} `);
+
+//   for (let reps = 1; reps <= 5; reps++) {
+//     console.log(`Lifting weights: repitions ${reps}`);
+//   }
+// }
 
 // ===================================================================================== //
 
@@ -394,7 +464,28 @@
 // The while Loop
 // **************
 
+// // While loop does NOT depend on a counter varaible
 
+// // Use while loop when you dont know how many iterations the loop will have
 
+// // |counter| |condition| |+ or - value|
+// for(let rep = 1; rep <= 10; rep = rep + 1) {
+//   console.log(`Lifting weights repitition ${rep}`);
+// }
+
+// let rep = 1;
+// // only can specify a condition 
+// while (rep <= 10) {
+//   console.log(`WHILE: Lifting weights repitition ${rep}`);
+//   rep++;
+// }
+
+// let dice = Math.trunc(Math.random() * 6) + 1;
+
+// while(dice !== 6) {
+//   console.log(`You rolled a ${dice}`);
+//   dice = Math.trunc(Math.random() * 6) + 1;
+//   if (dice === 6) console.log('Loop is ending...');
+// }
 
 // ===================================================================================== //
