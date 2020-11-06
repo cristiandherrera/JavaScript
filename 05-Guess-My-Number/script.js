@@ -27,3 +27,18 @@
 // document.querySelector(".guess").type = "text";
 // document.querySelector(".guess").value = "RIP";
 // console.log(document.querySelector(".guess").type);
+
+// // *********************
+// // Handling Click Events
+// // *********************
+
+// // The first two arguments of 'addEventListener(type, listener)' is the type of event you want and what you want to happen when said event is triggered.
+
+// document.querySelector(".check").addEventListener("click", function () {
+//   const guess = Number(document.querySelector(".guess").value);
+//   console.log(typeof guess);
+
+//   if (!guess) {
+//     document.querySelector(".message").textContent = "No number!";
+//   }
+// });
