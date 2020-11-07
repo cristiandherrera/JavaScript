@@ -31,3 +31,14 @@ for (let i = 0; i < btnsShowModal.length; i++) {
 
 btnCloseModal.addEventListener("click", closeModal);
 overlay.addEventListener("click", closeModal);
+
+// When an 'addEventListener' is triggered it creates an object; we can access the object for information on its key value pairs!! Example below: 'event.key'
+
+// Use the method 'contains' to check if element has a specific class.
+
+document.addEventListener("keydown", function (event) {
+  console.log(event);
+  if (event.key === "Escape" && !modal.classList.contains("hidden")) {
+    closeModal();
+  }
+});
