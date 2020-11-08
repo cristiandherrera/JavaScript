@@ -17,28 +17,43 @@ const playerElement0 = document.querySelector(".player--0");
 const playerElement1 = document.querySelector(".player--1");
 // Buttons
 const btnRoll = document.querySelector(".btn--roll");
-const btnNew = document.querySelector(".btn--new");
 const btnHold = document.querySelector(".btn--hold");
+const btnNew = document.querySelector(".btn--new");
 
-// STARTING CONDITIONS
-diceElement.classList.add("hidden");
-scoreElement0.textContent = 0;
-scoreElement1.textContent = 0;
-// Player and score starting values
-const totalScore = [0, 0];
-let currentScore = 0;
-let activePlayer = 0;
-let playing = true;
+// Delcaring variables in global scope
+let totalScore, currentScore, activePlayer, playing;
 
-// SWITCHES PLAYERS FUNCTION
+// INITIALIZING VALUES AND DISPLAYS
+const init = function () {
+  // Values
+  totalScore = [0, 0];
+  currentScore = 0;
+  activePlayer = 0;
+  playing = true;
+  // Displays
+  scoreElement0.textContent = 0;
+  scoreElement1.textContent = 0;
+  currentScoreElement0.textContent = 0;
+  currentScoreElement1.textContent = 0;
+  diceElement.classList.add("hidden");
+  // Classes
+  playerElement0.classList.add("player--active");
+  playerElement1.classList.remove("player--active");
+  document
+    .querySelector(`.player--${activePlayer}`)
+    .classList.remove("player--winner");
+};
+init();
+
+// SWITCHES PLAYERS
 const switchPlayers = function () {
-  // setting current score back to 0 when rolling 1
+  // Setting current score back to 0 when rolling 1
   document.querySelector(`#current--${activePlayer}`).textContent = 0;
   // Switch to next player
   activePlayer = activePlayer === 0 ? 1 : 0;
-  // reset score
+  // Reset current score value
   currentScore = 0;
-  // turn on/off '.player--active' styles
+  // Turn on/off '.player--active' styles
   playerElement0.classList.toggle("player--active");
   playerElement1.classList.toggle("player--active");
 };
@@ -55,7 +70,7 @@ btnRoll.addEventListener("click", function () {
     if (diceValue !== 1) {
       // Add dice roll to player score
       currentScore += diceValue;
-      // displaying current score depending on current player
+      // Displaying current score depending on current player
       document.querySelector(
         `#current--${activePlayer}`
       ).textContent = currentScore;
@@ -78,18 +93,18 @@ btnHold.addEventListener("click", function () {
     document.querySelector(`#score--${activePlayer}`).textContent =
       totalScore[activePlayer];
     // Is score >= 100?
-    if (totalScore[activePlayer] >= 100) {
+    if (totalScore[activePlayer] >= 20) {
       // CURRENT PLAYER WINS
       playing = false;
-      // adds 'player--winner' styles
+      // Adds 'player--winner' styles
       document
         .querySelector(`.player--${activePlayer}`)
         .classList.add("player--winner");
-      // removes 'player active' styles
+      // Removes 'player--active' styles
       document
         .querySelector(`.player--${activePlayer}`)
         .classList.remove("player--active");
-      // hide dice png!
+      // Hide dice png!
       diceElement.classList.add("hidden");
     } else {
       // Switch player
@@ -97,3 +112,6 @@ btnHold.addEventListener("click", function () {
     }
   }
 });
+
+// BUTTON NEW GAME LOGIC
+btnNew.addEventListener("click", init);
