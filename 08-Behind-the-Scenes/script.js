@@ -36,3 +36,28 @@
 //  - concurrency model: how the javascript engine handles mulitple tasks happening at the same time.
 //  - Javascript runs on a single thread; can only do one thing at a time.
 //  - Event loop takes long running tasks and executes them in the 'background', and puts them on main thread when finished!
+
+// *********************************
+// The Javascript Engine and Runtime
+// *********************************
+
+// What is a javascript engine??
+//  The engine is a program that executes javascript codel!
+//  Every browser has is own engine! Google chromes engine is the V8 engine! This engine is also used to execute server side JS code.(node js)
+//  JS engines are composed of two parts; the call stack and heap!
+//    - call stack: where our code is executed!
+//    - heap: where objects are stored!
+
+// Compiled languages vs Interpreted
+//  Interpreted: Interpreter runs through the source code and executes it line by line.
+//  Compiled: Entire code is converted into machine code at once, and written into a binary file that can be executed by a computer.
+//  Just-in-time(JIT) compilation: Entire code is converted into machine code at once, then executed immediatley!(IS NOT written into binary file)
+
+// Javascript Runtime Environment
+//  Includes everything we need to run JS in the browser(in this case)!!
+//  JS runtime is essentially a big container!! Within in this container are other smaller containers!!
+//  These smaller containers in the JS runtime are the JS engine, the Web API's, Call Back Queue, and the Event Loop!
+//    - JS Engine:
+//    - Web API's: funcitonalities provided to the engine, accessible on window object.
+//    - Call Back Queue
+//    - Event Loop
