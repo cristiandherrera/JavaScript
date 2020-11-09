@@ -42,8 +42,8 @@
 // *********************************
 
 // What is a javascript engine??
-//  The engine is a program that executes javascript codel!
-//  Every browser has is own engine! Google chromes engine is the V8 engine! This engine is also used to execute server side JS code.(node js)
+//  The engine is a program that executes javascript code!
+//  Every browser has its own engine! Google chromes engine is the V8 engine! This engine is also used to execute server side JS code.(node js)
 //  JS engines are composed of two parts; the call stack and heap!
 //    - call stack: where our code is executed!
 //    - heap: where objects are stored!
@@ -57,7 +57,7 @@
 //  Includes everything we need to run JS in the browser(in this case)!!
 //  JS runtime is essentially a big container!! Within in this container are other smaller containers!!
 //  These smaller containers in the JS runtime are the JS engine, the Web API's, Call Back Queue, and the Event Loop!
-//    - JS Engine:
+//    - JS Engine: Parses the JS code for errors. If none; reads rest from top to bottom!
 //    - Web API's: funcitonalities provided to the engine, accessible on window object.
-//    - Call Back Queue
-//    - Event Loop
+//    - Call Back Queue: A data stucture that contains all of the call back functions
+//    - Event Loop: Takes events from call back queue and puts them in engine call stack to be executed!! (essentialy non blocking concurrency model)
