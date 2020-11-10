@@ -105,6 +105,7 @@
  What is inside execution context?
 
  --Everyting below is genertated during the 'creation phase' right before execution!--
+
  1. The Variable Environment: variable decarations, functions, and argument objects.
 
  2. Scope Chain
@@ -120,4 +121,40 @@
  The call stack is where execution contexts get stacked on top of each other, to keep track of where we are in the execution. (one at a time(single thread))
 
  Since the call stack contexts can only be run one at a time and are stacked upwards; the call stack runs in a FILO(firstin-lastout) manner
+*/
+
+// *************************
+// Scope and The Scope Chain
+// *************************
+
+/*
+  Scope Concepts:
+
+  Scoping - How our program's varaibles are organized and accessed. "Where do variable live" or "Where can we access a certain variable, and where not?"  (the idea)
+
+  Lexical scoping - Scoping controlled by placement of functions and blocks in the code. (A linear upward reading of the code from child to parent)
+
+  Scope - Space or environment in which a certain variable is declared(variable environment in the case of functions).Three types of scope, global scope, function scope, and block scope!
+
+ Scope of a variable - Region of our code where a certain variable can be accessed.
+*/
+
+/*
+  The 3 Types of Scope:
+
+  Global Scope - Any code that is outside any function or block! Variables declared in global scope are accessible anywhere.
+
+  Function/Local Scope - Variables that are accessible ONLY inside the function. 
+
+  Block Scope (ES6) - Variables are only accessible inside a block. HOWEVER, ONLY applies to 'let' and 'const', NOT 'var'. NOTE: In strict mode; functions become block scoped!
+*/
+
+/*
+  The Scope Chain:
+
+  Every scope always has access wot all the variables from all its outer scopes. This is the scope chain!
+
+  Variable lookup - If a scope needs a variable and cannot find it in the current scope it will look up the 'scope chain' and see if it can find that variable in one of the parent scopes! If found: will use/ if not: refrerence error. (DOES NOT work in reverse)
+
+  The scope chain has nothing to do with the order in which functions were called!!
 */
