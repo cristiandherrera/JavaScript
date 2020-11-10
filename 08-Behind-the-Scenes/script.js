@@ -66,3 +66,27 @@
 // ************************************
 // Execution Contexts and The Call Stack
 // ************************************
+
+// How is Javscript code executed?
+
+// What is the execution context?
+
+// Execution Conext: Environment in which a piece of JS is executed. Store all the necessary information for some code to be executed.
+
+// Global Execution Context: Default context, created for code that is not inside any functino (top-level).
+
+// One execution context PER FUNCTION: For each funcion call, a new execution context is created. (all together make up the call stack)
+
+// What is inside execution context?
+
+// Everyting below is genertated during the 'creation phase' right before execution!
+// 1. The Variable Environment: variable decarations, functions, and argument objects.
+// 2. Scope Chain
+// 3. 'this' keyword
+// NOTE: argument objects and 'this' are NOT in arrow functions
+
+// The Call Stack:
+
+// The call stack is where execution contexts get stacked on top of each other, to keep track of where we are in the execution. (one at a time(single thread))
+
+// Since the call stack contexts can only be run one at a time and are stacked upwards; the call stack runs in a FILO(firstin-lastout) manner
