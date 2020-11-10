@@ -44,9 +44,10 @@
 // What is a javascript engine??
 //  The engine is a program that executes javascript code!
 //  Every browser has its own engine! Google chromes engine is the V8 engine! This engine is also used to execute server side JS code.(node js)
+//  Javascript engines run on a single thread
 //  JS engines are composed of two parts; the call stack and heap!
-//    - call stack: where our code is executed!
-//    - heap: where objects are stored!
+//    - memory heap: where information is stored, variables, functions, objects, etc.
+//    - call stack: Executes code with actionable items like funcition calls.
 
 // Compiled languages vs Interpreted
 //  Interpreted: Interpreter runs through the source code and executes it line by line.
@@ -57,7 +58,11 @@
 //  Includes everything we need to run JS in the browser(in this case)!!
 //  JS runtime is essentially a big container!! Within in this container are other smaller containers!!
 //  These smaller containers in the JS runtime are the JS engine, the Web API's, Call Back Queue, and the Event Loop!
-//    - JS Engine: Parses the JS code for errors. If none; reads rest from top to bottom!
-//    - Web API's: funcitonalities provided to the engine, accessible on window object.
-//    - Call Back Queue: A data stucture that contains all of the call back functions
-//    - Event Loop: Takes events from call back queue and puts them in engine call stack to be executed!! (essentialy non blocking concurrency model)
+//    - JS Engine: Uses memory heap and call stack to store and execute code synchronously.
+//    - Web API's: funcitonalities provided to the engine from the window object(DOM, webtimeouts, eventlisteners, AJAX, http requests, etc)
+//    - Call-Back Queue: Contains all of the call-back functions from the Web API's
+//    - Event Loop: Takes the call-back funtions from the queue and transfers the code to be excuted in the call stack ONCE the stack is EMPTY (essentialy non blocking concurrency model)
+
+// ************************************
+// Execution Contexts and The Call Stack
+// ************************************
