@@ -224,3 +224,63 @@
 
  Techincally, 'let' and 'const' ARE hoisted but the user wont be able to tell in practice because of the TDZ. 
 */
+
+// ****************************
+// Hoisting and TDZ in Practice
+// ****************************
+
+/* 
+ Always declare your variables at the top of the current scope!!
+
+ Always declare your functions first and then call them after; even with delcarative functions. Just because you can hoist does not mean you should!! NOT CLEAN!
+
+ Only the 'var' variable leaves a value in the window object.
+*/
+
+// // Vairables
+
+// console.log(me);
+// // console.log(job); // << ERROR: CANNOT access 'let' variable before init. (in TDZ)
+// // console.log(year); // << ERROR: CANNOT access 'const' variable before init. (in TDZ)
+
+// var me = "Cristian";
+// let job = "programmer";
+// const year = 1995;
+
+// // Functions
+
+// console.log(addDecl(2, 3));
+// console.log(addExpr);
+// // console.log(addExpr(2, 3)); // << ERROR: NOT a function, CANNOT pass value into undefined
+// // console.log(addArr(2, 3)); // << ERROR: CANNOT access 'addArr' func before init. (in TDZ)
+
+// function addDecl(a, b) {
+//   return a + b;
+// }
+
+// var addExpr = function (a, b) {
+//   return a + b;
+// };
+
+// const addArr = (a, b) => a + b;
+
+// // Example of hoisting & var shortcomings
+
+// console.log(numProducts);
+// if (!numProducts) deleteShoppingCart(); // Potenitally VERY DANGEROUS bug if in real app.
+
+// var numProducts = 10;
+
+// function deleteShoppingCart() {
+//   console.log("All products deleted");
+// }
+
+// // Window Object
+
+// var x = 1;
+// let y = 2;
+// const z = 3;
+
+// console.log(x === window.x); // << TRUE
+// console.log(y === window.y); // << FALSE
+// console.log(z === window.z); // << FALSE
