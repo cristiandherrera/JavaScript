@@ -234,7 +234,7 @@
 
  Always declare your functions first and then call them after; even with delcarative functions. Just because you can hoist does not mean you should!! NOT CLEAN!
 
- Only the 'var' variable leaves a value in the window object.
+ The 'var' variable creates a property in the window object.
 */
 
 // // Vairables
@@ -308,39 +308,107 @@
 // The 'this' Keyword in Practice
 // ******************************
 
-// The 'this' keyword used in the global scope is the 'window' object
-console.log(this);
+// // The 'this' keyword used in the global scope is the 'window' object
+// console.log(this);
 
-// Simple function call
-const calcAge = function (birthYear) {
-  console.log(2020 - birthYear);
-  console.log(this);
-};
-calcAge(1995);
+// // Simple function call
+// const calcAge = function (birthYear) {
+//   console.log(2020 - birthYear);
+//   console.log(this);
+// };
+// calcAge(1995);
 
-// Arrow function call
-const calcAgeArrow = (birthYear) => {
-  console.log(2020 - birthYear);
-  console.log(this);
-};
-calcAgeArrow(2001);
+// // Arrow function call
+// const calcAgeArrow = (birthYear) => {
+//   console.log(2020 - birthYear);
+//   console.log(this);
+// };
+// calcAgeArrow(2001);
 
-// Method calls
-const cristian = {
-  year: 1995,
-  calcAge: function () {
-    console.log(this);
-    console.log(2037 - this.year);
-  },
-};
-cristian.calcAge();
+// // Method calls
+// const cristian = {
+//   year: 1995,
+//   calcAge: function () {
+//     console.log(this);
+//     console.log(2037 - this.year);
+//   },
+// };
+// cristian.calcAge();
 
-const matilda = {
-  year: 1980,
-};
+// const matilda = {
+//   year: 1980,
+// };
 
-matilda.calcAge = cristian.calcAge; //<< known as "method borrowing"
-matilda.calcAge();
+// matilda.calcAge = cristian.calcAge; //<< known as "method borrowing"
+// matilda.calcAge();
 
-const f = cristian.calcAge;
-f(); // << ERROR: 'this' is undefined. no object exists.
+// const f = cristian.calcAge;
+// f(); // << ERROR: 'this' is undefined. no object exists.
+
+// *************************************
+// Regular Functions vs. Arrow Functions
+// *************************************
+
+// // GOOD PRACITICE: Do NOT us arrow functions inside of an object UNLESS nested in another function.
+
+// // NOTE: Object brackets do NOT create their own code block (no block scope) it is just an object literal (how we define our object).
+
+// // AGAIN: The 'var' variable creates a property in the window object.
+
+// // Arguments keyword NOT very modern.
+
+// var firstName = "Matilda";
+
+// const cristian = {
+//   firstName: "Cristian",
+//   year: 1995,
+//   calcAge: function () {
+//     console.log(this);
+//     console.log(2037 - this.year);
+
+//     // const isMillenial = function () {
+//     //   console.log(this);
+//     //   console.log(this.year >= 1981 && this.year <= 1986); // << ERROR: 'this' undefined
+//     // };
+//     // isMillenial();
+
+//     // //solution 1
+//     // const self = this; // pre es6 way
+//     // isMillenial();
+//     // const isMillenial = function () {
+//     //   console.log(self);
+//     //   console.log(self.year >= 1981 && self.year <= 1986);
+//     // };
+//     // isMillenial();
+
+//     // Solution 2. (perfered)
+//     const isMillenial = () => {
+//       console.log(this); // lexical 'this' bc arrow fucntion
+//       console.log(this.year >= 1981 && this.year <= 1996);
+//     };
+//     isMillenial();
+//   },
+
+//   greet: () => {
+//     console.log(this, "greet function");
+//     console.log(`Hey, ${this.firstName}`);
+//   },
+// };
+// cristian.greet();
+// console.log(this.firstName);
+
+// cristian.calcAge();
+
+// // arguments keyword
+// const addExpr = function (a, b) {
+//   console.log(arguments);
+//   return a + b;
+// };
+// addExpr(2, 5);
+// addExpr(2, 5, 8, 12);
+
+// const addArr = (a, b) => {
+//   console.log(arguments); // ERROR: Arrow functions DO NOT get keyword 'arguements just like 'this'.
+//   return a + b;
+// };
+// addArr(2, 5, 8, 12);
