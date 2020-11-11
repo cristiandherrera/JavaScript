@@ -136,7 +136,7 @@
 
   Scope - Space or environment in which a certain variable is declared(variable environment in the case of functions).Three types of scope, global scope, function scope, and block scope!
 
- Scope of a variable - Region of our code where a certain variable can be accessed.
+  Scope of a variable - Region of our code where a certain variable can be accessed.
 */
 
 /*
@@ -158,3 +158,44 @@
 
   The scope chain has nothing to do with the order in which functions were called!!
 */
+
+// *******************
+// Scoping in Practice
+// *******************
+
+// function calcAge(birthYear) {
+//   const age = 2020 - birthYear;
+
+//   function printAge() {
+//     // JS outputs 'firstName' as 'Cristian' because of the global scope(variable lookup)
+//     let output = `${firstName}, you are ${age}, born in ${birthYear}`;
+//     console.log(output);
+//     if (birthYear >= 1981 && birthYear <= 1996) {
+//       var millenial = true;
+//       // Creating NEW variable with same name as outer scope's variable 'firstName'
+//       const firstName = "Steven";
+
+//       // Reassigning outer scope's variable 'output'
+//       output = "NEW OUTPUT";
+
+//       // JS DOES NOT perform variable lookup because 'firstName' can be found in the current scope!! So 'str' gives us the value 'Steven'
+//       const str = `Oh, and you're a millenial, ${firstName}`;
+//       console.log(str);
+
+//       function add(a, b) {
+//         return a + b;
+//       }
+//     }
+//     // console.log(str); << ERROR: str is not defined; declared with const(block scoped)
+//     console.log(millenial);
+//     // console.log(add(2, 3)); << ERROR: funcion is also block scoped because 'use strict;'
+//     console.log(output);
+//   }
+
+//   printAge();
+
+//   return age;
+// }
+// // TWO 'firstName' variables but in two different scopes!! Just like paramaters can be named the same because they have DIFFERNT scopes!!
+// const firstName = "Cristian";
+// calcAge(1995);
