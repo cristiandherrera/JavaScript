@@ -412,3 +412,48 @@
 //   return a + b;
 // };
 // addArr(2, 5, 8, 12);
+
+// ******************************************************
+// Primitives vs. Objects (Primitive vs. Reference Types)
+// ******************************************************
+
+/*
+ Data types:
+
+ Are stored in the call stack in the execution context
+
+ When assigning a variables value to a seperate variable they will share the same memory address UNTIL the value of one is reassigned!!
+
+ 'age' and 'oldAge' value constained the same exact memory address UNTIL 'age' value was reassigned to 25
+
+ NOTE: 'const' variables ar immutable with primitive values NOT with reference values.
+
+*/
+/*
+ Reference types(objects):
+  
+ Are stored in the heap with a memory address that links the object to the identifier(variable name) in the call stack!
+
+ Objects 'me' and 'friend' point to the exact same place in the memory heap BECAUSE they share the same memory adress.
+
+ When ever you copy an object you are really just creating a new variable that points to the exact same object. (same memory address)
+
+*/
+
+// let age = 24;
+// let oldAge = age;
+// age = 25;
+
+// console.log(age);
+// console.log(oldAge);
+
+// const me = {
+//   name: "Cristian",
+//   age: 25,
+// };
+
+// const friend = me;
+// friend.age = 30;
+
+// console.log("friend", friend); // 'age' property changes to 30
+// console.log("me", me); // ALSO changes to 30
