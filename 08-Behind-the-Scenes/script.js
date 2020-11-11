@@ -284,3 +284,22 @@
 // console.log(x === window.x); // << TRUE
 // console.log(y === window.y); // << FALSE
 // console.log(z === window.z); // << FALSE
+
+// ******************
+// The 'this' Keyword
+// ******************
+
+/* 
+ 'this' keyword/variable: Special variable that is created for every execution context (every function). Take the value of (points to) the ownner of the functino in which the 'this' keyword is used
+
+ 'this' is NOT static. It depends on HOW the function is called, and its value is only assigned when the function is acutally called.
+
+ If 'this' is called by a... 
+
+    Method: The object that is calling the method.
+    Simple function call: Returns 'undefined'
+    Arrow Functions: The 'this' of parent function (lexical 'this')
+    Event Listener: The DOM element that the handler is attached to
+
+ 'this' does NOT point to the function itself, and also NOT the its variable environment!
+*/
