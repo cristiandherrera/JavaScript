@@ -296,10 +296,51 @@
 
  If 'this' is called by a... 
 
-    Method: The object that is calling the method.
-    Simple function call: Returns 'undefined'
+    Method: The object that is CALLING the method.
+    Simple function call: Returns 'undefined'(in 'strict mode')
     Arrow Functions: The 'this' of parent function (lexical 'this')
     Event Listener: The DOM element that the handler is attached to
 
  'this' does NOT point to the function itself, and also NOT the its variable environment!
 */
+
+// ******************************
+// The 'this' Keyword in Practice
+// ******************************
+
+// The 'this' keyword used in the global scope is the 'window' object
+console.log(this);
+
+// Simple function call
+const calcAge = function (birthYear) {
+  console.log(2020 - birthYear);
+  console.log(this);
+};
+calcAge(1995);
+
+// Arrow function call
+const calcAgeArrow = (birthYear) => {
+  console.log(2020 - birthYear);
+  console.log(this);
+};
+calcAgeArrow(2001);
+
+// Method calls
+const cristian = {
+  year: 1995,
+  calcAge: function () {
+    console.log(this);
+    console.log(2037 - this.year);
+  },
+};
+cristian.calcAge();
+
+const matilda = {
+  year: 1980,
+};
+
+matilda.calcAge = cristian.calcAge; //<< known as "method borrowing"
+matilda.calcAge();
+
+const f = cristian.calcAge;
+f(); // << ERROR: 'this' is undefined. no object exists.
