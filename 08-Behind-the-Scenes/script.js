@@ -199,3 +199,28 @@
 // // TWO 'firstName' variables but in two different scopes!! Just like paramaters can be named the same because they have DIFFERNT scopes!!
 // const firstName = "Cristian";
 // calcAge(1995);
+
+// **************************************
+// Variable Environment: Hoisting and TDZ
+// **************************************
+
+/*
+ Hoisting: 
+ 
+ Makes some type of variables accessible/usable in the code before they are actually declared. "Variable lift to the top of their scope."
+
+ Before execution, code is scanned for variable declarations, and for each variable, a new property is created in the variable environment object.
+
+ Ex. Function declarations are hoisted, and can return a value before code is even declared. The 'var' variables can do this too but do not return intial value instead return undefined.
+*/
+
+/*
+ Temporal Dead Zone:
+
+ When declaring a block scoped variable, TDZ is the space in the scope before the variable is declared!
+
+ When trying access block scoped variables before they are initalized the console will throw out an ERROR. This is to help prevent bugs!! AND keep 'const' acutally working!!
+ NOTE: Since 'var' in function scoped, it does not have TDZ; so it will return a value 'undefined'
+
+ Techincally, 'let' and 'const' ARE hoisted but the user wont be able to tell in practice because of the TDZ. 
+*/
