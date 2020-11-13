@@ -75,6 +75,18 @@ const restaurant = {
 
 // ================================================================================================== //
 
+// ************************************
+// The Nullish Coalescing Operator (??)
+// ************************************
+
+// restaurant.numGuests = 0;
+// const guest = restaurant.numGuests || 10;
+// console.log(guest);
+
+// // Nullish values: ONLY null and undefined (NOT 0, "", or EVEN booleans);
+// const guestCorrect = restaurant.numGuests ?? false;
+// console.log(guestCorrect);
+
 // ***************************
 // Short Circuting (&& and ||)
 // ***************************
@@ -106,6 +118,7 @@ const restaurant = {
 //   : (restaurant.numGuests = 10);
 // console.log(guest1);
 
+// // setting a default value of 10 if the first value is 'falsy'
 // const guest2 = restaurant.numGuests || 10;
 // console.log(guest2);
 
@@ -123,6 +136,7 @@ const restaurant = {
 //   restaurant.orderPizza("mushrooms", "onions");
 // }
 
+// // calling a method if the first value is 'truthy'
 // restaurant.orderPizza && restaurant.orderPizza("mushrooms", "onions");
 
 // ****************************
