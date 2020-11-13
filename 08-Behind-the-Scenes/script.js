@@ -462,47 +462,48 @@
 // Primitives vs. Objects in Practice
 // **********************************
 
-// // remember: each primitive value will be saved into its own piece of memory in the stack!
+// remember: each primitive value will be saved into its own piece of memory in the stack!
 
-// // remember: when saving an objects value to a variable, that variable is just simply another variable in the stack which holds a reference to the original object.
+// remember: when saving an objects value to a variable, that variable is just simply another variable in the stack which holds a reference to the original object.
 
-// // Completly changing the object, assigning a new object(not allowed with 'const') to it is completely different than just changing property
+// Completly changing the object, assigning a new object(not allowed with 'const') to it is completely different than just changing property
 
-// // The method 'assign()' is a way of making actually making a copy of an object. BUT it is only a "shallow" copy; meaning it ONLY copies on the first level, nested objects will NOT be copied
+// The method 'assign()' is a way of making actually making a copy of an object. BUT it is only a "shallow" copy; meaning it ONLY copies on the first level, nested objects will NOT be copied
 
-// // Primitive types
-// let lastName = "Williams";
-// let oldLastName = lastName;
-// lastName = "Davis";
-// console.log(lastName, oldLastName);
+// Primitive types
+let lastName = "Williams";
+let oldLastName = lastName;
+lastName = "Davis";
+console.log(lastName, oldLastName);
 
-// // reference types
-// const jessica = {
-//   firstName: "Jessica",
-//   lastName: "Williams",
-//   age: 27,
-//   family: ["Alice", "Bob"],
-// };
-// const marriedJessica = jessica;
-// marriedJessica.lastName = "Davis";
-// console.log("Before marriage:", jessica);
-// console.log("After marriage:", marriedJessica);
-// // marriedJessica = {}; // << ERROR
+// reference types
+const jessica = {
+  firstName: "Jessica",
+  lastName: "Williams",
+  age: 27,
+  family: ["Alice", "Bob"],
+};
+const marriedJessica = jessica;
+marriedJessica.lastName = "Davis";
+console.log("Before marriage:", jessica);
+console.log("After marriage:", marriedJessica);
+// marriedJessica = {}; // << ERROR
 
-// console.log("");
+console.log("");
 
-// // Copying Objects
-// const jessica2 = {
-//   firstName: "Jessica",
-//   lastName: "Williams",
-//   age: 27,
-// };
+// Copying Objects
+const jessica2 = {
+  firstName: "Jessica",
+  lastName: "Williams",
+  age: 27,
+  family: ["Alice", "Bob"],
+};
 
-// const copyJessica = Object.assign({}, jessica2);
-// copyJessica.lastName = "Davis";
+const copyJessica = Object.assign({}, jessica2);
+copyJessica.lastName = "Davis";
 
-// copyJessica.family.push("John");
-// copyJessica.family.push("Mary");
+copyJessica.family.push("John");
+copyJessica.family.push("Mary");
 
-// console.log("Before marriage:", jessica2);
-// console.log("After marriage:", copyJessica);
+console.log("Before marriage:", jessica2);
+console.log("After marriage:", copyJessica);
