@@ -73,6 +73,58 @@ const restaurant = {
 //   starterIndex: 3,
 // });
 
+// ================================================================================================== //
+
+// ***************************
+// Short Circuting (&& and ||)
+// ***************************
+
+/*
+ Short Circuting: refers to how logical operators will by react to values if they are 'falsy'.
+
+   OR operators will reuturn its FIRST 'truthy' value or its FINAL 'falsy' value IF none are 'truthy'.
+   AND operators will reuturn its FIRST 'falsy' value or its FINAL 'truthy' value IF none are 'falsy'.
+
+ Logical operators values DONT have to be just booleans; they can use ANY data type, and return ANY data type!
+
+ Setting default values CAN done using OR short circuting.
+
+ Can use AND short circuting to return its final operant. (used like an if/esle) 
+*/
+
+// // SHORT CIRCUTING with OR
+// console.log(3 || "Cristian");
+// console.log("" || "Cristian");
+// console.log(true || 0);
+// console.log(undefined || null);
+// console.log(undefined || 0 || "" || "Hello" || 23 || null);
+
+// // COMPARISON
+// // restaurant.numGuests = 23;
+// const guest1 = restaurant.numGuests
+//   ? restaurant.numGuests
+//   : (restaurant.numGuests = 10);
+// console.log(guest1);
+
+// const guest2 = restaurant.numGuests || 10;
+// console.log(guest2);
+
+// console.log("====== AND ======");
+
+// // SHORT CIRCUTING with AND
+// console.log(0 && "Cristian");
+// console.log(1 && "Cristian");
+
+// console.log("hello" && 25 && undefined && "goodbye");
+// console.log("hello" && 25 && "goodbye");
+
+// // COMPARISON
+// if (restaurant.orderPizza) {
+//   restaurant.orderPizza("mushrooms", "onions");
+// }
+
+// restaurant.orderPizza && restaurant.orderPizza("mushrooms", "onions");
+
 // ****************************
 // Rest Patterns and Parameters
 // ****************************
