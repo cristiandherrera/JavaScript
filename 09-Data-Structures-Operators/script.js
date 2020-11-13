@@ -25,8 +25,7 @@ const restaurant = {
   order: function (starterIndex, mainIndex) {
     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
   },
-  // Method with an object as the paramater; function will automatically destructure object.
-  // also set default values if properties are not defined a value
+  // Method with an object as the paramater; so it will automatically destructure object.
   orderDelivery: function ({
     starterIndex = 1,
     mainIndex = 0,
@@ -37,19 +36,94 @@ const restaurant = {
       `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}!`
     );
   },
+  // Method made to pass in all arguments at once with spread operator
+  orderPasta: function (ing1, ing2, ing3) {
+    console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}!`);
+  },
 };
-// Passing in objects as arguements for function calls
-restaurant.orderDelivery({
-  time: "22:30",
-  address: "Via del Sole, 21",
-  mainIndex: 2,
-  starterIndex: 2,
-});
 
-restaurant.orderDelivery({
-  address: "Via del Sole, 21",
-  starterIndex: 3,
-});
+// // SPREAD OPERATOR
+// const ingrediants = [
+//   prompt("What is the fist ingrediant?"),
+//   prompt("What is the second ingrediant?"),
+//   prompt("What is the third ingrediant?"),
+// ];
+// restaurant.orderPasta(...ingrediants);
+
+// // DESTRUCTURING OBJECTS
+// // Passing in objects as arguements for function calls
+// restaurant.orderDelivery({
+//   time: "22:30",
+//   address: "Via del Sole, 21",
+//   mainIndex: 2,
+//   starterIndex: 2,
+// });
+// restaurant.orderDelivery({
+//   address: "Via del Sole, 21",
+//   starterIndex: 3,
+// });
+
+// *************************
+// The Spread Operator (...)
+// *************************
+
+/*
+ Spread Operator: Spread syntax (...) allows an iterable such as an array expression or string to be expanded in places where zero or more arguments (for function calls) or elements (for array literals) are expected, or an object expression to be expanded in places where zero or more key-value pairs (for object literals) are expected. (MDN)
+
+ Iterables: arrays, strings, maps, sets. NOT objects (simple def.)
+
+ USE: Whenever we need the elements of an array individualy, pass mulitple elements into a function, use the spread operator
+
+ Can ONLY use the spread operator when building an array OR when we pass values into a function
+
+ Similarly too destructuring spread operator helps us get elements out of arrays 
+
+ Spread operator gets ALL of the elements from an array and DOES NOT create new variables
+ so we can only use it in places where values are seperated by commas
+
+ UPDATE: Since 2018, the spread operator, now woks on objects(even though NOT iterals)
+*/
+
+// // old way
+// const arr = [7, 8, 9];
+// const badArr = [1, 2, arr[0], arr[1], arr[2]];
+// console.log(badArr);
+
+// // Spread operator: concatinatiing 'arr' with 'gooaArr'
+// const goodArr = [1, 2, ...arr];
+// console.log(goodArr);
+// console.log(...goodArr);
+
+// // Creating new array 'newMenu'; adding string (DOES NOT manipulate orginal array 'mainMenu')
+// const newMenu = [...restaurant.mainMenu, "Gnocci"];
+// console.log(newMenu);
+
+// // Copy array (shallow copy)
+// const mainMenuCopy = [...restaurant.mainMenu];
+// console.log(mainMenuCopy);
+
+// // Joining 2 full arrays
+// const fullMenu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+// console.log(fullMenu);
+
+// // Iterables
+// const str = "Cristian";
+// const letters = [...str, " ", "S."];
+// console.log(letters);
+// console.timeStamp(...str);
+// // console.log(`${...str}`); // ERROR: unexpexted token '...''
+
+// // Objects
+// // Created a shallow copy of 'resturants' with the spread operator!
+// // can add and change in any order!
+// const newRestaurant = {
+//   foundedIn: 1998,
+//   ...restaurant,
+//   founder: "Mario",
+//   name: "Peaches Castle",
+// };
+// console.log(newRestaurant, restaurant);
+// console.log(newRestaurant.name, restaurant.name);
 
 // *********************
 // Destructuring Objects
@@ -69,8 +143,8 @@ restaurant.orderDelivery({
  Default values: a varaible can be assigned a default(any value really), in case the value unpacked is 'undefined' (does not exist). 
 
  TIP: Default values make it easy to interact with non-hardcoded code; usually coming from somewhere else (ex: an API)
-
 */
+
 // // Deconstrucing object 'restarant'
 // const { name, openingHours, categories } = restaurant;
 // console.log(name, openingHours, categories);
