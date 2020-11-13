@@ -21,11 +21,11 @@ const restaurant = {
       close: 24,
     },
   },
-  // Method to destructure and return multiple values from arrays
+  // Method to DESTRUCTURE and return multiple values from arrays
   order: function (starterIndex, mainIndex) {
     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
   },
-  // Method with an object as the paramater; so it will automatically destructure object.
+  // Method with an object as the paramater; so it will automatically DESTRUCTURE object.
   orderDelivery: function ({
     starterIndex = 1,
     mainIndex = 0,
@@ -36,11 +36,21 @@ const restaurant = {
       `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}!`
     );
   },
-  // Method made to pass in all arguments at once with spread operator
+  // Method made to pass in all arguments at once during the function call with the SPREAD OPERATOR
   orderPasta: function (ing1, ing2, ing3) {
     console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}!`);
   },
+
+  // Method that allows us to pass a indefinite number of args as an array BECAUSE of the REST PARAMETER
+  orderPizza: function (mainIngrediant, ...otherIngrediants) {
+    console.log(mainIngrediant);
+    console.log(otherIngrediants);
+  },
 };
+
+// // REST PATTERNS AND PARAMETERS
+// restaurant.orderPizza("red sauce", "pepperonies", "onions", "peppers");
+// restaurant.orderPizza("white sauce");
 
 // // SPREAD OPERATOR
 // const ingrediants = [
@@ -62,6 +72,66 @@ const restaurant = {
 //   address: "Via del Sole, 21",
 //   starterIndex: 3,
 // });
+
+// ****************************
+// Rest Patterns and Parameters
+// ****************************
+
+/*
+ The rest parameter syntax allows us to represent an indefinite number of arguments as an array.
+
+ Rest vs. Spread: 
+
+    Rest pattern has same syntax as spread operator BUT insted of unpacking elements from an array the rest pattern PACKS elements into arrays
+
+    Rest Pattern is used on the LEFT side of the '=' during destructuring assignment
+    Spread Operator is used on the RIGHT side of the '=' sign.
+
+    Passing values into functions: Rest pattern compresses individual values into arrays.(written in parameters)
+    Passing values into functions: Spread Operator expands arrays into individual values. (written in arguements)
+
+ USE: Make sure to use the rest pattern at the very end of the destructuring assignment!
+
+*/
+
+// 1) Destructuring
+
+// // SPREAD, because on RIGHT side
+// const arr = [1, 2, ...[3, 4]];
+
+// // REST, because of LEFT side
+// const [a, b, ...others] = [1, 2, 3, 4, 5];
+// console.log(a, b, others);
+
+// // Combining the TWO!
+// const [sauceDisk, , riceDish, ...otherFood] = [
+//   ...restaurant.mainMenu,
+//   ...restaurant.starterMenu,
+// ];
+// console.log(sauceDisk, riceDish, otherFood);
+
+// // Objects
+// const { sat, ...weekdays } = restaurant.openingHours;
+// console.log(weekdays);
+
+// 2) Functions
+
+// //          |REST PATTERN|
+// const add = (...numbers) => {
+//   let sum = 0;
+//   for (let i = 0; i < numbers.length; i++) {
+//     sum += numbers[i];
+//   }
+//   console.log(sum);
+// };
+
+// add(2, 3);
+// add(5, 3, 7, 2);
+// add(8, 3, 5, 3, 2, 1, 4);
+
+// const x = [23, 5, 7];
+// // |SPREAD|
+// add(...x);
 
 // *************************
 // The Spread Operator (...)
