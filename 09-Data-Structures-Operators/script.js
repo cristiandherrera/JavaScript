@@ -1,51 +1,51 @@
 "use strict";
 
-const restaurant = {
-  name: "Classico Italiano",
-  location: "Via Angelo Tavanti 23, Firenze, Italy",
-  categories: ["Italian", "Pizzeria", "Vegetarian", "Organic"],
-  starterMenu: ["Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad"],
-  mainMenu: ["Pizza", "Pasta", "Risotto"],
+// const restaurant = {
+//   name: "Classico Italiano",
+//   location: "Via Angelo Tavanti 23, Firenze, Italy",
+//   categories: ["Italian", "Pizzeria", "Vegetarian", "Organic"],
+//   starterMenu: ["Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad"],
+//   mainMenu: ["Pizza", "Pasta", "Risotto"],
 
-  openingHours: {
-    thu: {
-      open: 12,
-      close: 22,
-    },
-    fri: {
-      open: 11,
-      close: 23,
-    },
-    sat: {
-      open: 0, // Open 24 hours
-      close: 24,
-    },
-  },
-  // Method to DESTRUCTURE and return multiple values from arrays
-  order: function (starterIndex, mainIndex) {
-    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
-  },
-  // Method with an object as the paramater; so it will automatically DESTRUCTURE object.
-  orderDelivery: function ({
-    starterIndex = 1,
-    mainIndex = 0,
-    time = "12:00",
-    address,
-  }) {
-    console.log(
-      `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}!`
-    );
-  },
-  // Method made to pass in all arguments at once during the function call with the SPREAD OPERATOR
-  orderPasta: function (ing1, ing2, ing3) {
-    console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}!`);
-  },
-  // Method that allows us to pass a indefinite number of args as an array BECAUSE of the REST PARAMETER
-  orderPizza: function (mainIngrediant, ...otherIngrediants) {
-    console.log(mainIngrediant);
-    console.log(otherIngrediants);
-  },
-};
+//   openingHours: {
+//     thu: {
+//       open: 12,
+//       close: 22,
+//     },
+//     fri: {
+//       open: 11,
+//       close: 23,
+//     },
+//     sat: {
+//       open: 0, // Open 24 hours
+//       close: 24,
+//     },
+//   },
+//   // Method to DESTRUCTURE and return multiple values from arrays
+//   order: function (starterIndex, mainIndex) {
+//     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+//   },
+//   // Method with an object as the paramater; so it will automatically DESTRUCTURE object.
+//   orderDelivery: function ({
+//     starterIndex = 1,
+//     mainIndex = 0,
+//     time = "12:00",
+//     address,
+//   }) {
+//     console.log(
+//       `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}!`
+//     );
+//   },
+//   // Method made to pass in all arguments at once during the function call with the SPREAD OPERATOR
+//   orderPasta: function (ing1, ing2, ing3) {
+//     console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}!`);
+//   },
+//   // Method that allows us to pass a indefinite number of args as an array BECAUSE of the REST PARAMETER
+//   orderPizza: function (mainIngrediant, ...otherIngrediants) {
+//     console.log(mainIngrediant);
+//     console.log(otherIngrediants);
+//   },
+// };
 
 // // REST PATTERNS AND PARAMETERS
 // restaurant.orderPizza("red sauce", "pepperonies", "onions", "peppers");
@@ -74,6 +74,64 @@ const restaurant = {
 
 // ================================================================================================== //
 
+// ************************
+// Enhanced Object Literals
+// ************************
+
+/* 
+ When nesting objects, we would have to set a property to our nested objects, NOW we can just have the variable name of the nested object.
+
+ Methods: We no longer have to create a property and then set it to a function expression. We can now leave out the keyword 'function' and ':'.
+
+ We can now compute property names instead of write them out manually.
+  
+*/
+
+// const weekdays = ["mon", "tues", "wed", "thu", "fri", "sat", "sun"];
+// const openingHours = {
+//   [weekdays[3]]: {
+//     open: 12,
+//     close: 22,
+//   },
+//   [weekdays[4]]: {
+//     open: 11,
+//     close: 23,
+//   },
+//   [`day-${2 + 4}`]: {
+//     open: 0, // Open 24 hours
+//     close: 24,
+//   },
+// };
+
+// const restaurant2 = {
+//   name: "Classico Italiano",
+//   location: "Via Angelo Tavanti 23, Firenze, Italy",
+//   categories: ["Italian", "Pizzeria", "Vegetarian", "Organic"],
+//   starterMenu: ["Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad"],
+//   mainMenu: ["Pizza", "Pasta", "Risotto"],
+
+//   // ES6 enhanced object calling
+//   openingHours,
+
+//   // ES6 enhanced method syntax
+//   order(starterIndex, mainIndex) {
+//     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+//   },
+//   orderDelivery({ starterIndex = 1, mainIndex = 0, time = "12:00", address }) {
+//     console.log(
+//       `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}!`
+//     );
+//   },
+//   orderPasta(ing1, ing2, ing3) {
+//     console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}!`);
+//   },
+//   // OLD WAY
+//   orderPizza: function (mainIngrediant, ...otherIngrediants) {
+//     console.log(mainIngrediant);
+//     console.log(otherIngrediants);
+//   },
+// };
+
 // *******************************
 // Looping Arrays: The for-of Loop
 // *******************************
@@ -86,22 +144,22 @@ const restaurant = {
  'continue' and 'break' keywords still work
 */
 
-const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+// const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
 
-// for-of loop
+// // for-of loop
 
-// looping through element
-for (const item of menu) {
-  console.log(item);
-}
+// // looping through element
+// for (const item of menu) {
+//   console.log(item);
+// }
 
-// getting index from element using 'entries' method
-for (const [index, element] of menu.entries()) {
-  console.log(`${index + 1}: ${element}`);
-}
+// // getting index from element using 'entries' method
+// for (const [index, element] of menu.entries()) {
+//   console.log(`${index + 1}: ${element}`);
+// }
 
-//'.entries()' is one big array that contains key-value pairs for each index in the array
-console.log(...menu.entries());
+// //'.entries()' is one big array that contains key-value pairs for each index in the array
+// console.log(...menu.entries());
 
 // ************************************
 // The Nullish Coalescing Operator (??)
