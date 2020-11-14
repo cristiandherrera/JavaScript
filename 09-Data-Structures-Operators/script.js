@@ -1,51 +1,51 @@
 "use strict";
 
-// const restaurant = {
-//   name: "Classico Italiano",
-//   location: "Via Angelo Tavanti 23, Firenze, Italy",
-//   categories: ["Italian", "Pizzeria", "Vegetarian", "Organic"],
-//   starterMenu: ["Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad"],
-//   mainMenu: ["Pizza", "Pasta", "Risotto"],
+const restaurant = {
+  name: "Classico Italiano",
+  location: "Via Angelo Tavanti 23, Firenze, Italy",
+  categories: ["Italian", "Pizzeria", "Vegetarian", "Organic"],
+  starterMenu: ["Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad"],
+  mainMenu: ["Pizza", "Pasta", "Risotto"],
 
-//   openingHours: {
-//     thu: {
-//       open: 12,
-//       close: 22,
-//     },
-//     fri: {
-//       open: 11,
-//       close: 23,
-//     },
-//     sat: {
-//       open: 0, // Open 24 hours
-//       close: 24,
-//     },
-//   },
-//   // Method to DESTRUCTURE and return multiple values from arrays
-//   order: function (starterIndex, mainIndex) {
-//     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
-//   },
-//   // Method with an object as the paramater; so it will automatically DESTRUCTURE object.
-//   orderDelivery: function ({
-//     starterIndex = 1,
-//     mainIndex = 0,
-//     time = "12:00",
-//     address,
-//   }) {
-//     console.log(
-//       `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}!`
-//     );
-//   },
-//   // Method made to pass in all arguments at once during the function call with the SPREAD OPERATOR
-//   orderPasta: function (ing1, ing2, ing3) {
-//     console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}!`);
-//   },
-//   // Method that allows us to pass a indefinite number of args as an array BECAUSE of the REST PARAMETER
-//   orderPizza: function (mainIngrediant, ...otherIngrediants) {
-//     console.log(mainIngrediant);
-//     console.log(otherIngrediants);
-//   },
-// };
+  openingHours: {
+    thu: {
+      open: 12,
+      close: 22,
+    },
+    fri: {
+      open: 11,
+      close: 23,
+    },
+    sat: {
+      open: 0, // Open 24 hours
+      close: 24,
+    },
+  },
+  // Method to DESTRUCTURE and return multiple values from arrays
+  order: function (starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  },
+  // Method with an object as the paramater; so it will automatically DESTRUCTURE object.
+  orderDelivery: function ({
+    starterIndex = 1,
+    mainIndex = 0,
+    time = "12:00",
+    address,
+  }) {
+    console.log(
+      `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}!`
+    );
+  },
+  // Method made to pass in all arguments at once during the function call with the SPREAD OPERATOR
+  orderPasta: function (ing1, ing2, ing3) {
+    console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}!`);
+  },
+  // Method that allows us to pass a indefinite number of args as an array BECAUSE of the REST PARAMETER
+  orderPizza: function (mainIngrediant, ...otherIngrediants) {
+    console.log(mainIngrediant);
+    console.log(otherIngrediants);
+  },
+};
 
 // // REST PATTERNS AND PARAMETERS
 // restaurant.orderPizza("red sauce", "pepperonies", "onions", "peppers");
@@ -74,6 +74,56 @@
 
 // ================================================================================================== //
 
+// **********************
+// Optional Chaining (?.)
+// **********************
+
+/*
+ Optional chaining: if a certain property does NOT exist then 'undefined' is returned IMMEDIATELY.
+
+ USE: when accessing a chain of object values use '?.' to test if the value on the left of it does exist!
+
+ REMEMBER: 'nullish' values are like 'falsy' values EXCEPT ONLY null and undefined trigger it.
+
+ REMEMBER: If we need to compute the property name with an expression USE bracket notation
+
+ PRACTICES: We often use optional chaining operator(?.) with the  nullish coalescing operator(??) so that we can actually do something in case we don't get a result from the object
+
+*/
+
+// // BAD PRACTICE (old way)
+// if (restaurant.openingHours && restaurant.openingHours.mon) {
+//   console.log(restaurant.openingHours.mon);
+// }
+
+// // WITH optional chaining
+// console.log(restaurant.openingHours.mon?.open);
+// console.log(restaurant.openingHours?.mon?.open);
+// console.log(restaurant.openingHours?.fri?.open);
+
+// // EXAMPLE
+// const days = ["mon", "tues", "wed", "thu", "fri", "sat", "sun"];
+
+// // looping through array; storing each value in 'items'; checking if resturant 'items' exist based on array index
+// for (const items of days) {
+//   const open = restaurant.openingHours[items]?.open ?? "closed";
+//   console.log(`On ${items}, we open at ${open}`);
+// }
+
+// // METHODS
+
+// // checking if methods exist with 'optional chaining' and 'nullish coalescing' operators
+// console.log(restaurant.order?.(0, 2) ?? "method does NOT exist!");
+// console.log(restaurant.orderTacos?.(0, 2) ?? "method does NOT exist!");
+
+// // ARRAYS
+
+// const users = [{ name: "cristian", email: "cristian@hello.com" }];
+
+// // checking if arrays exist with 'optional chaining' and 'nullish coalescing' operators
+// console.log(users[0]?.name ?? "users array empty");
+// console.log(users[1]?.name ?? "users idex does not exist");
+
 // ************************
 // Enhanced Object Literals
 // ************************
@@ -84,7 +134,6 @@
  Methods: We no longer have to create a property and then set it to a function expression. We can now leave out the keyword 'function' and ':'.
 
  We can now compute property names instead of write them out manually.
-  
 */
 
 // const weekdays = ["mon", "tues", "wed", "thu", "fri", "sat", "sun"];
@@ -149,6 +198,7 @@
 // // for-of loop
 
 // // looping through element
+// //       |values|'of'|looped|
 // for (const item of menu) {
 //   console.log(item);
 // }
