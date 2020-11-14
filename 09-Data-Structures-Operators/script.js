@@ -74,6 +74,52 @@ const restaurant = {
 
 // ================================================================================================== //
 
+// **************************************************
+// Looping Objects: Objects Keys, Values, and Entries
+// **************************************************
+
+/*
+ Allows us to loop over objects(NOT iterables) in an indirect way by transforming the data in side of objects into arrays.
+
+ Keys: collects the PROPERTY names of objects(also known as keys)
+
+ Values: collects the VALUES of the objects
+
+ Entries: collects BOTH values and property names. NOTE: when calling this method on an object you DO NOT call it on the data-structure itself like you do with an array
+*/
+
+// // Object KEYS
+// const properties = Object.keys(restaurant.openingHours);
+// console.log(properties);
+
+// // Looping through the PROPERTIES of '.openingHours' object
+// let string = `We are open on ${properties.length}: `;
+// for (const keys of properties) {
+//   string += ` ${keys},`;
+// }
+// console.log(string);
+
+// // Property VALUES
+// const values = Object.values(restaurant.openingHours);
+// console.log(values);
+
+// // ENTIRE object
+// const entries = Object.entries(restaurant.openingHours);
+// console.log(entries);
+
+// // Looping through ENTIRE '.openingHours' object
+// // also DESTRUCTURING nested objects in loop
+// for (const [day, { open, close }] of entries) {
+//   console.log(`On ${day} we open at ${open} and close at ${close}`);
+// }
+
+// // ARRAYS - calling keys, values, and entries
+// const weekdays = ["mon", "tues", "wed", "thu", "fri", "sat", "sun"];
+
+// console.log(...weekdays.keys());
+// console.log(...weekdays.values());
+// console.log(...weekdays.entries());
+
 // **********************
 // Optional Chaining (?.)
 // **********************
@@ -191,6 +237,8 @@ const restaurant = {
  Does NOT have to specify conditions or a counter; does it automatically!
 
  'continue' and 'break' keywords still work
+
+ When calling 'entries' on an array it returns the index number and the element itself
 */
 
 // const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
