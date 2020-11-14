@@ -21,11 +21,11 @@ const restaurant = {
       close: 24,
     },
   },
-  // Method to destructure and return multiple values from arrays
+  // Method to DESTRUCTURE and return multiple values from arrays
   order: function (starterIndex, mainIndex) {
     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
   },
-  // Method with an object as the paramater; so it will automatically destructure object.
+  // Method with an object as the paramater; so it will automatically DESTRUCTURE object.
   orderDelivery: function ({
     starterIndex = 1,
     mainIndex = 0,
@@ -36,11 +36,20 @@ const restaurant = {
       `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}!`
     );
   },
-  // Method made to pass in all arguments at once with spread operator
+  // Method made to pass in all arguments at once during the function call with the SPREAD OPERATOR
   orderPasta: function (ing1, ing2, ing3) {
     console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}!`);
   },
+  // Method that allows us to pass a indefinite number of args as an array BECAUSE of the REST PARAMETER
+  orderPizza: function (mainIngrediant, ...otherIngrediants) {
+    console.log(mainIngrediant);
+    console.log(otherIngrediants);
+  },
 };
+
+// // REST PATTERNS AND PARAMETERS
+// restaurant.orderPizza("red sauce", "pepperonies", "onions", "peppers");
+// restaurant.orderPizza("white sauce");
 
 // // SPREAD OPERATOR
 // const ingrediants = [
@@ -62,6 +71,269 @@ const restaurant = {
 //   address: "Via del Sole, 21",
 //   starterIndex: 3,
 // });
+
+// ================================================================================================== //
+
+// **********************
+// Optional Chaining (?.)
+// **********************
+
+/*
+ Optional chaining: if a certain property does NOT exist then 'undefined' is returned IMMEDIATELY.
+
+ USE: when accessing a chain of object values use '?.' to test if the value on the left of it does exist!
+
+ REMEMBER: 'nullish' values are like 'falsy' values EXCEPT ONLY null and undefined trigger it.
+
+ REMEMBER: If we need to compute the property name with an expression USE bracket notation
+
+ PRACTICES: We often use optional chaining operator(?.) with the  nullish coalescing operator(??) so that we can actually do something in case we don't get a result from the object
+
+*/
+
+// // BAD PRACTICE (old way)
+// if (restaurant.openingHours && restaurant.openingHours.mon) {
+//   console.log(restaurant.openingHours.mon);
+// }
+
+// // WITH optional chaining
+// console.log(restaurant.openingHours.mon?.open);
+// console.log(restaurant.openingHours?.mon?.open);
+// console.log(restaurant.openingHours?.fri?.open);
+
+// // EXAMPLE
+// const days = ["mon", "tues", "wed", "thu", "fri", "sat", "sun"];
+
+// // looping through array; storing each value in 'items'; checking if resturant 'items' exist based on array index
+// for (const items of days) {
+//   const open = restaurant.openingHours[items]?.open ?? "closed";
+//   console.log(`On ${items}, we open at ${open}`);
+// }
+
+// // METHODS
+
+// // checking if methods exist with 'optional chaining' and 'nullish coalescing' operators
+// console.log(restaurant.order?.(0, 2) ?? "method does NOT exist!");
+// console.log(restaurant.orderTacos?.(0, 2) ?? "method does NOT exist!");
+
+// // ARRAYS
+
+// const users = [{ name: "cristian", email: "cristian@hello.com" }];
+
+// // checking if arrays exist with 'optional chaining' and 'nullish coalescing' operators
+// console.log(users[0]?.name ?? "users array empty");
+// console.log(users[1]?.name ?? "users idex does not exist");
+
+// ************************
+// Enhanced Object Literals
+// ************************
+
+/* 
+ When nesting objects, we would have to set a property to our nested objects, NOW we can just have the variable name of the nested object.
+
+ Methods: We no longer have to create a property and then set it to a function expression. We can now leave out the keyword 'function' and ':'.
+
+ We can now compute property names instead of write them out manually.
+*/
+
+// const weekdays = ["mon", "tues", "wed", "thu", "fri", "sat", "sun"];
+// const openingHours = {
+//   [weekdays[3]]: {
+//     open: 12,
+//     close: 22,
+//   },
+//   [weekdays[4]]: {
+//     open: 11,
+//     close: 23,
+//   },
+//   [`day-${2 + 4}`]: {
+//     open: 0, // Open 24 hours
+//     close: 24,
+//   },
+// };
+
+// const restaurant2 = {
+//   name: "Classico Italiano",
+//   location: "Via Angelo Tavanti 23, Firenze, Italy",
+//   categories: ["Italian", "Pizzeria", "Vegetarian", "Organic"],
+//   starterMenu: ["Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad"],
+//   mainMenu: ["Pizza", "Pasta", "Risotto"],
+
+//   // ES6 enhanced object calling
+//   openingHours,
+
+//   // ES6 enhanced method syntax
+//   order(starterIndex, mainIndex) {
+//     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+//   },
+//   orderDelivery({ starterIndex = 1, mainIndex = 0, time = "12:00", address }) {
+//     console.log(
+//       `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}!`
+//     );
+//   },
+//   orderPasta(ing1, ing2, ing3) {
+//     console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}!`);
+//   },
+//   // OLD WAY
+//   orderPizza: function (mainIngrediant, ...otherIngrediants) {
+//     console.log(mainIngrediant);
+//     console.log(otherIngrediants);
+//   },
+// };
+
+// *******************************
+// Looping Arrays: The for-of Loop
+// *******************************
+
+/*
+ Loops through the values of iterable objects.
+
+ Does NOT have to specify conditions or a counter; does it automatically!
+
+ 'continue' and 'break' keywords still work
+*/
+
+// const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+
+// // for-of loop
+
+// // looping through element
+// //       |values|'of'|looped|
+// for (const item of menu) {
+//   console.log(item);
+// }
+
+// // getting index from element using 'entries' method
+// for (const [index, element] of menu.entries()) {
+//   console.log(`${index + 1}: ${element}`);
+// }
+
+// //'.entries()' is one big array that contains key-value pairs for each index in the array
+// console.log(...menu.entries());
+
+// ************************************
+// The Nullish Coalescing Operator (??)
+// ************************************
+
+// restaurant.numGuests = 0;
+// const guest = restaurant.numGuests || 10;
+// console.log(guest);
+
+// // Nullish values: ONLY null and undefined (NOT 0, "", or EVEN booleans);
+// const guestCorrect = restaurant.numGuests ?? false;
+// console.log(guestCorrect);
+
+// ***************************
+// Short Circuting (&& and ||)
+// ***************************
+
+/*
+ Short Circuting: refers to how logical operators will by react to values if they are 'falsy'.
+
+   OR operators will return its FIRST 'truthy' value or its FINAL 'falsy' value IF none are 'truthy'.
+   AND operators will return its FIRST 'falsy' value or its FINAL 'truthy' value IF none are 'falsy'.
+
+ Logical operators values DONT have to be just booleans; they can use ANY data type, and return ANY data type!
+
+ Setting default values CAN done using OR short circuting.
+
+ Can use AND short circuting to return its final operant. (used like an if/esle) 
+*/
+
+// // SHORT CIRCUTING with OR
+// console.log(3 || "Cristian");
+// console.log("" || "Cristian");
+// console.log(true || 0);
+// console.log(undefined || null);
+// console.log(undefined || 0 || "" || "Hello" || 23 || null);
+
+// // COMPARISON
+// // restaurant.numGuests = 23;
+// const guest1 = restaurant.numGuests
+//   ? restaurant.numGuests
+//   : (restaurant.numGuests = 10);
+// console.log(guest1);
+
+// // setting a default value of 10 if the first value is 'falsy'
+// const guest2 = restaurant.numGuests || 10;
+// console.log(guest2);
+
+// console.log("====== AND ======");
+
+// // SHORT CIRCUTING with AND
+// console.log(0 && "Cristian");
+// console.log(1 && "Cristian");
+
+// console.log("hello" && 25 && undefined && "goodbye");
+// console.log("hello" && 25 && "goodbye");
+
+// // COMPARISON
+// if (restaurant.orderPizza) {
+//   restaurant.orderPizza("mushrooms", "onions");
+// }
+
+// // calling a method if the first value is 'truthy'
+// restaurant.orderPizza && restaurant.orderPizza("mushrooms", "onions");
+
+// ****************************
+// Rest Patterns and Parameters
+// ****************************
+
+/*
+ The rest parameter syntax allows us to represent an indefinite number of arguments as an array.
+
+ Rest vs. Spread: 
+
+    Rest pattern has same syntax as spread operator BUT insted of unpacking elements from an array the rest pattern PACKS elements into arrays
+
+    Rest Pattern is used on the LEFT side of the '=' during destructuring assignment
+    Spread Operator is used on the RIGHT side of the '=' sign.
+
+    Passing values into functions: Rest pattern compresses individual values into arrays.(written in parameters)
+    Passing values into functions: Spread Operator expands arrays into individual values. (written in arguements)
+
+ USE: Make sure to use the rest pattern at the very end of the destructuring assignment!
+
+*/
+
+// 1) Destructuring
+
+// // SPREAD, because on RIGHT side
+// const arr = [1, 2, ...[3, 4]];
+
+// // REST, because of LEFT side
+// const [a, b, ...others] = [1, 2, 3, 4, 5];
+// console.log(a, b, others);
+
+// // Combining the TWO!
+// const [sauceDisk, , riceDish, ...otherFood] = [
+//   ...restaurant.mainMenu,
+//   ...restaurant.starterMenu,
+// ];
+// console.log(sauceDisk, riceDish, otherFood);
+
+// // Objects
+// const { sat, ...weekdays } = restaurant.openingHours;
+// console.log(weekdays);
+
+// 2) Functions
+
+// //          |REST PATTERN|
+// const add = (...numbers) => {
+//   let sum = 0;
+//   for (let i = 0; i < numbers.length; i++) {
+//     sum += numbers[i];
+//   }
+//   console.log(sum);
+// };
+
+// add(2, 3);
+// add(5, 3, 7, 2);
+// add(8, 3, 5, 3, 2, 1, 4);
+
+// const x = [23, 5, 7];
+// // |SPREAD|
+// add(...x);
 
 // *************************
 // The Spread Operator (...)
