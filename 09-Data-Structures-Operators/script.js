@@ -40,7 +40,6 @@ const restaurant = {
   orderPasta: function (ing1, ing2, ing3) {
     console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}!`);
   },
-
   // Method that allows us to pass a indefinite number of args as an array BECAUSE of the REST PARAMETER
   orderPizza: function (mainIngrediant, ...otherIngrediants) {
     console.log(mainIngrediant);
@@ -75,6 +74,35 @@ const restaurant = {
 
 // ================================================================================================== //
 
+// *******************************
+// Looping Arrays: The for-of Loop
+// *******************************
+
+/*
+ Loops through the values of iterable objects.
+
+ Does NOT have to specify conditions or a counter; does it automatically!
+
+ 'continue' and 'break' keywords still work
+*/
+
+const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+
+// for-of loop
+
+// looping through element
+for (const item of menu) {
+  console.log(item);
+}
+
+// getting index from element using 'entries' method
+for (const [index, element] of menu.entries()) {
+  console.log(`${index + 1}: ${element}`);
+}
+
+//'.entries()' is one big array that contains key-value pairs for each index in the array
+console.log(...menu.entries());
+
 // ************************************
 // The Nullish Coalescing Operator (??)
 // ************************************
@@ -94,8 +122,8 @@ const restaurant = {
 /*
  Short Circuting: refers to how logical operators will by react to values if they are 'falsy'.
 
-   OR operators will reuturn its FIRST 'truthy' value or its FINAL 'falsy' value IF none are 'truthy'.
-   AND operators will reuturn its FIRST 'falsy' value or its FINAL 'truthy' value IF none are 'falsy'.
+   OR operators will return its FIRST 'truthy' value or its FINAL 'falsy' value IF none are 'truthy'.
+   AND operators will return its FIRST 'falsy' value or its FINAL 'truthy' value IF none are 'falsy'.
 
  Logical operators values DONT have to be just booleans; they can use ANY data type, and return ANY data type!
 
