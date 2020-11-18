@@ -74,6 +74,77 @@ const restaurant = {
 
 // ================================================================================================== //
 
+// ****
+// Sets
+// ****
+
+/*
+ A Set another data structure and is basically just a collection of unique values.
+
+   Sets can only have ONE of each unique value. 
+
+   Sets can have mulitple data types
+
+   There is no way of getting values out of a set.
+
+ Sets are not intended to replace arrays at all. So whenever you need to store values in order, and that might contain duplicates, always just use arrays.
+
+ COMPARISON: Sets are very different from arrays, its elements are unique, and the order of elements in the set is irrelevant.
+
+ USE: The main use case of Sets in a codebase is to remove duplicate values from arrays
+
+ REMEMBER: the spread operator works on all iterables. So that also includes sets.
+*/
+
+// const orderSet = new Set([
+//   "Pasta",
+//   "Pizza",
+//   "Pizza",
+//   "Risoto",
+//   "Pasta",
+//   "Pizza",
+// ]);
+// // Logs string "pizza" and "pasta" only ONCE!
+// console.log(orderSet);
+// // Logs iterated string! (leter by letter).
+// console.log(new Set("Cristian"));
+// // Logs the size of UNIQUE values in 'Set' (which is 3).
+// console.log(orderSet.size);
+
+// // SET METHODS
+// // 'has()' checks if a Set contains a unique value, returns Boolean.
+// console.log(orderSet.has("Pizza"));
+// console.log(orderSet.has("Bread"));
+// // 'add()' adds unqiue values to Set; remember Set can only contain 1 unique value.
+// console.log(orderSet.add("Garlic Bread"));
+// console.log(orderSet.add("Garlic Bread"));
+// // 'delete()' deletes the selected unique value!
+// console.log(orderSet.delete("Garlic Bread"));
+// console.log(orderSet);
+// // 'clear()' clears ALL values from the Set!
+// // orderSet.clear();
+// // console.log(orderSet);
+
+// // LOOPING A SET
+// // A 'Set' is a iterable which means we can loop through it.
+// for (const order of orderSet) {
+//   console.log(order);
+// }
+
+// // EXAMPLE - Removing duplicate values from array using Sets.
+// // Creating and logging 'staff' array.
+// const staff = ["Waiter", "Chef", "Waiter", "Manager", "Chef", "Waiter"];
+// console.log(staff);
+// // Creating Set 'staffUnique' BUT wrapping in array AND unpacking the Set with spread operator!
+// const staffUnique = [...new Set(staff)];
+// // Logging new array: ([ 'Waiter', 'Chef', 'Manager' ])
+// console.log(staffUnique);
+
+// // If you just want the size of the of the set.
+// console.log(
+//   new Set(["Waiter", "Chef", "Waiter", "Manager", "Chef", "Waiter"]).size
+// );
+
 // **************************************************
 // Looping Objects: Objects Keys, Values, and Entries
 // **************************************************
@@ -465,7 +536,7 @@ const restaurant = {
  TIP: Default values make it easy to interact with non-hardcoded code; usually coming from somewhere else (ex: an API)
 */
 
-// // Deconstrucing object 'restarant'
+// // Deconstructing object 'restarant'
 // const { name, openingHours, categories } = restaurant;
 // console.log(name, openingHours, categories);
 
