@@ -74,6 +74,76 @@ const restaurant = {
 
 // ================================================================================================== //
 
+// ******************
+// Maps: Fundementals
+// ******************
+
+/*
+ A Map is a data structure that we can use to map values to keys
+
+ Just like an object data is stored in key value pairs in Maps BUT Maps the keys and values can have ANY value including both objects and primitive values.
+
+ Maps are ordered at the original insertion order of the keys.
+
+ REMEMBER: THE DOM is nothing more than just a special type of object
+*/
+
+// // MAPS
+// // Best way to create a map is to create an empty one.
+// const rest = new Map();
+
+// // SET METHOD
+// // To fill the Map we use the 'set(key, value)' method.
+// rest.set("name", "Classico Italiano");
+// rest.set(1, "Ferenze, Italy");
+
+// // Calling the method will also return the new set.
+// console.log(rest.set(2, "Cristian Herrera"));
+
+// // We can chain 'set()' methods on top of eachother!
+// rest
+//   .set("categories", ["Italian", "Pizzeria", "Vegetarian", "Organic"])
+//   .set("open", 11)
+//   .set("close", 23)
+//   // We can use any data types for the keys, including Booleans!!
+//   .set(true, "We are open!")
+//   .set(false, "We are closed!");
+
+// // GET METHOD
+// // To read data we use the 'get(key)' method.
+// console.log(rest.get("name"));
+// console.log(rest.get(true));
+// console.log(rest.get(1));
+
+// // Showing the power of having Booleans as Map.
+// const time = 8;
+// // Using a true or false expression to return the values from our Map keys 'true' and 'false'
+// console.log(rest.get(time > rest.get("open") && time < rest.get("close")));
+
+// // MORE METHODS AND PROPERTIES
+// // 'has(key)' method will check if key exists!
+// console.log(rest.has("categories"));
+
+// // 'delete(key)' method will delete
+// rest.delete(2);
+
+// // Logging changed map since deletion
+// console.log(rest);
+// console.log(rest.size);
+
+// // rest.clear();
+
+// // OBJECTS AS KEYS
+// // Setting an object as a key
+// const arr = [1, 2];
+// rest.set(arr, "Testing for arrays");
+// console.log(rest.get(arr));
+
+// // Manipulating the DOM
+// // using 'set()' to select the H1 using the DOM queryselector
+// rest.set(document.querySelector("h1"), "DOM Heading");
+// console.log(rest);
+
 // ****
 // Sets
 // ****
@@ -91,7 +161,7 @@ const restaurant = {
 
  COMPARISON: Sets are very different from arrays, its elements are unique, and the order of elements in the set is irrelevant.
 
- USE: The main use case of Sets in a codebase is to remove duplicate values from arrays
+ USE: The main use case of Sets in a codebase is to remove duplicate values from arrays.
 
  REMEMBER: the spread operator works on all iterables. So that also includes sets.
 */
