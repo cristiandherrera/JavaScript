@@ -74,6 +74,60 @@ const restaurant = {
 
 // ================================================================================================== //
 
+// ****************
+// Maps: Iterations
+// ****************
+
+/*
+ A Map is an iterable so the 'for of' loop WILL work with Maps
+
+ USE: If there are alot of values to set DONT use the 'set()' method to populate the Map INSTEAD create the Map passing in arrays
+*/
+
+// // MAPS WITH ARRAYS
+// // Creating a Map while passing in an array for the values and keys (NOTE: Jonas' perfered way of writting Maps)
+// const question = new Map([
+//   ["question", "What is the best programming language in the world?"],
+//   [1, "Java"],
+//   [2, "C"],
+//   [3, "Javascript"],
+//   ["correct", 3],
+//   [true, "correct answer"],
+//   [false, "Try again!"],
+// ]);
+// console.log(question);
+
+// // CONVERTING OBJECT TO MAP
+// // Logging object 'restaurant.openingHours' to compare to new Map below
+// console.log(Object.entries(restaurant.openingHours));
+// // creating Map 'mapHours' and passing in the object 'openingHours' using 'entries()' method
+// const mapHours = new Map(Object.entries(restaurant.openingHours));
+// // Logging Map 'mapHours' created from object to compare
+// console.log(mapHours);
+
+// // QUIZ APP
+// // Logging value of key 'question' using 'get()'
+// console.log(question.get("question"));
+// // for loop to iterate each key and value of the Map 'question'
+// for (const [key, value] of question) {
+//   console.log(key, value);
+//   // if the key is a number print it in a string
+//   if (typeof key === "number") {
+//     console.log(`Answer ${key}: ${value}`);
+//   }
+// }
+// // Using Booleans to get the value of the 'true' and 'false' keys of 'question'
+// const answer = 3;
+// // const answer = Number(prompt(`Your answer`));
+// console.log(question.get(question.get("correct") === answer));
+
+// // CONVERTING MAPS TO ARRAYS
+// // building a new array and then unpacking the Map with the spread operator!
+// console.log([...question]);
+// // console.log([...question.entries()]);
+// console.log([...question.keys()]);
+// console.log([...question.values()]);
+
 // ******************
 // Maps: Fundementals
 // ******************
@@ -81,7 +135,7 @@ const restaurant = {
 /*
  A Map is a data structure that we can use to map values to keys
 
- Just like an object data is stored in key value pairs in Maps BUT Maps the keys and values can have ANY value including both objects and primitive values.
+ Just like an object, data is stored in key value pairs in Maps BUT Maps the keys and values can have ANY value including both objects and primitive values.
 
  Maps are ordered at the original insertion order of the keys.
 
@@ -89,7 +143,7 @@ const restaurant = {
 */
 
 // // MAPS
-// // Best way to create a map is to create an empty one.
+// When filling the Map with the 'set()' method it is best to create the Map empty
 // const rest = new Map();
 
 // // SET METHOD
@@ -110,14 +164,14 @@ const restaurant = {
 //   .set(false, "We are closed!");
 
 // // GET METHOD
-// // To read data we use the 'get(key)' method.
+// // To read the value we use the 'get(key)' method.
 // console.log(rest.get("name"));
 // console.log(rest.get(true));
 // console.log(rest.get(1));
 
 // // Showing the power of having Booleans as Map.
 // const time = 8;
-// // Using a true or false expression to return the values from our Map keys 'true' and 'false'
+// // Using a true or false expression to return the values from our Boolean Map keys 'true' and 'false'
 // console.log(rest.get(time > rest.get("open") && time < rest.get("close")));
 
 // // MORE METHODS AND PROPERTIES
@@ -220,7 +274,7 @@ const restaurant = {
 // **************************************************
 
 /*
- Allows us to loop over objects(NOT iterables) in an indirect way by transforming the data in side of objects into arrays.
+ These methods(keys, values, entries) allows us to loop over objects(NOT iterables) in an indirect way by transforming the data in side of objects into arrays(turning them into iterables).
 
  Keys: collects the PROPERTY names of objects(also known as keys)
 
@@ -373,7 +427,7 @@ const restaurant = {
 // *******************************
 
 /*
- Loops through the values of iterable objects.
+ Loops through the values of ONLY iterable objects.
 
  Does NOT have to specify conditions or a counter; does it automatically!
 
