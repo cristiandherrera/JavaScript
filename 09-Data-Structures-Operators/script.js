@@ -74,6 +74,247 @@ const restaurant = {
 
 // ================================================================================================== //
 
+// ****************
+// Maps: Iterations
+// ****************
+
+/*
+ A Map is an iterable so the 'for of' loop WILL work with Maps
+
+ USE: If there are alot of values to set DONT use the 'set()' method to populate the Map INSTEAD create the Map passing in arrays
+*/
+
+// // MAPS WITH ARRAYS
+// // Creating a Map while passing in an array for the values and keys (NOTE: Jonas' perfered way of writting Maps)
+// const question = new Map([
+//   ["question", "What is the best programming language in the world?"],
+//   [1, "Java"],
+//   [2, "C"],
+//   [3, "Javascript"],
+//   ["correct", 3],
+//   [true, "correct answer"],
+//   [false, "Try again!"],
+// ]);
+// console.log(question);
+
+// // CONVERTING OBJECT TO MAP
+// // Logging object 'restaurant.openingHours' to compare to new Map below
+// console.log(Object.entries(restaurant.openingHours));
+// // creating Map 'mapHours' and passing in the object 'openingHours' using 'entries()' method
+// const mapHours = new Map(Object.entries(restaurant.openingHours));
+// // Logging Map 'mapHours' created from object to compare
+// console.log(mapHours);
+
+// // QUIZ APP
+// // Logging value of key 'question' using 'get()'
+// console.log(question.get("question"));
+// // for loop to iterate each key and value of the Map 'question'
+// for (const [key, value] of question) {
+//   console.log(key, value);
+//   // if the key is a number print it in a string
+//   if (typeof key === "number") {
+//     console.log(`Answer ${key}: ${value}`);
+//   }
+// }
+// // Using Booleans to get the value of the 'true' and 'false' keys of 'question'
+// const answer = 3;
+// // const answer = Number(prompt(`Your answer`));
+// console.log(question.get(question.get("correct") === answer));
+
+// // CONVERTING MAPS TO ARRAYS
+// // building a new array and then unpacking the Map with the spread operator!
+// console.log([...question]);
+// // console.log([...question.entries()]);
+// console.log([...question.keys()]);
+// console.log([...question.values()]);
+
+// ******************
+// Maps: Fundementals
+// ******************
+
+/*
+ A Map is a data structure that we can use to map values to keys
+
+ Just like an object, data is stored in key value pairs in Maps BUT Maps the keys and values can have ANY value including both objects and primitive values.
+
+ Maps are ordered at the original insertion order of the keys.
+
+ REMEMBER: THE DOM is nothing more than just a special type of object
+*/
+
+// // MAPS
+// When filling the Map with the 'set()' method it is best to create the Map empty
+// const rest = new Map();
+
+// // SET METHOD
+// // To fill the Map we use the 'set(key, value)' method.
+// rest.set("name", "Classico Italiano");
+// rest.set(1, "Ferenze, Italy");
+
+// // Calling the method will also return the new set.
+// console.log(rest.set(2, "Cristian Herrera"));
+
+// // We can chain 'set()' methods on top of eachother!
+// rest
+//   .set("categories", ["Italian", "Pizzeria", "Vegetarian", "Organic"])
+//   .set("open", 11)
+//   .set("close", 23)
+//   // We can use any data types for the keys, including Booleans!!
+//   .set(true, "We are open!")
+//   .set(false, "We are closed!");
+
+// // GET METHOD
+// // To read the value we use the 'get(key)' method.
+// console.log(rest.get("name"));
+// console.log(rest.get(true));
+// console.log(rest.get(1));
+
+// // Showing the power of having Booleans as Map.
+// const time = 8;
+// // Using a true or false expression to return the values from our Boolean Map keys 'true' and 'false'
+// console.log(rest.get(time > rest.get("open") && time < rest.get("close")));
+
+// // MORE METHODS AND PROPERTIES
+// // 'has(key)' method will check if key exists!
+// console.log(rest.has("categories"));
+
+// // 'delete(key)' method will delete
+// rest.delete(2);
+
+// // Logging changed map since deletion
+// console.log(rest);
+// console.log(rest.size);
+
+// // rest.clear();
+
+// // OBJECTS AS KEYS
+// // Setting an object as a key
+// const arr = [1, 2];
+// rest.set(arr, "Testing for arrays");
+// console.log(rest.get(arr));
+
+// // Manipulating the DOM
+// // using 'set()' to select the H1 using the DOM queryselector
+// rest.set(document.querySelector("h1"), "DOM Heading");
+// console.log(rest);
+
+// ****
+// Sets
+// ****
+
+/*
+ A Set another data structure and is basically just a collection of unique values.
+
+   Sets can only have ONE of each unique value. 
+
+   Sets can have mulitple data types
+
+   There is no way of getting values out of a set.
+
+ Sets are not intended to replace arrays at all. So whenever you need to store values in order, and that might contain duplicates, always just use arrays.
+
+ COMPARISON: Sets are very different from arrays, its elements are unique, and the order of elements in the set is irrelevant.
+
+ USE: The main use case of Sets in a codebase is to remove duplicate values from arrays.
+
+ REMEMBER: the spread operator works on all iterables. So that also includes sets.
+*/
+
+// const orderSet = new Set([
+//   "Pasta",
+//   "Pizza",
+//   "Pizza",
+//   "Risoto",
+//   "Pasta",
+//   "Pizza",
+// ]);
+// // Logs string "pizza" and "pasta" only ONCE!
+// console.log(orderSet);
+// // Logs iterated string! (leter by letter).
+// console.log(new Set("Cristian"));
+// // Logs the size of UNIQUE values in 'Set' (which is 3).
+// console.log(orderSet.size);
+
+// // SET METHODS
+// // 'has()' checks if a Set contains a unique value, returns Boolean.
+// console.log(orderSet.has("Pizza"));
+// console.log(orderSet.has("Bread"));
+// // 'add()' adds unqiue values to Set; remember Set can only contain 1 unique value.
+// console.log(orderSet.add("Garlic Bread"));
+// console.log(orderSet.add("Garlic Bread"));
+// // 'delete()' deletes the selected unique value!
+// console.log(orderSet.delete("Garlic Bread"));
+// console.log(orderSet);
+// // 'clear()' clears ALL values from the Set!
+// // orderSet.clear();
+// // console.log(orderSet);
+
+// // LOOPING A SET
+// // A 'Set' is a iterable which means we can loop through it.
+// for (const order of orderSet) {
+//   console.log(order);
+// }
+
+// // EXAMPLE - Removing duplicate values from array using Sets.
+// // Creating and logging 'staff' array.
+// const staff = ["Waiter", "Chef", "Waiter", "Manager", "Chef", "Waiter"];
+// console.log(staff);
+// // Creating Set 'staffUnique' BUT wrapping in array AND unpacking the Set with spread operator!
+// const staffUnique = [...new Set(staff)];
+// // Logging new array: ([ 'Waiter', 'Chef', 'Manager' ])
+// console.log(staffUnique);
+
+// // If you just want the size of the of the set.
+// console.log(
+//   new Set(["Waiter", "Chef", "Waiter", "Manager", "Chef", "Waiter"]).size
+// );
+
+// **************************************************
+// Looping Objects: Objects Keys, Values, and Entries
+// **************************************************
+
+/*
+ These methods(keys, values, entries) allows us to loop over objects(NOT iterables) in an indirect way by transforming the data in side of objects into arrays(turning them into iterables).
+
+ Keys: collects the PROPERTY names of objects(also known as keys)
+
+ Values: collects the VALUES of the objects
+
+ Entries: collects BOTH values and property names. NOTE: when calling this method on an object you DO NOT call it on the data-structure itself like you do with an array
+*/
+
+// // Object KEYS
+// const properties = Object.keys(restaurant.openingHours);
+// console.log(properties);
+
+// // Looping through the PROPERTIES of '.openingHours' object
+// let string = `We are open on ${properties.length}: `;
+// for (const keys of properties) {
+//   string += ` ${keys},`;
+// }
+// console.log(string);
+
+// // Property VALUES
+// const values = Object.values(restaurant.openingHours);
+// console.log(values);
+
+// // ENTIRE object
+// const entries = Object.entries(restaurant.openingHours);
+// console.log(entries);
+
+// // Looping through ENTIRE '.openingHours' object
+// // also DESTRUCTURING nested objects in loop
+// for (const [day, { open, close }] of entries) {
+//   console.log(`On ${day} we open at ${open} and close at ${close}`);
+// }
+
+// // ARRAYS - calling keys, values, and entries
+// const weekdays = ["mon", "tues", "wed", "thu", "fri", "sat", "sun"];
+
+// console.log(...weekdays.keys());
+// console.log(...weekdays.values());
+// console.log(...weekdays.entries());
+
 // **********************
 // Optional Chaining (?.)
 // **********************
@@ -186,11 +427,13 @@ const restaurant = {
 // *******************************
 
 /*
- Loops through the values of iterable objects.
+ Loops through the values of ONLY iterable objects.
 
  Does NOT have to specify conditions or a counter; does it automatically!
 
  'continue' and 'break' keywords still work
+
+ When calling 'entries' on an array it returns the index number and the element itself
 */
 
 // const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
@@ -417,7 +660,7 @@ const restaurant = {
  TIP: Default values make it easy to interact with non-hardcoded code; usually coming from somewhere else (ex: an API)
 */
 
-// // Deconstrucing object 'restarant'
+// // Deconstructing object 'restarant'
 // const { name, openingHours, categories } = restaurant;
 // console.log(name, openingHours, categories);
 

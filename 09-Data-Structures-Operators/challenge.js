@@ -87,3 +87,73 @@
 // // 7.
 // const odds = team1 < team2 && console.log("team1 will win");
 // const odds = team1 > team2 && console.log("team2 will win");
+
+// *******************
+// Coding Challenge #2
+// *******************
+
+// const game = {
+//   team1: "Bayern Munich",
+//   team2: "Borrussia Dortmund",
+//   players: [
+//     [
+//       "Neuer",
+//       "Pavard",
+//       "Martinez",
+//       "Alaba",
+//       "Davies",
+//       "Kimmich",
+//       "Goretzka",
+//       "Coman",
+//       "Muller",
+//       "Gnarby",
+//       "Lewandowski",
+//     ],
+//     [
+//       "Burki",
+//       "Schulz",
+//       "Hummels",
+//       "Akanji",
+//       "Hakimi",
+//       "Weigl",
+//       "Witsel",
+//       "Hazard",
+//       "Brandt",
+//       "Sancho",
+//       "Gotze",
+//     ],
+//   ],
+//   score: "4:0",
+//   scored: ["Lewandowski", "Gnarby", "Lewandowski", "Hummels"],
+//   date: "Nov 9th, 2037",
+//   odds: {
+//     team1: 1.33,
+//     x: 3.25,
+//     team2: 6.5,
+//   },
+// };
+
+// // 1.
+// for (const [index, players] of game.scored.entries()) {
+//   console.log(`Goal ${index + 1}: ${players}`);
+// }
+// console.log("");
+
+// // 2.
+// const odds = Object.values(game.odds);
+// let sum = 0;
+// for (const avg of odds) {
+//   sum += avg;
+// }
+// const total = sum / odds.length;
+// console.log(total);
+
+// // 3.
+// const entries = Object.entries(game.odds);
+// console.log(entries);
+
+// for (const [key, value] of entries) {
+//   const string = key === "x" ? `draw` : `victory ${game[key]}`;
+//   console.log(key, value);
+//   console.log(`Odd of ${string} ${value}`);
+// }
