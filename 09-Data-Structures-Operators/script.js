@@ -74,6 +74,56 @@ const restaurant = {
 
 // ================================================================================================== //
 
+// *************************************
+// Summary: Which Data Structure to Use?
+// *************************************
+
+/*
+ Where does data come from?
+
+   From the program itself: Data written directly in source code (e.g. status messages)
+   From the UI: Data input from the user or data written in the DOM (e.g. tasks in todo app)
+   From External sources: Data fetched for example from web API (e.g. recipe objects)
+ 
+ Other data stuctures we have not covered!
+
+   Built into JS: WeakMap and WeakSets
+   NOT built into JS: Stacks, Queues, Linked lists, Trees, Hash Tables
+
+ When deciding between data types we must ask ourselves do we need a simple list? Then we use arrays or sets! If we need to have key/value pairs then use objects or maps!!
+
+ Arrays vs. Sets
+
+   Arrays: 
+     Use when you need ORDERED list of values (might contain duplicates)
+     Use when you need to manipulate data (a TON of useful array methods)
+  
+   Sets: 
+     Use when you need to work with UNIQUE values
+     Use when HIGH-PERFORMANCE is really important
+     Use to remove dupicates from arrays
+
+ Objects vs. Maps
+
+   Objects:
+     The "traditional" key/value data-stucture ("abused" objects)
+     Easier to write and access values with . and []
+
+     Use when you need to include functions (methods)
+     Use when working with JSON (can convert to map (not common))
+
+   Maps:
+     Better performance
+     Keys can have ANY data type
+     Easy to iterate
+     Easy to compute size 
+
+     Use when you simply need to map key to values
+     Use when you need keys that are NOT strings
+
+ REMEMBER: Data coming from web APIs usually comes in the format of JSON
+*/
+
 // ****************
 // Maps: Iterations
 // ****************
