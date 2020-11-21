@@ -74,6 +74,55 @@ const restaurant = {
 
 // ================================================================================================== //
 
+// *****************************
+// Working with Strings - Part 1
+// *****************************
+
+//Whenever we call a method on a string, JavaScript will automatically behind the scenes convert that string primitive to a string object with the same content. This process is called boxing
+
+// const airline = "TAP Air Portugal";
+// const plane = "A320";
+
+// // String and Index
+// console.log(plane[0]);
+// console.log(plane[1]);
+// console.log(plane[2]);
+// console.log("B737"[0]);
+
+// console.log(airline.length);
+// console.log("B737"[0]);
+
+// // Strings and Methods
+// console.log(airline.indexOf("r"));
+// console.log(airline.lastIndexOf("r"));
+// console.log(airline.indexOf("portugal"));
+
+// console.log(airline.slice(4));
+// console.log(airline.slice(4, 7));
+
+// console.log(airline.slice(0, airline.indexOf(" ")));
+// console.log(airline.slice(airline.lastIndexOf(" ") + 1));
+
+// console.log(airline.slice(-8));
+// console.log(airline.slice(4, -8));
+
+// // String and Functions
+// const checkMiddleSeat = (seat) => {
+//   const slice = seat.slice(-1);
+//   slice === "B" || slice === "E"
+//     ? console.log("You got the middle seat!")
+//     : console.log("You got lucky!!");
+// };
+
+// checkMiddleSeat("11B");
+// checkMiddleSeat("23C");
+// checkMiddleSeat("3E");
+
+// // Behind the Scenes
+// console.log(new String("cristian"));
+// console.log(typeof new String("cristian"));
+// console.log(typeof new String("cristian").slice(-1));
+
 // *************************************
 // Summary: Which Data Structure to Use?
 // *************************************
