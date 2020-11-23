@@ -1,5 +1,23 @@
 "use strict";
 
+// *****************************
+// Functions Returning Functions
+// *****************************
+
+// // 'greet' function returning another function
+// const greet = function (greeting) {
+//   return function (name) {
+//     console.log(`${greeting} ${name}`);
+//   };
+// };
+// // SAME function with arrows instead
+// const greetArr = (greeting) => (name) => console.log(`${greeting} ${name}`);
+
+// // Storing the returned function 'name' into variable 'greeterHey'
+// const greeterHey = greet("Hey");
+// greeterHey("Cristian");
+// greeterHey("Steven");
+
 // **************************************
 // Functions Accepting Callback Functions
 // **************************************
