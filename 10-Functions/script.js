@@ -1,5 +1,32 @@
 "use strict";
 
+// **************************************
+// First-Class and Higher-Order Functions
+// **************************************
+
+/*
+ So, first class functions is just a feature that a programming language either has or does not have. All it means is that all functions are values. It's just a concept.
+
+ There are however higher order functions in practice, which are possible because the language supports first class functions.
+
+ First-Class Functions:
+   JavaScript treats functions as first-class citizens
+   This means that functions are simply values
+   Functions are just another 'type' of object
+
+     store functions in variables or properties
+     pass functions as arguements to OTHER functions
+     return functions FROM functions
+     call methods on functions
+
+ Higher-Order Functions:
+   A function that receives another function as an argument, that returns a new function, or BOTH
+   This is onlyu possible because of first-class functions
+
+     function that recieves another function
+     function that returns new function
+*/
+
 // ***********************************************
 // How Passing Arguments Work: Value vs. Reference
 // ***********************************************
