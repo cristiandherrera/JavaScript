@@ -75,6 +75,65 @@ const restaurant = {
 // ================================================================================================== //
 
 // *****************************
+// Working with Strings - Part 3
+// *****************************
+
+// So split allows us to split a string into multiple parts based on a divider string.
+
+// REMEMBER: When one of the operands of the plus sign is a string it will convert all the operands to a string.
+
+// Split() and Join()
+// console.log("a+very+nice+string".split("+"));
+// console.log("Cristian Herrera".split(" "));
+
+// const [firstName, lastName] = "Cristian Herrera".split(" ");
+
+// const newName = ["Mr.", firstName, lastName.toUpperCase()].join(" ");
+// console.log(newName);
+
+// const capitalizeName = function (name) {
+//   const names = name.split(" ");
+//   const namesUpper = [];
+
+//   for (const n of names) {
+//     // namesUpper.push(n[0].toUpperCase() + n.slice(1));
+//     namesUpper.push(n.replace(n[0], n[0].toUpperCase()));
+//   }
+//   console.log(namesUpper.join(" "));
+// };
+
+// capitalizeName("jessica ann smith davis");
+// capitalizeName("cristian herrera");
+
+// // Padding
+// const message = "Go to gate 23!";
+// console.log(message.padStart(20, "+").padEnd(30, "-"));
+// console.log("Cristian".padStart(20, "+").padEnd(30, "-"));
+
+// const maskCreditCard = function (number) {
+//   // converting argument 'number' into a string
+//   const str = number + "";
+//   const last = str.slice(-4);
+//   return last.padStart(str.length, "*");
+// };
+
+// console.log(maskCreditCard(43134658645648));
+// console.log(maskCreditCard(453456456485444));
+// console.log(maskCreditCard("15646534654545646637964148943486"));
+
+// // Repeat
+// const messageRepeat = "Bad weather... All departures delayed...";
+
+// console.log(messageRepeat.repeat(5));
+
+// const planesInLine = function (n) {
+//   console.log(`There are ${n} planes in line ${"plane ".repeat(n)}`);
+// };
+// planesInLine(5);
+// planesInLine(3);
+// planesInLine(12);
+
+// *****************************
 // Working with Strings - Part 2
 // *****************************
 
@@ -144,7 +203,7 @@ const restaurant = {
 // Working with Strings - Part 1
 // *****************************
 
-//Whenever we call a method on a string, JavaScript will automatically behind the scenes convert that string primitive to a string object with the same content. This process is called boxing
+// // Whenever we call a method on a string, JavaScript will automatically behind the scenes convert that string primitive to a string object with the same content. This process is called boxing
 
 // const airline = "TAP Air Portugal";
 // const plane = "A320";

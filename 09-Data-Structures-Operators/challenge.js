@@ -201,3 +201,49 @@
 //       : `[SECOND HALF]${min}: ${event}`;
 //   console.log(string);
 // }
+
+// *******************
+// Coding Challenge #4
+// *******************
+
+// document.body.append(document.createElement("textarea"));
+// document.body.append(document.createElement("button"));
+
+// document.querySelector("button").addEventListener("click", function () {
+//   // selcting
+//   const text = document.querySelector("textarea").value;
+//   // lower case and delete whitespace
+//   const lowerText = text.toLowerCase().trim();
+//   // index of '_'
+//   const index = lowerText.indexOf("_") + 1;
+//   console.log(index);
+//   // creatintg string
+//   const camelCase =
+//     lowerText.slice(0, index - 1) +
+//     lowerText[index].toUpperCase() +
+//     lowerText.slice(index + 1);
+//   console.log(camelCase);
+
+//   // const replace = upperCase.replace(/_/g, "");
+// });
+
+// document.querySelector("button").addEventListener("click", function () {
+//   const text = document.querySelector("textarea").value;
+//   const newLine = text.split("\n");
+
+//   for (const [i, line] of newLine.entries()) {
+//     const [first, second] = line.toLowerCase().trim().split("_");
+
+//     const output = `${first}${second.replace(
+//       second[0],
+//       second[0].toUpperCase()
+//     )}`;
+//     console.log(`${output.padEnd(20)}${"$".repeat(i + 1)}`);
+//   }
+// });
+
+// underscore_case
+//  first_name
+// Some_Variable
+//   calculate_AGE
+// delayed_departure
