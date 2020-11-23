@@ -82,128 +82,128 @@ const restaurant = {
 
 // REMEMBER: When one of the operands of the plus sign is a string it will convert all the operands to a string.
 
-// // Split() and Join()
-// console.log("a+very+nice+string".split("+"));
-// console.log("Cristian Herrera".split(" "));
+// Split() and Join()
+console.log("a+very+nice+string".split("+"));
+console.log("Cristian Herrera".split(" "));
 
-// const [firstName, lastName] = "Cristian Herrera".split(" ");
+const [firstName, lastName] = "Cristian Herrera".split(" ");
 
-// const newName = ["Mr.", firstName, lastName.toUpperCase()].join(" ");
-// console.log(newName);
+const newName = ["Mr.", firstName, lastName.toUpperCase()].join(" ");
+console.log(newName);
 
-// const capitalizeName = function (name) {
-//   const names = name.split(" ");
-//   const namesUpper = [];
+const capitalizeName = function (name) {
+  const names = name.split(" ");
+  const namesUpper = [];
 
-//   for (const n of names) {
-//     // namesUpper.push(n[0].toUpperCase() + n.slice(1));
-//     namesUpper.push(n.replace(n[0], n[0].toUpperCase()));
-//   }
-//   console.log(namesUpper.join(" "));
-// };
+  for (const n of names) {
+    // namesUpper.push(n[0].toUpperCase() + n.slice(1));
+    namesUpper.push(n.replace(n[0], n[0].toUpperCase()));
+  }
+  console.log(namesUpper.join(" "));
+};
 
-// capitalizeName("jessica ann smith davis");
-// capitalizeName("cristian herrera");
+capitalizeName("jessica ann smith davis");
+capitalizeName("cristian herrera");
 
-// // Padding
-// const message = "Go to gate 23!";
-// console.log(message.padStart(20, "+").padEnd(30, "-"));
-// console.log("Cristian".padStart(20, "+").padEnd(30, "-"));
+// Padding
+const message = "Go to gate 23!";
+console.log(message.padStart(20, "+").padEnd(30, "-"));
+console.log("Cristian".padStart(20, "+").padEnd(30, "-"));
 
-// const maskCreditCard = function (number) {
-//   // converting argument 'number' into a string
-//   const str = number + "";
-//   const last = str.slice(-4);
-//   return last.padStart(str.length, "*");
-// };
+const maskCreditCard = function (number) {
+  // converting argument 'number' into a string
+  const str = number + "";
+  const last = str.slice(-4);
+  return last.padStart(str.length, "*");
+};
 
-// console.log(maskCreditCard(43134658645648));
-// console.log(maskCreditCard(453456456485444));
-// console.log(maskCreditCard("15646534654545646637964148943486"));
+console.log(maskCreditCard(43134658645648));
+console.log(maskCreditCard(453456456485444));
+console.log(maskCreditCard("15646534654545646637964148943486"));
 
-// // Repeat
-// const messageRepeat = "Bad weather... All departures delayed...";
+// Repeat
+const messageRepeat = "Bad weather... All departures delayed...";
 
-// console.log(messageRepeat.repeat(5));
+console.log(messageRepeat.repeat(5));
 
-// const planesInLine = function (n) {
-//   console.log(`There are ${n} planes in line ${"plane ".repeat(n)}`);
-// };
-// planesInLine(5);
-// planesInLine(3);
-// planesInLine(12);
+const planesInLine = function (n) {
+  console.log(`There are ${n} planes in line ${"plane ".repeat(n)}`);
+};
+planesInLine(5);
+planesInLine(3);
+planesInLine(12);
 
 // *****************************
 // Working with Strings - Part 2
 // *****************************
 
-// const airline = "TAP Air Portugal";
+const airline = "TAP Air Portugal";
 
-// console.log(airline.toLowerCase());
-// console.log(airline.toUpperCase());
-// console.log("Cristian".toUpperCase());
+console.log(airline.toLowerCase());
+console.log(airline.toUpperCase());
+console.log("Cristian".toUpperCase());
 
-// const passenger = "crIsTiaN";
-// const passengerLower = passenger.toLowerCase();
-// const passengerCorrect =
-//   passengerLower[0].toUpperCase() + passengerLower.slice(1);
-// console.log(passengerCorrect);
+const passenger = "crIsTiaN";
+const passengerLower = passenger.toLowerCase();
+const passengerCorrect =
+  passengerLower[0].toUpperCase() + passengerLower.slice(1);
+console.log(passengerCorrect);
 
-// const email = "hello@cristian.com";
-// const loginEmail = "Hello@Cristian.cOM \n";
+const email = "hello@cristian.com";
+const loginEmail = "Hello@Cristian.cOM \n";
 
-// // const lowerEmail = loginEmail.toLowerCase();
-// // const trimmedEmail = lowerEmail.trim();
-// // console.log(trimmedEmail); // hello@cristian.com
+// const lowerEmail = loginEmail.toLowerCase();
+// const trimmedEmail = lowerEmail.trim();
+// console.log(trimmedEmail); // hello@cristian.com
 
-// // returns string so we can chain string methods
-// const normlizedEmail = loginEmail.toLowerCase().trim();
-// console.log(normlizedEmail);
-// console.log(email === normlizedEmail);
+// returns string so we can chain string methods
+const normlizedEmail = loginEmail.toLowerCase().trim();
+console.log(normlizedEmail);
+console.log(email === normlizedEmail);
 
-// // replacing parts of strings
-// const priceGB = "288,97E";
-// const priceUS = priceGB.replace("E", "$").replace(",", ".");
-// console.log(priceUS);
+// replacing parts of strings
+const priceGB = "288,97E";
+const priceUS = priceGB.replace("E", "$").replace(",", ".");
+console.log(priceUS);
 
-// // 'replace() creates brand new string does NOT mutate orignal string
-// const announcment =
-//   "All passengers come to boarding door 23. Boarding door 23.";
+// 'replace() creates brand new string does NOT mutate orignal string
+const announcment =
+  "All passengers come to boarding door 23. Boarding door 23.";
 
-// console.log(announcment.replace("door", "gate"));
+console.log(announcment.replace("door", "gate"));
 
-// // using a regular expression to target ALL strings with 'door'
-// console.log(announcment.replace(/door/g, "gate"));
+// using a regular expression to target ALL strings with 'door'
+console.log(announcment.replace(/door/g, "gate"));
 
-// // Booleans
-// const plane = "Airbus A320neo";
-// console.log(plane.includes("A320neo"));
-// console.log(plane.includes("Boeing"));
-// console.log(plane.startsWith("Airb"));
+// Booleans
+const plane = "Airbus A320neo";
+console.log(plane.includes("A320neo"));
+console.log(plane.includes("Boeing"));
+console.log(plane.startsWith("Airb"));
 
-// if (plane.startsWith("Airbus") && plane.endsWith("neo")) {
-//   console.log("Part of the NEW Airbus family");
-// }
+if (plane.startsWith("Airbus") && plane.endsWith("neo")) {
+  console.log("Part of the NEW Airbus family");
+}
 
-// // Practice
-// const checkBaggage = function (items) {
-//   const baggage = items.toLowerCase();
-//   if (baggage.includes("knife") || baggage.includes("gun")) {
-//     console.log("You have just been ARRESTED");
-//   } else {
-//     console.log("Welcome aboard!");
-//   }
-// };
+// Practice
+const checkBaggage = function (items) {
+  const baggage = items.toLowerCase();
+  if (baggage.includes("knife") || baggage.includes("gun")) {
+    console.log("You have just been ARRESTED");
+  } else {
+    console.log("Welcome aboard!");
+  }
+};
 
-// checkBaggage("I have a labtop, some Food and a pocket Knife.");
-// checkBaggage("Socks and camera.");
-// checkBaggage("Got some snacks and a gun for protection.");
+checkBaggage("I have a labtop, some Food and a pocket Knife.");
+checkBaggage("Socks and camera.");
+checkBaggage("Got some snacks and a gun for protection.");
 
 // *****************************
 // Working with Strings - Part 1
 // *****************************
 
-//Whenever we call a method on a string, JavaScript will automatically behind the scenes convert that string primitive to a string object with the same content. This process is called boxing
+// // Whenever we call a method on a string, JavaScript will automatically behind the scenes convert that string primitive to a string object with the same content. This process is called boxing
 
 // const airline = "TAP Air Portugal";
 // const plane = "A320";
