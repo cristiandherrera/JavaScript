@@ -1,5 +1,56 @@
 "use strict";
 
+// ***********************************************
+// How Passing Arguments Work: Value vs. Reference
+// ***********************************************
+
+/*
+ REMEMBER: 
+   When passing a primitive value into a funcition, its value is just COPIED, SO if that function value is changed the orignal primitive value will NOT change with it.
+
+   When passing a object into a function, its value is REFERENCED to the original object, meaning they are the SAME object so if changed it will be seen in or out of function.
+
+ BUGS: Because objects are reference types bugs can arise when passing one object into mulitple functions that manipulate its values SINCE its ALL ONE object!
+
+ TECHNICALLY: In JS there is no "passing in reference" ONLY "passing in value" because even though we are passing a reference to the memory heap, the reference number IS A VALUE! 
+*/
+
+// const flight = "LH234";
+// const cristian = {
+//   name: "Cristian",
+//   passport: 123456789,
+// };
+
+// const checkIn = (flightNum, passenger) => {
+//   // attempting to change 'flight' value through the arguement 'flightNum' but actually just creating copy
+//   flightNum = "FN2187";
+
+//   // actually changing objects value because it is a reference type
+//   passenger.name = "Mr. " + passenger.name;
+
+//   if (passenger.passport === 123456789) {
+//     alert("Checked in!");
+//   } else {
+//     alert("Wrong passport!");
+//   }
+// };
+
+// checkIn(flight, cristian);
+// console.log(flight);
+// console.log(cristian);
+
+// // Is the same as doing ... (compared to functions reassigning values)
+// const flightNum = flight;
+// const passenger = cristian;
+
+// // BUGS: changing 'cristian.passport' value to show potentially bugs with reference types
+// const newPassport = (person) =>
+//   (person.passport = Math.trunc(Math.random() * 100000));
+
+// newPassport(cristian);
+// console.log(cristian.passport);
+// checkIn(flight, cristian);
+
 // ******************
 // Default Parameters
 // ******************
@@ -20,7 +71,6 @@
    With enhanced object literals by JUST declaring a property you can define its value with the property name itself!
 
    When short circuiting using the or(||) operator, the result of the whole operator will be the first truthy operand.
-   
 */
 
 // const bookings = [];
