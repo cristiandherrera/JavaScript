@@ -1,6 +1,57 @@
 "use strict";
 
 // **************************************
+// Functions Accepting Callback Functions
+// **************************************
+
+/* 
+ Why our callback functions so much used in JavaScript and why are they so helpful?
+
+   First is that it makes it easy to split up or code into more reusable and interconnected parts.
+
+   Second and way more important advantage, which is the fact that callback functions allow us to create abstraction.
+
+ Abstraction: 
+
+   We hide the detail of some code implementation because we don't really care about all that detail. And this allows us to think about problems at a higher more abstract level.
+    
+
+ REMEMBER: that we call functions that we pass "callback functions". And that's because we DO NOT call them ourselves. But instead we call JavaScript to basically tell them later.
+*/
+
+// const oneWord = (str) => str.replace(/ /g, "").toLowerCase();
+// console.log(oneWord("Hello my friend!"));
+
+// const upperFirstWord = (str) => {
+//   const [first, ...others] = str.split(" ");
+//   console.log(first, others);
+
+//   console.log([first.toUpperCase(), ...others]);
+//   return [first.toUpperCase(), ...others].join(" ");
+// };
+// console.log(upperFirstWord("Hello my friend!"));
+
+// // Higher-order function
+// const transformer = (str, fn) => {
+//   console.log(`Original string: ${str}`);
+//   console.log(`Transformed string: ${fn(str)}`);
+
+//   console.log(`Transformed by: ${fn.name}`);
+// };
+
+// transformer("JavaScript is the best!", upperFirstWord);
+// transformer("JavaScript is the best!", oneWord);
+
+// // JS uses callbacks all the time
+// const hello = function () {
+//   console.log("hello");
+// };
+// //               |higher-order|       |callback|
+// document.body.addEventListener("click", hello);
+
+// ["Jonas", "Marth", "Adam"].forEach(hello);
+
+// **************************************
 // First-Class and Higher-Order Functions
 // **************************************
 
