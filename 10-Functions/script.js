@@ -1,5 +1,61 @@
 "use strict";
 
+// **************************
+// The call and apply Methods
+// **************************
+
+/*
+ How do we tell JS explicitly what the 'this' keyword should look like?
+
+ Well, there are three function methods to do that and they are call(), apply() and bind().
+
+   The call() method: the FIRST arguement will be the 'this' keyword followed by the arguement for the function.
+
+   The apply() method: DOES NOT receive a list of arguments after the 'this' keyword, but instead it takes an ARRAY of the arguments.
+
+ NOTE: The apply() method is NOT used in modern JS, INSTEAD we use the spread operator with the call() method!! 
+*/
+// const deltaAir = {
+//   airline: "Delta",
+//   iataCode: "DE",
+//   bookings: [],
+
+//   book(flightNum, name) {
+//     console.log(
+//       `${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`
+//     );
+//     this.bookings.push({ flight: `${this.iataCode}${flightNum}`, name });
+//   },
+// };
+
+// deltaAir.book(239, "Cristian Herrera");
+// deltaAir.book(635, "John Smith");
+// console.log(deltaAir);
+
+// const alaskaAir = {
+//   name: "Alaska",
+//   iataCode: "AL",
+//   bookings: [],
+// };
+
+// const book = deltaAir.book;
+// // book(23, "Sarah Williams"); // ERROR: 'this' not defined outside object
+
+// // Call method
+// book.call(alaskaAir, 23, "Sarah Williams");
+// console.log(deltaAir);
+
+// book.call(deltaAir, 487, "Mary Cooper");
+// console.log(deltaAir);
+
+// // Apply method
+// const flighData = [583, "George Cooper"];
+// book.apply(alaskaAir, flighData);
+// console.log(alaskaAir);
+
+// book.call(deltaAir, ...flighData);
+// console.log(deltaAir);
+
 // *****************************
 // Functions Returning Functions
 // *****************************
