@@ -1,8 +1,8 @@
 "use strict";
 
-// **************************
-// The call and apply Methods
-// **************************
+// *********************************
+// The call, apply, and bind Methods
+// *********************************
 
 /*
  How do we tell JS explicitly what the 'this' keyword should look like?
@@ -12,6 +12,10 @@
    The call() method: the FIRST arguement will be the 'this' keyword followed by the arguement for the function.
 
    The apply() method: DOES NOT receive a list of arguments after the 'this' keyword, but instead it takes an ARRAY of the arguments.
+
+   The bind() method: Lets us manually set the 'this' keyword BUT DOES NOT immediately call the function. Instead it returns a new function where this keyword is bound.
+  
+ Partial application: means that a part of the arguments of the original function are already applied.
 
  NOTE: The apply() method is NOT used in modern JS, INSTEAD we use the spread operator with the call() method!! 
 */
@@ -55,6 +59,48 @@
 
 // book.call(deltaAir, ...flighData);
 // console.log(deltaAir);
+
+// // Bind method
+// const bookAL = book.bind(alaskaAir);
+// const bookLH = book.bind(deltaAir);
+
+// bookAL(23, "Steven Williams");
+
+// const bookAL95 = book.bind(alaskaAir, 95);
+// bookAL95("Cristian Diego");
+// console.log(alaskaAir);
+
+// // With Event Listeners
+// deltaAir.planes = 300;
+// deltaAir.buyPlane = function () {
+//   console.log(this);
+
+//   this.planes++;
+//   console.log(this.planes);
+// };
+// // deltaAir.buyPlane();
+
+// document
+//   .querySelector(".buy")
+//   .addEventListener("click", deltaAir.buyPlane.bind(deltaAir));
+
+// // Partial application
+// const addTax = (rate, value) => value + value * rate;
+// console.log(addTax(0.1, 200));
+
+// const addVAT = addTax.bind(null, 0.23);
+// console.log(addVAT(100));
+// console.log(addVAT(23));
+
+// // Returning function
+// const addTax2 = function (rate) {
+//   return function (value) {
+//     return value + value * rate;
+//   };
+// };
+// const addVat2 = addTax2(0.23);
+// console.log(addVat2(100));
+// console.log(addVAT2(23));
 
 // *****************************
 // Functions Returning Functions
