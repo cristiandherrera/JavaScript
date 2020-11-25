@@ -1,5 +1,45 @@
 "use strict";
 
+// ***********************************************
+// Immediately Invoked Function Expressions (IIFE)
+// ***********************************************
+
+/*
+ The IIFE pattern is taking a function and turning it into an expression and executing it immediately.
+
+ You need paranthesis to around the function to create a function expression; and it MUST be an expression to create an IIFE.
+
+ IIFE is NOT A feature of JS but as said above is just a pattern.
+
+ NOTE: Using anonymous function with IIFEs is not good practice.
+*/
+
+// const runOnce = function () {
+//   console.log("This will only run once... I swear!!");
+// };
+// runOnce();
+
+// // IIFE
+// (function () {
+//   console.log("This will ACUTALLY run once.");
+// })();
+
+// (() => console.log("Hey! I run once TOO."))();
+
+// // IIFE(DO NOT return values)
+// !(function () {
+//   console.log("I learned this from a medium article!");
+// })();
+
+// void (function () {
+//   console.log("hellooo");
+// })();
+
+// // INVLALID IIFE
+// // function () {
+// //   console.log("This will ACUTALLY run once.");
+// // }();
+
 // *********************************
 // The call, apply, and bind Methods
 // *********************************
