@@ -1,6 +1,43 @@
 "use strict";
 
-// ***********************************************
+// ********
+// Closures
+// ********
+
+/*
+ Closure:
+
+   Allows a function to remember the variable environment of the execution conetext at the time of the functions creation. EVEN if the context is popped off the call stack.
+  
+   Have priority over even the scope chain which means that if no variable is found in the current scope it will search the closures BEFORE the scope chain!!!
+
+   NOTE: We DO NOT manually create closures, this is a JS feature that happens implicitly! We cant even access closed-over variables explicitly. Closures are NOT a tangible JS object. (BUT we can view it in the console.) 
+
+ EXAMPLE: The 'booking' function can STILL update the variable 'passengerCount' BECAUSE the variable 'passengerCount' existed in the same execution context as 'bookers' when they were was CREATED! SO even though 'secureBooking' popped of the callstack by time 'bookers'
+
+ console.dir(): Is the way to see all the properties of a specified JavaScript object in console 
+*/
+
+// const secureBooking = function () {
+//   let passengerCount = 0;
+//   console.log(`${passengerCount} passengers`);
+
+//   return function () {
+//     // this function is stored into bookers variable
+//     passengerCount++;
+//     console.log(`${passengerCount} passengers`);
+//   };
+// };
+
+// const bookers = secureBooking();
+// bookers();
+// bookers();
+// bookers();
+
+// // use to see the internal closure object in the console
+// console.dir(bookers);
+
+// // ***********************************************
 // Immediately Invoked Function Expressions (IIFE)
 // ***********************************************
 
