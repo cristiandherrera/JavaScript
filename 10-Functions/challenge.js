@@ -55,3 +55,27 @@
 
 // poll.displayResults.call({ answers: [5, 2, 1] });
 // poll.displayResults.call({ answers: [1, 5, 3, 9, 6, 1] });
+
+// *******************
+// Coding Chalenge # 2
+// *******************
+
+// (function () {
+//   const header = document.querySelector("h1");
+//   header.style.color = "red";
+//   document.querySelector("body").addEventListener("click", function () {
+//     header.style.color = "blue";
+//   });
+// })();
+
+// 1.
+
+/*
+ Explain why the event listener function worked because of closure!!
+
+   The IIFE(Immediately Invoked Function Expression) as the name suggestes was immediately executed. Leaving us to believe that since the function was ran, the execution context and the varible environment left with it when the function was 'popped off' the call stack. 
+    
+   BUT REMEMBER that closures allow the function to remember the variable environment of the execution context it was called in!!
+
+   The IIFE was called and executed and popped of the call stack leaving the JS engine. BUT when we call the 'addeventlistener' function by clicking on the 'body' of the page, it has to remember its variable environment to be able to call on the variable 'header' to change it!! Without closures the event listener would have no idea what 'header' even is. 
+*/
