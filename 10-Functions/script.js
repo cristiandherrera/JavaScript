@@ -1,5 +1,127 @@
 "use strict";
 
+// *********************
+// More Closure Examples
+// *********************
+
+// // Example 1: Reassigning functions will ALSO create closures
+// let f;
+
+// const g = function () {
+//   const a = 23;
+//   f = function () {
+//     console.log(a * 2);
+//   };
+// };
+
+// const h = function () {
+//   const b = 155;
+//   f = function () {
+//     console.log(b * 2);
+//   };
+// };
+
+// g();
+// f();
+// console.dir(f);
+
+// // reassigning 'f' function
+// h();
+// f();
+// console.dir(f);
+
+// // Example 2: Poving that we dont need to return a function to get a closure by getting one using the 'setTimeout' function
+// const boardPassengers = function (n, wait) {
+//   const perGroup = n / 3;
+
+//   setTimeout(function () {
+//     console.log(`We are now boarding all ${n} passengers!`);
+//     console.log(`There are 3 groups, each with ${perGroup} passengers`);
+//   }, wait * 1000);
+
+//   console.log(`Will start boarding in ${wait} seconds`);
+// };
+
+// const perGroup = 1000; // DOES NOT DO ANYTHING because closures have prority over the scope chain!
+// boardPassengers(180, 3);
+
+// ********
+// Closures
+// ********
+
+/*
+ Closure:
+
+   Allows a function to remember the variable environment of the execution conetext at the time of the functions creation. EVEN if the context is popped off the call stack.
+  
+   Have priority over even the scope chain which means that if no variable is found in the current scope it will search the closures BEFORE the scope chain!!!
+
+   NOTE: We DO NOT manually create closures, this is a JS feature that happens implicitly! We cant even access closed-over variables explicitly. Closures are NOT a tangible JS object. (BUT we can view it in the console.) 
+
+ EXAMPLE: The 'booking' function can STILL update the variable 'passengerCount' BECAUSE the variable 'passengerCount' existed in the same execution context as 'bookers' when they were was CREATED! SO even though 'secureBooking' popped of the callstack by time 'bookers'
+
+ console.dir(): Is the way to see all the properties of a specified JavaScript object in console 
+*/
+
+// const secureBooking = function () {
+//   let passengerCount = 0;
+//   console.log(`${passengerCount} passengers`);
+
+//   return function () {
+//     // this function is stored into bookers variable
+//     passengerCount++;
+//     console.log(`${passengerCount} passengers`);
+//   };
+// };
+
+// const bookers = secureBooking();
+// bookers();
+// bookers();
+// bookers();
+
+// // use to see the internal closure object in the console
+// console.dir(bookers);
+
+// // ***********************************************
+// Immediately Invoked Function Expressions (IIFE)
+// ***********************************************
+
+/*
+ The IIFE pattern is taking a function and turning it into an expression and executing it immediately.
+
+ You need paranthesis to around the function to create a function expression; and it MUST be an expression to create an IIFE.
+
+ IIFE is NOT A feature of JS but as said above is just a pattern.
+
+ NOTE: Using anonymous function with IIFEs is not good practice.
+*/
+
+// const runOnce = function () {
+//   console.log("This will only run once... I swear!!");
+// };
+// runOnce();
+
+// // IIFE
+// (function () {
+//   console.log("This will ACUTALLY run once.");
+// })();
+
+// (() => console.log("Hey! I run once TOO."))();
+
+// // IIFE(DO NOT return values)
+// !(function () {
+//   console.log("I learned this from a medium article!");
+// })();
+
+// void (function () {
+//   console.log("hellooo");
+// })();
+
+// // INVLALID IIFE
+// // function () {
+// //   console.log("This will ACUTALLY run once.");
+// // }();
+
 // *********************************
 // The call, apply, and bind Methods
 // *********************************
