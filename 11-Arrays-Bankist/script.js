@@ -75,15 +75,49 @@
 
 // /////////////////////////////////////////////////
 
+// **************************
+// forEach With Maps and Sets
+// **************************
+
+/*
+ The map.forEach() method: executes a provided function once for each value in the Set object, in insertion order.
+   SYNTAX: 'map.forEach(callback (value, key, map) {})' (WHEN USED WITH MAPS)
+
+ The set.forEach() method: executes a provided function once per each key/value pair in the Map object, in insertion order.
+   SYNTAX: 'set.forEach(callback (value1, value2, map) {})' (WHEN USED WITH SETS)
+   note: that the second arguement in set.forEach() ALWAYS will have the same value as the first. 
+
+ PRACTICE: When '_' is used as a variable name, it means it is a "throwaway variable".(useless/has no meaning)
+*/
+
+// // MAPS
+// const currencies = new Map([
+//   ["USD", "United States dollar"],
+//   ["EUR", "Euro"],
+//   ["GBP", "Pound sterling"],
+// ]);
+
+// currencies.forEach(function (value, key, map) {
+//   console.log(`${key}: ${value}`);
+// });
+
+// // SETS
+// const currenciesUnique = new Set(["USD", "GBP", "USD", "EUR", "EUR", "RUP"]);
+// console.log(currenciesUnique);
+
+// currenciesUnique.forEach(function (value1, _, set) {
+//   console.log(value1, _, set);
+// });
+
 // ***********************
 // Looping Arrays: forEach
 // ***********************
 
 /*
- The forEach() method: is an array method that requires a callback to execute once for every item in the array.
+ The array.forEach() method: is a method that requires a callback to execute once for every item in the array.
 
- SYNTAX: Can take up to THREE arguements in a specific order. 
-   Ex. object.forEach(callback (item, index, array) {})
+ SYNTAX: Can take up to THREE arguements in a specific order. (WHEN USED WITH ARRAYS) 
+   Ex. array.forEach(callback (item, index, array) {})
 
  USE: You CANNOT break out of a forEach() loop! 'continue' and 'break' statements DONOT work with them!
 
