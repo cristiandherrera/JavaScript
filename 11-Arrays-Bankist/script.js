@@ -75,6 +75,43 @@
 
 // /////////////////////////////////////////////////
 
+// ***********************
+// Looping Arrays: forEach
+// ***********************
+
+/*
+ The forEach() method: is an array method that requires a callback to execute once for every item in the array.
+
+ SYNTAX: Can take up to THREE arguements in a specific order. 
+   Ex. object.forEach(callback (item, index, array) {})
+
+ USE: You CANNOT break out of a forEach() loop! 'continue' and 'break' statements DONOT work with them!
+
+ REMEMBER: 
+   A higher-order function is a func that requires a callback(function) as an arguement 
+   A callback function is a function passed into a higher-order function as an argument.
+*/
+
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// for (const [i, movement] of movements.entries()) {
+//   if (movement > 0) {
+//     console.log(`Movement ${i + 1}: You deposited ${movement}`);
+//   } else {
+//     console.log(`Movement ${i + 1}: You withdrew ${Math.abs(movement)}`);
+//   }
+// }
+
+// console.log("");
+
+// movements.forEach(function (mov, i, arr) {
+//   if (mov > 0) {
+//     console.log(`Movement ${i + 1}: You deposited ${mov} ${arr}`);
+//   } else {
+//     console.log(`Movement ${i + 1}: You withdrew ${Math.abs(mov)}`);
+//   }
+// });
+
 // ********************
 // Simple Array Methods
 // ********************
