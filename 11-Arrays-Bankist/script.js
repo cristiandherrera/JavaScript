@@ -93,6 +93,32 @@ const calcDisplayBalance = function (movements) {
 };
 calcDisplayBalance(account1.movements);
 
+//CHAINING METHODS TO DISPLAY SUMMARY
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter((mov) => mov > 0)
+    .reduce((acc, mov) => acc + mov);
+  console.log(incomes);
+  labelSumIn.textContent = `${incomes}€`;
+
+  const out = movements
+    .filter((mov) => mov < 0)
+    .reduce((acc, mov) => acc + mov);
+  labelSumOut.textContent = `${Math.abs(out)}€`;
+
+  const interest = movements
+    .filter((mov) => mov > 0)
+    .map((mov) => (mov * 1.2) / 100)
+    .filter((int, i, arr) => {
+      console.log(arr);
+      return int >= 1;
+    })
+    .reduce((acc, int) => acc + int);
+  console.log(interest);
+  labelSumInterest.textContent = `${interest}€`;
+};
+calcDisplaySummary(account1.movements);
+
 // COMPUTING USERNAMES
 const createUsernames = function (accs) {
   // Looing through 'accs' arg using forEach() SO we can mutate the ORIGINAL accounts array.("side effects")
@@ -112,6 +138,30 @@ console.log(accounts);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
+
+// *****************************
+// The Magic of Chaining Methods
+// *****************************
+
+/*
+ We can only chain a method after another one, IF the first one returns an ARRAY.
+
+ Debuggin can be challenging with chaining. BUT we can inspect the current array at any stage of the chain using the third parameter of the callback function!
+
+ PERFORMANCE: Chaining tons of methods one after the other can cause a real performance issues. Try to compress all the functionality that they do into as little methods as possible.
+
+ BAD PRACTICE: It is bad in JavaScript to chain methods that mutate the underlying original array.
+   Ex. DO NOT chain a method like the splice or the reverse method BECAUSE THEY MUTATE arrays
+*/
+
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const eurToUsd = 1.1;
+
+// const totalDepositUSD = movements
+//   .filter((mov) => mov > 0)
+//   .map((mov) => mov * eurToUsd)
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log(totalDepositUSD);
 
 // *****************
 // The reduce Method
