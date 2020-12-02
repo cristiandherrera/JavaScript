@@ -224,77 +224,75 @@
 // Refactoring Our Code: The DRY Principle
 // ***************************************
 
-// let secretNumber = Math.trunc(Math.random() * 20) + 1;
-// let score = 20;
-// let highscore = 0;
+let secretNumber = Math.trunc(Math.random() * 20) + 1;
+let score = 20;
+let highscore = 0;
 
-// const displayMessage = function (message) {
-//   document.querySelector(".message").textContent = message;
-// };
+const displayMessage = function (message) {
+  document.querySelector(".message").textContent = message;
+};
 
-// const displayScore = function (score) {
-//   document.querySelector(".score").textContent = score;
-// };
+const displayScore = function (score) {
+  document.querySelector(".score").textContent = score;
+};
 
-// const displayInput = function (input) {
-//   document.querySelector(".number").textContent = input;
-// };
+const displayInput = function (input) {
+  document.querySelector(".number").textContent = input;
+};
 
-// // 'Check!' button logic
-// document.querySelector(".check").addEventListener("click", function () {
-//   const guess = Number(document.querySelector(".guess").value);
-//   console.log(typeof guess);
+// 'Check!' button logic
+document.querySelector(".check").addEventListener("click", function () {
+  const guess = Number(document.querySelector(".guess").value);
+  console.log(typeof guess);
 
-//   // When there is no input
-//   if (!guess) {
-//     displayMessage("No number!");
+  // When there is no input
+  if (!guess) {
+    displayMessage("No number!");
 
-//     // When player wins
-//   } else if (guess === secretNumber) {
-//     displayMessage("Correct Number!");
-//     displayInput(secretNumber);
+    // When player wins
+  } else if (guess === secretNumber) {
+    displayMessage("Correct Number!");
+    displayInput(secretNumber);
 
-//     // winning styles
-//     document.querySelector("body").style.backgroundColor = "#60b347";
-//     document.querySelector(".number").style.width = "30rem";
+    // winning styles
+    document.querySelector("body").style.backgroundColor = "#60b347";
+    document.querySelector(".number").style.width = "30rem";
 
-//     // highscore
-//     if (score > highscore) {
-//       highscore = score;
-//       document.querySelector(".highscore").textContent = highscore;
-//     }
+    // highscore
+    if (score > highscore) {
+      highscore = score;
+      document.querySelector(".highscore").textContent = highscore;
+    }
 
-//     // when player is wrong
-//   } else if (guess !== secretNumber) {
-//     if (score > 1) {
+    // when player is wrong
+  } else if (guess !== secretNumber) {
+    if (score > 1) {
+      // display miss
+      displayMessage(guess > secretNumber ? "Too High!" : "Too Low!");
+      score--;
+      displayScore(score);
+    } else {
+      // display loss
+      score = 0;
+      displayMessage("You lost the game!");
+      displayScore(0);
+    }
+  }
+});
 
-//       // display miss
-//       displayMessage(guess > secretNumber ? "Too High!" : "Too Low!");
-//       score--;
-//       displayScore(score);
-//     } else {
+// 'Reset' button logic
+document.querySelector(".again").addEventListener("click", function () {
+  // reset random number
+  secretNumber = Math.trunc(Math.random() * 20) + 1;
 
-//       // display loss
-//       score = 0;
-//       displayMessage("You lost the game!");
-//       displayScore(0);
-//     }
-//   }
-// });
+  // reset displays and score
+  displayMessage("Start guessing...");
+  displayInput("?");
+  score = 20;
+  displayScore(score);
+  document.querySelector(".guess").value = "";
 
-// // 'Reset' button logic
-// document.querySelector(".again").addEventListener("click", function () {
-//   // reset random number
-//   secretNumber = Math.trunc(Math.random() * 20) + 1;
-
-//   // reset displays and score
-//   displayMessage("Start guessing...");
-//   displayInput("?");
-//   score = 20;
-//   displayScore(score);
-//   document.querySelector(".guess").value = "";
-
-//   // reset styles
-//   document.querySelector("body").style.backgroundColor = "#222";
-//   document.querySelector(".number").style.width = "15rem";
-// });
+  // reset styles
+  document.querySelector("body").style.backgroundColor = "#222";
+  document.querySelector(".number").style.width = "15rem";
+});
