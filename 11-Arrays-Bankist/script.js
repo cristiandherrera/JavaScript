@@ -64,12 +64,10 @@ const inputClosePin = document.querySelector(".form__input--pin");
 const displayMovements = function (movements) {
   // Setting HTML within '.movements' class to empty
   containerMovements.innerHTML = "";
-
   // Looping through function argument 'movements'
   movements.forEach(function (mov, i) {
     // Creating string on whether value is below or above 0
     const type = mov > 0 ? "deposit" : "withdrawal";
-
     // Creating string of html to create a new row to display withdrawals and deposits
     const html = `
       <div class="movements__row">
@@ -84,6 +82,15 @@ const displayMovements = function (movements) {
   });
 };
 displayMovements(account1.movements);
+
+// Calculating the balance and displaying it
+const calcDisplayBalance = function (movements) {
+  // Using reduce() to create the sum of withdrawls and deposits
+  const balance = movements.reduce((acc, curr) => acc + curr, 0);
+  // Updating text to display calculations
+  labelBalance.textContent = `${balance} EUR`;
+};
+calcDisplayBalance(account1.movements);
 
 // Computing usernames for each account
 const createUsernames = function (accs) {
@@ -102,8 +109,40 @@ const createUsernames = function (accs) {
 createUsernames(accounts);
 console.log(accounts);
 
-// /////////////////////////////////////////////////
-// /////////////////////////////////////////////////
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+
+// *****************
+// The reduce Method
+// *****************
+
+/*
+ REMEMBER: executes a REDUCER function (that you provide) on each element of the array, resulting in SINGLE output value.
+
+   SYNTAX: 'arr.reduce(callback(accumulator, currentValue, index, array), initialValue) {}) ' 
+ 
+ COMPARISON: We always need an external variable whenever we want to use a for loop, these method on the otherhand, they completely avoid this and simply return the variable or the value actually right away.
+
+ JONAS: "It is by far the most powerful array method there is. And because of that, it can also be the hardest one to use. So we always need to think exactly what we want the accumulator and the core value to be and how they should interact."
+*/
+
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// // REDUCE METHOD
+// const balance = movements.reduce((acc, curr) => acc + curr, 0);
+// console.log(balance);
+
+// // FOR LOOP COMPARISON
+// let sum = 0;
+// for (const mov of movements.entries()) sum += mov;
+// console.log(sum);
+
+// // REDUCE METHOD - checking maximum value
+// const max = movements.reduce(
+//   (acc, mov) => (acc > mov ? acc : mov),
+//   movements[0]
+// );
+// console.log(max);
 
 // *****************
 // The filter Method
@@ -111,6 +150,9 @@ console.log(accounts);
 
 /*
  REMEMBER: Creates a new array with all elements that pass the test implemented by the provided callback function.
+
+   SYNTAX: 'let newArray = arr.filter(callback (value, index, array) {})'
+   return element; (if true) 
 
  SYNTAX: MUST use a conditional statement that produces a boolean value
 */
@@ -143,6 +185,9 @@ console.log(accounts);
 
 /*
  REMEMBER: The map() method creates a NEW ARRAY populated with the results of calling a provided function on every element in the calling array.
+
+   SYNTAX: 'let newArray = arr.map(callback (value, index, array) {}) 
+   return element;' (after executing something) 
 
  NOTE: We do not call this function by ourselves. It is the map method who we'll call this function for each of the array elements in the movement array.
  
