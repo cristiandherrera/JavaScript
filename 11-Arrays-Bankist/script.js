@@ -87,13 +87,14 @@ displayMovements(account1.movements);
 
 // Computing usernames for each account
 const createUsernames = function (accs) {
-  // Looing through 'accs' arg using forEach() SO we can mutate the ORIGINAL accounts array
+  // Looing through 'accs' arg using forEach() SO we can mutate the ORIGINAL accounts array.("side effects")
   accs.forEach(function (acc) {
     // Creating property 'username' for each account object using the property 'owner' as a beginning value
     acc.username = acc.owner
       // Manipulating the string to create intials of the name
       .toLowerCase()
       .split(" ")
+      // Creating new simple array with map() to actually grab the intials
       .map((name) => name[0])
       .join("");
   });
@@ -103,6 +104,38 @@ console.log(accounts);
 
 // /////////////////////////////////////////////////
 // /////////////////////////////////////////////////
+
+// *****************
+// The filter Method
+// *****************
+
+/*
+ REMEMBER: Creates a new array with all elements that pass the test implemented by the provided callback function.
+
+ SYNTAX: MUST use a conditional statement that produces a boolean value
+*/
+
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// // FILTER METHOD
+// const deposits = movements.filter(function (mov) {
+//   return mov > 0;
+// });
+// console.log(movements);
+// console.log(deposits);
+
+// // FOR LOOP COMPARISON
+// const depositsForLoop = [];
+// for (const mov of movements) if (mov > 0) depositsForLoop.push(mov);
+// console.log(depositsForLoop);
+
+// // CHALLENGE
+// const withdrawals = movements.filter((mov) => mov < 0);
+// console.log(withdrawals);
+
+// const withdrawalsForLoop = [];
+// for (const mov of movements) if (mov < 0) withdrawalsForLoop.push(mov);
+// console.log(withdrawalsForLoop);
 
 // **************
 // The map Method
