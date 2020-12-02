@@ -139,6 +139,31 @@ console.log(accounts);
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 
+// ***************
+// The find Method
+// ***************
+
+/*
+ The find() method: returns the value of the first element in the provided array that satisfies the provided BOOLEAN testing function.
+   SYNTAX: 'arr.find(callback(element, index, array), thisArg)'
+   
+ find() vs. filter():
+   filter() returns all the elements that match the condition while the Find method only returns the first one. 
+   The Filter method returns a new array while Find only returns the element itself, NOT an array.
+*/
+
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// const firstWithdrawal = movements.find((mov) => mov < 0);
+// console.log(movements);
+// console.log(firstWithdrawal);
+
+// const account = accounts.find((accs) => accs.owner === "Jessica Davis");
+// console.log(account);
+
+// for (const accs of accounts)
+//   if (accs.owner === "Jessica Davis") console.log(accs);
+
 // *****************************
 // The Magic of Chaining Methods
 // *****************************
