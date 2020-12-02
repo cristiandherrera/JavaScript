@@ -61,6 +61,7 @@ const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
+// DISPLAYING TRANSACTIONS
 const displayMovements = function (movements) {
   // Setting HTML within '.movements' class to empty
   containerMovements.innerHTML = "";
@@ -83,7 +84,7 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
-// Calculating the balance and displaying it
+// CALCULATING AND DISPLAYING BALANCE
 const calcDisplayBalance = function (movements) {
   // Using reduce() to create the sum of withdrawls and deposits
   const balance = movements.reduce((acc, curr) => acc + curr, 0);
@@ -92,7 +93,7 @@ const calcDisplayBalance = function (movements) {
 };
 calcDisplayBalance(account1.movements);
 
-// Computing usernames for each account
+// COMPUTING USERNAMES
 const createUsernames = function (accs) {
   // Looing through 'accs' arg using forEach() SO we can mutate the ORIGINAL accounts array.("side effects")
   accs.forEach(function (acc) {
