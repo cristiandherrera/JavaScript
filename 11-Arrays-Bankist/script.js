@@ -85,6 +85,22 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
+// Computing usernames for each account
+const createUsernames = function (accs) {
+  // Looing through 'accs' arg using forEach() SO we can mutate the ORIGINAL accounts array
+  accs.forEach(function (acc) {
+    // Creating property 'username' for each account object using the property 'owner' as a beginning value
+    acc.username = acc.owner
+      // Manipulating the string to create intials of the name
+      .toLowerCase()
+      .split(" ")
+      .map((name) => name[0])
+      .join("");
+  });
+};
+createUsernames(accounts);
+console.log(accounts);
+
 // /////////////////////////////////////////////////
 // /////////////////////////////////////////////////
 
@@ -93,52 +109,52 @@ displayMovements(account1.movements);
 // **************
 
 /*
- REMEMBER: The map() method creates a new array populated with the results of calling a provided function on every element in the calling array.
+ REMEMBER: The map() method creates a NEW ARRAY populated with the results of calling a provided function on every element in the calling array.
 
  NOTE: We do not call this function by ourselves. It is the map method who we'll call this function for each of the array elements in the movement array.
  
  USE: loops over arrays just like the forEach() EXCEPT the map() creates a whole NEW array and the elements values will be the result of a callback functions execution!!
 */
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-const eurToUsd = 1.1;
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const eurToUsd = 1.1;
 
-// const movementsToUsd = movements.map(function (mov) {
-//   return mov * eurToUsd;
+// // const movementsToUsd = movements.map(function (mov) {
+// //   return mov * eurToUsd;
+// // });
+
+// // MAP METHOD with arrow function callback
+// const movementsToUsd = movements.map((mov) => mov * eurToUsd);
+// console.log(movementsToUsd);
+// console.log(movements);
+
+// // FOR OF LOOP (comparison to above)
+// const movementsToUSDfor = [];
+// for (const mov of movements) {
+//   movementsToUSDfor.push(mov * eurToUsd);
+// }
+// console.log(movementsToUSDfor);
+// console.log(movements);
+
+// console.log("");
+
+// // MAP METHOD: returning each string from the callback into a new array and then logging the entire array (not one by one like in the 'forEach' method example below)
+// const movementsDescriptions = movements.map(
+//   (mov, i) =>
+//     `Movement ${i + 1}: You ${mov > 0 ? "deposited" : "withdrew"} ${Math.abs(
+//       mov
+//     )}`
+// );
+// console.log(movementsDescriptions);
+
+// // FOR EACH METHOD: printing each line individually as we loop over array(each iterations performing an action which is known as a "side effect")
+// movements.forEach(function (mov, i, arr) {
+//   if (mov > 0) {
+//     console.log(`Movement ${i + 1}: You deposited ${mov} ${arr}`);
+//   } else {
+//     console.log(`Movement ${i + 1}: You withdrew ${Math.abs(mov)}`);
+//   }
 // });
-
-// MAP METHOD with arrow function callback
-const movementsToUsd = movements.map((mov) => mov * eurToUsd);
-console.log(movementsToUsd);
-console.log(movements);
-
-// FOR OF LOOP (comparison to above)
-const movementsToUSDfor = [];
-for (const mov of movements) {
-  movementsToUSDfor.push(mov * eurToUsd);
-}
-console.log(movementsToUSDfor);
-console.log(movements);
-
-console.log("");
-
-// MAP METHOD: returning each string from the callback into a new array and then logging the entire array (not one by one like in the 'forEach' method example below)
-const movementsDescriptions = movements.map(
-  (mov, i) =>
-    `Movement ${i + 1}: You ${mov > 0 ? "deposited" : "withdrew"} ${Math.abs(
-      mov
-    )}`
-);
-console.log(movementsDescriptions);
-
-// FOR EACH METHOD: printing each line individually as we loop over array(each iterations performing an action which is known as a "side effect")
-movements.forEach(function (mov, i, arr) {
-  if (mov > 0) {
-    console.log(`Movement ${i + 1}: You deposited ${mov} ${arr}`);
-  } else {
-    console.log(`Movement ${i + 1}: You withdrew ${Math.abs(mov)}`);
-  }
-});
 
 // *****************************************
 // Data Transformations: map, filter, reduce
