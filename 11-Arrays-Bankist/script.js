@@ -120,7 +120,7 @@ console.log(accounts);
 /*
  REMEMBER: executes a REDUCER function (that you provide) on each element of the array, resulting in SINGLE output value.
 
-   SYNTAX: 'arr.reduce(callback(accumulator, currentValue, index, array), initialValue) {}) ' 
+   SYNTAX: 'arr.reduce(callback(accumulator, currentValue, index, array), initialValue) {})' 
  
  COMPARISON: We always need an external variable whenever we want to use a for loop, these method on the otherhand, they completely avoid this and simply return the variable or the value actually right away.
 
