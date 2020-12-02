@@ -84,26 +84,29 @@ const displayMovements = function (movements) {
 };
 
 // CALCULATING AND DISPLAYING BALANCE
-const calcDisplayBalance = function (movements) {
+const calcDisplayBalance = function (acc) {
   // Using reduce() to create the sum of withdrawls and deposits
-  const balance = movements.reduce((acc, curr) => acc + curr, 0);
+  acc.balance = acc.movements.reduce((acc, curr) => acc + curr, 0);
   // Updating text to display calculations
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${acc.balance} EUR`;
 };
 
 //CHAINING METHODS TO DISPLAY SUMMARY
 const calcDisplaySummary = function (acc) {
+  // Display incomes
   const incomes = acc.movements
     .filter((mov) => mov > 0)
     .reduce((acc, mov) => acc + mov);
   // console.log(incomes);
   labelSumIn.textContent = `${incomes}€`;
 
+  // Display out
   const out = acc.movements
     .filter((mov) => mov < 0)
     .reduce((acc, mov) => acc + mov);
   labelSumOut.textContent = `${Math.abs(out)}€`;
 
+  // Display interest
   const interest = acc.movements
     .filter((mov) => mov > 0)
     .map((mov) => (mov * acc.interestRate) / 100)
@@ -132,37 +135,66 @@ const createUsernames = function (accs) {
 };
 createUsernames(accounts);
 
+// UPDATE UI LOGIC
+const updateUI = function (acc) {
+  // Display movements
+  displayMovements(acc.movements);
+  // Display balance
+  calcDisplayBalance(acc);
+  // Display summary
+  calcDisplaySummary(acc);
+};
+
+// IMPLEMENTIING LOGIN LOGIC
 let currentAccount;
 
 btnLogin.addEventListener("click", function (e) {
+  // Stops the html element 'form' automatic reload of page when 'click' event is fired
   e.preventDefault();
-
+  // Setting 'currentAccount' to value of input user login
   currentAccount = accounts.find(
     (acc) => acc.username === inputLoginUsername.value
   );
   console.log(currentAccount);
-
+  // Checking if value of the input pin is matached to the 'currentAccount' pin
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
     // Display UI and message
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(" ")[0]
     }`;
     containerApp.style.opacity = 100;
-
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = "";
     inputLoginPin.blur();
 
-    // Display movements
-    displayMovements(currentAccount.movements);
-
-    // Display balance
-    calcDisplayBalance(currentAccount.movements);
-
-    // Display summary
-    calcDisplaySummary(currentAccount);
+    updateUI(currentAccount);
   }
 });
+
+btnTransfer.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputTransferAmount.value);
+  const recieverAcc = accounts.find(
+    (acc) => acc.username === inputTransferTo.value
+  );
+  console.log(amount, recieverAcc);
+
+  inputTransferAmount.value = inputTransferTo.value = "";
+
+  if (
+    amount > 0 &&
+    recieverAcc &&
+    currentAccount.balance >= amount &&
+    recieverAcc?.username !== currentAccount.username
+  ) {
+    currentAccount.movements.push(-amount);
+    recieverAcc.movements.push(amount);
+
+    updateUI(currentAccount);
+  }
+});
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 
