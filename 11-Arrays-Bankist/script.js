@@ -62,11 +62,13 @@ const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
 // DISPLAYING TRANSACTIONS
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = true) {
   // Setting HTML within '.movements' class to empty
   containerMovements.innerHTML = "";
+  // Variable to sort based on 'sort' boolean value
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
   // Looping through function argument 'movements'
-  movements.forEach(function (mov, i) {
+  movs.forEach(function (mov, i) {
     // Creating string on whether value is below or above 0
     const type = mov > 0 ? "deposit" : "withdrawal";
     // Creating string of html to create a new row to display withdrawals and deposits
@@ -230,8 +232,50 @@ btnClose.addEventListener("click", function (e) {
   inputCloseUsername.value = inputClosePin = "";
 });
 
+// SORT BUTTON LOGIC
+let sorted = false;
+btnSort.addEventListener("click", function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+});
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
+
+// **************
+// Sorting Arrays
+// **************
+
+/*
+ The sort() method: Sorts the elements of an array IN PLACE(doesnt copy) and returns the sorted array.
+   
+   SYNTAX: arr.sort([compareFunction])
+
+   Ex. arr.sort(function(a, b) {a - b}) - If 'a' is greater than 'b' than ascends order if otherwise than it decends. 
+
+   If you do NOT specify the sort order with a function THEN he array elements are converted to strings and sorted according to each character's Unicode code point value.
+
+ NOTE: DO NOT use sort() method if the array of question contains mulitple data types
+
+*/
+
+// Strings
+const owners = ["Jonas", "Zach", "Adam", "Martha"];
+console.log(owners.sort());
+console.log(owners); // ["Adam", "Jonas", "Martha", "Zach"]
+
+// Numbers
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+console.log(movements); // [200, 450, -400, 3000, -650, -130, 70, 1300] (WEIRD)
+
+// Ascending
+movements.sort((a, b) => a - b);
+console.log(movements); // [-650, -400, -130, 70, 200, 450, 1300, 3000
+
+// Descending
+movements.sort((a, b) => b - a);
+console.log(movements); // [3000, 1300, 450, 200, 70, -130, -400, -650]
 
 // ****************
 // flat and flatMap
