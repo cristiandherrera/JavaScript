@@ -233,6 +233,42 @@ btnClose.addEventListener("click", function (e) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 
+// ****************
+// flat and flatMap
+// ****************
+
+/*
+ The flat() method: creates a new array and UNnests nested arrays within the new array. Can specify the depth of nest you want to UNnest.
+
+   SYNTAX: var newArray = arr.flat(depth);
+
+ The flatMap() method: Returns a new array formed by applying a given callback function to each element of the array, and then flattening the result by one level. SAME AS chaining map() and flat()
+
+   SYNTAX: var newArray = arr.flatMap(function callback(currentValue, index, array) {
+   // return element for newArray
+   }, thisArg)
+
+*/
+
+// // flat
+// const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
+// console.log(arr.flat());
+
+// const arrDeep = [[[1, [2]], 3], [4, [5, 6]], 7, 8];
+// console.log(arr.flat(3));
+
+// const overallBalance = accounts
+//   .map((acc) => acc.movements)
+//   .flat()
+//   .reduce((acc, curr) => acc + curr, 0);
+// console.log(overallBalance);
+
+// // flatMat
+// const overallBalance2 = accounts
+//   .flatMap((acc) => acc.movements)
+//   .reduce((acc, curr) => acc + curr, 0);
+// console.log(overallBalance2);
+
 // **************
 // some and every
 // **************
