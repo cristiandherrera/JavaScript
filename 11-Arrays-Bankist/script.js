@@ -82,44 +82,41 @@ const displayMovements = function (movements) {
     containerMovements.insertAdjacentHTML("afterbegin", html);
   });
 };
-displayMovements(account1.movements);
 
 // CALCULATING AND DISPLAYING BALANCE
-const calcDisplayBalance = function (movements) {
+const calcDisplayBalance = function (acc) {
   // Using reduce() to create the sum of withdrawls and deposits
-  const balance = movements.reduce((acc, curr) => acc + curr, 0);
+  acc.balance = acc.movements.reduce((acc, curr) => acc + curr, 0);
   // Updating text to display calculations
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${acc.balance} EUR`;
 };
-calcDisplayBalance(account1.movements);
 
-//CHAINING METHODS TO DISPLAY SUMMARY
-const calcDisplaySummary = function (movements) {
-  const incomes = movements
+// CALCULATING AND DISPLAYING SUMMARY
+const calcDisplaySummary = function (acc) {
+  // Display incomes
+  const incomes = acc.movements
     .filter((mov) => mov > 0)
     .reduce((acc, mov) => acc + mov);
-  console.log(incomes);
   labelSumIn.textContent = `${incomes}€`;
 
-  const out = movements
+  // Display out
+  const out = acc.movements
     .filter((mov) => mov < 0)
     .reduce((acc, mov) => acc + mov);
   labelSumOut.textContent = `${Math.abs(out)}€`;
 
-  const interest = movements
+  // Display interest
+  const interest = acc.movements
     .filter((mov) => mov > 0)
-    .map((mov) => (mov * 1.2) / 100)
+    .map((mov) => (mov * acc.interestRate) / 100)
     .filter((int, i, arr) => {
-      console.log(arr);
       return int >= 1;
     })
     .reduce((acc, int) => acc + int);
-  console.log(interest);
   labelSumInterest.textContent = `${interest}€`;
 };
-calcDisplaySummary(account1.movements);
 
-// COMPUTING USERNAMES
+// COMPUTING USERNAME OBJECTS
 const createUsernames = function (accs) {
   // Looing through 'accs' arg using forEach() SO we can mutate the ORIGINAL accounts array.("side effects")
   accs.forEach(function (acc) {
@@ -134,10 +131,217 @@ const createUsernames = function (accs) {
   });
 };
 createUsernames(accounts);
-console.log(accounts);
+
+// UPDATE UI LOGIC
+const updateUI = function (acc) {
+  // Display movements
+  displayMovements(acc.movements);
+  // Display balance
+  calcDisplayBalance(acc);
+  // Display summary
+  calcDisplaySummary(acc);
+};
+
+// LOGIN LOGIC
+let currentAccount;
+btnLogin.addEventListener("click", function (e) {
+  // Stops the html element 'form' automatic reload of page when 'click' event is fired
+  e.preventDefault();
+  // Setting 'currentAccount' to value of input user login
+  currentAccount = accounts.find(
+    (acc) => acc.username === inputLoginUsername.value
+  );
+  console.log(currentAccount);
+  // Checking if value of the input pin is matached to the 'currentAccount' pin
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // Display UI and message
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(" ")[0]
+    }`;
+    containerApp.style.opacity = 100;
+    // Clear input fields
+    inputLoginUsername.value = inputLoginPin.value = "";
+    inputLoginPin.blur();
+
+    updateUI(currentAccount);
+  }
+});
+
+// TRANSFER MONEY LOGIC
+btnTransfer.addEventListener("click", function (e) {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const recieverAcc = accounts.find(
+    (acc) => acc.username === inputTransferTo.value
+  );
+  console.log(amount, recieverAcc);
+
+  inputTransferAmount.value = inputTransferTo.value = "";
+
+  if (
+    amount > 0 &&
+    recieverAcc &&
+    currentAccount.balance >= amount &&
+    recieverAcc?.username !== currentAccount.username
+  ) {
+    currentAccount.movements.push(-amount);
+    recieverAcc.movements.push(amount);
+
+    updateUI(currentAccount);
+  }
+});
+
+// REQUEST LOAN LOGIC
+btnLoan.addEventListener("click", function (e) {
+  e.preventDefault();
+  // Variable of input value
+  const amount = Number(inputLoanAmount.value);
+  // Checking loan conditions
+  if (
+    amount > 0 &&
+    currentAccount.movements.some((mov) => mov >= amount * 0.1)
+  ) {
+    // Add movement
+    currentAccount.movements.push(amount);
+    // Update UI
+    updateUI(currentAccount);
+  }
+  // reset input text
+  inputLoanAmount.value = "";
+});
+
+// CLOSE ACCOUNT LOGIC
+btnClose.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  if (
+    currentAccount.username === inputCloseUsername.value &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    const index = accounts.findIndex(
+      (acc) => acc.username === currentAccount.username
+    );
+    // Delete account
+    accounts.splice(index, 1);
+    // Hide UI
+    containerApp.style.opacity = 0;
+  }
+  // Removing inputs
+  inputCloseUsername.value = inputClosePin = "";
+});
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
+
+// ****************
+// flat and flatMap
+// ****************
+
+/*
+ The flat() method: creates a new array and UNnests nested arrays within the new array. Can specify the depth of nest you want to UNnest.
+
+   SYNTAX: var newArray = arr.flat(depth);
+
+ The flatMap() method: Returns a new array formed by applying a given callback function to each element of the array, and then flattening the result by one level. SAME AS chaining map() and flat()
+
+   SYNTAX: var newArray = arr.flatMap(function callback(currentValue, index, array) {
+   // return element for newArray
+   }, thisArg)
+
+*/
+
+// // flat
+// const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
+// console.log(arr.flat());
+
+// const arrDeep = [[[1, [2]], 3], [4, [5, 6]], 7, 8];
+// console.log(arr.flat(3));
+
+// const overallBalance = accounts
+//   .map((acc) => acc.movements)
+//   .flat()
+//   .reduce((acc, curr) => acc + curr, 0);
+// console.log(overallBalance);
+
+// // flatMat
+// const overallBalance2 = accounts
+//   .flatMap((acc) => acc.movements)
+//   .reduce((acc, curr) => acc + curr, 0);
+// console.log(overallBalance2);
+
+// **************
+// some and every
+// **************
+
+/*
+ The some() method: tests if ANY element in the array passes the conditional implemented by the provided function. It returns a Boolean value.
+
+   SYNTAX: arr.some(callback(element, index, array), thisArg)
+   COMPARISON: includes() method ONLY checks for equality, where as the some() method checks a condition 
+
+ The every() method: tests if ALL elements in the array passes the conditional implemented by the provided function. It returns a Boolean value.
+
+   SYNTAX: arr.every(callback(element, index, array), thisArg)
+
+ TIP: We CAN write our callback functions OUTSIDE the methods we are supposed to callback too!! This will help us with the DRY principle!!
+*/
+
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// // INCLUDES MEHTOD
+// console.log(movements);
+// console.log(movements.includes(-130));
+
+// // SOME METHOD
+// console.log(movements.some((mov) => mov === -130));
+
+// const some = movements.some((mov) => mov > 0);
+// console.log(some);
+
+// // EVERY
+// console.log(movements.every((mov) => mov > 0));
+// console.log(account4.movements.every((mov) => mov > 0));
+
+// // Seperate callback
+// const callBack = (mov) => mov > 0;
+// console.log(movements.every(callBack));
+// console.log(movements.some(callBack));
+// console.log(movements.filter(callBack));
+
+// ********************
+// The findIndex Method
+// ********************
+
+/*
+The findIndex() method: Returns the index of the FIRST element in the array that satisfies the provided testing function. Otherwise, it returns -1, indicating that no element passed the test.
+  
+   SYNTAX: arr.findIndex(callback( element, index, array ), thisArg)
+*/
+
+// ***************
+// The find Method
+// ***************
+
+/*
+ The find() method: returns the value of the first element in the provided array that satisfies the provided BOOLEAN testing function.
+   SYNTAX: 'arr.find(callback(element, index, array), thisArg)'
+   
+ find() vs. filter():
+   filter() returns all the elements that match the condition while the Find method only returns the first one. 
+   The Filter method returns a new array while Find only returns the element itself, NOT an array.
+*/
+
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// const firstWithdrawal = movements.find((mov) => mov < 0);
+// console.log(movements);
+// console.log(firstWithdrawal);
+
+// const account = accounts.find((accs) => accs.owner === "Jessica Davis");
+// console.log(account);
+
+// for (const accs of accounts)
+//   if (accs.owner === "Jessica Davis") console.log(accs);
 
 // *****************************
 // The Magic of Chaining Methods
