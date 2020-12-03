@@ -264,7 +264,6 @@ btnSort.addEventListener("click", function (e) {
 
    TIP: Allows us to apply array methods on other data structures once we turn them into an array using this method!!
    
-
 */
 
 // // ARRAY CONSTRUCTOR
