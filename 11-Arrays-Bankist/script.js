@@ -191,6 +191,25 @@ btnTransfer.addEventListener("click", function (e) {
   }
 });
 
+// REQUEST LOAN LOGIC
+btnLoan.addEventListener("click", function (e) {
+  e.preventDefault();
+  // Variable of input value
+  const amount = Number(inputLoanAmount.value);
+  // Checking loan conditions
+  if (
+    amount > 0 &&
+    currentAccount.movements.some((mov) => mov >= amount * 0.1)
+  ) {
+    // Add movement
+    currentAccount.movements.push(amount);
+    // Update UI
+    updateUI(currentAccount);
+  }
+  // reset input text
+  inputLoanAmount.value = "";
+});
+
 // CLOSE ACCOUNT LOGIC
 btnClose.addEventListener("click", function (e) {
   e.preventDefault();
@@ -213,6 +232,45 @@ btnClose.addEventListener("click", function (e) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
+
+// **************
+// some and every
+// **************
+
+/*
+ The some() method: tests if ANY element in the array passes the conditional implemented by the provided function. It returns a Boolean value.
+
+   SYNTAX: arr.some(callback(element, index, array), thisArg)
+   COMPARISON: includes() method ONLY checks for equality, where as the some() method checks a condition 
+
+ The every() method: tests if ALL elements in the array passes the conditional implemented by the provided function. It returns a Boolean value.
+
+   SYNTAX: arr.every(callback(element, index, array), thisArg)
+
+ TIP: We CAN write our callback functions OUTSIDE the methods we are supposed to callback too!! This will help us with the DRY principle!!
+*/
+
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// // INCLUDES MEHTOD
+// console.log(movements);
+// console.log(movements.includes(-130));
+
+// // SOME METHOD
+// console.log(movements.some((mov) => mov === -130));
+
+// const some = movements.some((mov) => mov > 0);
+// console.log(some);
+
+// // EVERY
+// console.log(movements.every((mov) => mov > 0));
+// console.log(account4.movements.every((mov) => mov > 0));
+
+// // Seperate callback
+// const callBack = (mov) => mov > 0;
+// console.log(movements.every(callBack));
+// console.log(movements.some(callBack));
+// console.log(movements.filter(callBack));
 
 // ********************
 // The findIndex Method
