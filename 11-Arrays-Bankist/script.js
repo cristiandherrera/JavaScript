@@ -243,6 +243,70 @@ btnSort.addEventListener("click", function (e) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 
+// ****************************************
+// More Ways of Creating and Filling Arrays
+// ****************************************
+
+/*
+ The Array() constructor: Is used to create Array objects.
+
+   SYNTAX: 'new Array(element0, element1)' OR 'new Array(arrayLength)' 
+
+   REMEMBER: If using the 'new Array()' constructor and only one integer argument is passed in, then it returns an empty array with its length property set to that number.
+
+ The fill() method: MUTATES all elements in an array to a single value
+   
+   SYNTAX: 'arr.fill(value, start, end)'
+
+ The Array.from() method: creates a NEW SHALLOW COPIED Array instance from an array-like or iterable object.(turns iterable objects into arrays!)
+
+   SYNTAX: Array.from(arrayLike , mapFunction , thisArg)
+
+   TIP: Allows us to apply array methods on other data structures once we turn them into an array using this method!!
+   
+
+*/
+
+// // ARRAY CONSTRUCTOR
+// const arr = [1, 2, 3, 4, 5, 6, 7];
+// console.log(new Array(1, 2, 3, 4, 5, 6, 7));
+
+// const x = new Array(7);
+// console.log(x); // [empty * 7]
+
+// console.log(x.map(() => 5)); // DOES NOT FILL THE ARRAY // output: [empty * 7]
+
+// // FILL METHOD
+// x.fill(1, 3, 5);
+// console.log(x); // [<empty * 3>, 1, 1,  <empty * 2> ]
+// x.fill(1);
+// console.log(x); // [1, 1, 1, 1, 1, 1, 1]
+
+// arr.fill(23, 2, 6);
+// console.log(arr); // [1, 2, 23, 23, 23, 23, 7]
+
+// // FROM METHOD
+// const y = Array.from({ length: 7 }, () => 1);
+// console.log(y);
+
+// const z = Array.from({ length: 7 }, (_, i) => i + 1);
+// console.log(z);
+
+// // FROM VS SPREAD AND MAP
+// labelBalance.addEventListener("click", function () {
+//   // Array.from() - grabbing movements nodelist from the DOM
+//   const movementsUI = Array.from(
+//     document.querySelectorAll(".movements__value"),
+//     (el) => Number(el.textContent.replace("€", ""))
+//   );
+//   console.log(movementsUI);
+
+//   // spread operator then map()
+//   const movementUI2 = [...document.querySelectorAll(".movements__value")];
+//   const map = movementUI2.map((el) => Number(el.textContent.replace("€", "")));
+//   console.log(map);
+// });
+
 // **************
 // Sorting Arrays
 // **************
@@ -260,22 +324,22 @@ btnSort.addEventListener("click", function (e) {
 
 */
 
-// Strings
-const owners = ["Jonas", "Zach", "Adam", "Martha"];
-console.log(owners.sort());
-console.log(owners); // ["Adam", "Jonas", "Martha", "Zach"]
+// // Strings
+// const owners = ["Jonas", "Zach", "Adam", "Martha"];
+// console.log(owners.sort());
+// console.log(owners); // ["Adam", "Jonas", "Martha", "Zach"]
 
-// Numbers
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-console.log(movements); // [200, 450, -400, 3000, -650, -130, 70, 1300] (WEIRD)
+// // Numbers
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// console.log(movements); // [200, 450, -400, 3000, -650, -130, 70, 1300] (WEIRD)
 
-// Ascending
-movements.sort((a, b) => a - b);
-console.log(movements); // [-650, -400, -130, 70, 200, 450, 1300, 3000
+// // Ascending
+// movements.sort((a, b) => a - b);
+// console.log(movements); // [-650, -400, -130, 70, 200, 450, 1300, 3000
 
-// Descending
-movements.sort((a, b) => b - a);
-console.log(movements); // [3000, 1300, 450, 200, 70, -130, -400, -650]
+// // Descending
+// movements.sort((a, b) => b - a);
+// console.log(movements); // [3000, 1300, 450, 200, 70, -130, -400, -650]
 
 // ****************
 // flat and flatMap
@@ -367,7 +431,7 @@ The findIndex() method: Returns the index of the FIRST element in the array that
 // ***************
 
 /*
- The find() method: returns the value of the first element in the provided array that satisfies the provided BOOLEAN testing function.
+ The find() method: returns the value of the FIRST ELEMENT in the provided array that satisfies the provided BOOLEAN CONDITIONAL.
    SYNTAX: 'arr.find(callback(element, index, array), thisArg)'
    
  find() vs. filter():
@@ -448,7 +512,7 @@ The findIndex() method: Returns the index of the FIRST element in the array that
 // *****************
 
 /*
- REMEMBER: Creates a new array with all elements that pass the test implemented by the provided callback function.
+ REMEMBER: Creates a NEW ARRAY with all elements that pass the test implemented by the provided callback function.
 
    SYNTAX: 'let newArray = arr.filter(callback (value, index, array) {})'
    return element; (if true) 
