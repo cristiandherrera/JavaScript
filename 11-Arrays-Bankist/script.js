@@ -91,13 +91,12 @@ const calcDisplayBalance = function (acc) {
   labelBalance.textContent = `${acc.balance} EUR`;
 };
 
-//CHAINING METHODS TO DISPLAY SUMMARY
+// CALCULATING AND DISPLAYING SUMMARY
 const calcDisplaySummary = function (acc) {
   // Display incomes
   const incomes = acc.movements
     .filter((mov) => mov > 0)
     .reduce((acc, mov) => acc + mov);
-  // console.log(incomes);
   labelSumIn.textContent = `${incomes}€`;
 
   // Display out
@@ -111,15 +110,13 @@ const calcDisplaySummary = function (acc) {
     .filter((mov) => mov > 0)
     .map((mov) => (mov * acc.interestRate) / 100)
     .filter((int, i, arr) => {
-      // console.log(arr);
       return int >= 1;
     })
     .reduce((acc, int) => acc + int);
-  // console.log(interest);
   labelSumInterest.textContent = `${interest}€`;
 };
 
-// COMPUTING USERNAMES
+// COMPUTING USERNAME OBJECTS
 const createUsernames = function (accs) {
   // Looing through 'accs' arg using forEach() SO we can mutate the ORIGINAL accounts array.("side effects")
   accs.forEach(function (acc) {
@@ -145,9 +142,8 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
-// IMPLEMENTIING LOGIN LOGIC
+// LOGIN LOGIC
 let currentAccount;
-
 btnLogin.addEventListener("click", function (e) {
   // Stops the html element 'form' automatic reload of page when 'click' event is fired
   e.preventDefault();
@@ -171,9 +167,9 @@ btnLogin.addEventListener("click", function (e) {
   }
 });
 
+// TRANSFER MONEY LOGIC
 btnTransfer.addEventListener("click", function (e) {
   e.preventDefault();
-
   const amount = Number(inputTransferAmount.value);
   const recieverAcc = accounts.find(
     (acc) => acc.username === inputTransferTo.value
@@ -195,8 +191,38 @@ btnTransfer.addEventListener("click", function (e) {
   }
 });
 
+// CLOSE ACCOUNT LOGIC
+btnClose.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  if (
+    currentAccount.username === inputCloseUsername.value &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    const index = accounts.findIndex(
+      (acc) => acc.username === currentAccount.username
+    );
+    // Delete account
+    accounts.splice(index, 1);
+    // Hide UI
+    containerApp.style.opacity = 0;
+  }
+  // Removing inputs
+  inputCloseUsername.value = inputClosePin = "";
+});
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
+
+// ********************
+// The findIndex Method
+// ********************
+
+/*
+The findIndex() method: Returns the index of the FIRST element in the array that satisfies the provided testing function. Otherwise, it returns -1, indicating that no element passed the test.
+  
+   SYNTAX: arr.findIndex(callback( element, index, array ), thisArg)
+*/
 
 // ***************
 // The find Method
