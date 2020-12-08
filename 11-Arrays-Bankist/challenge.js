@@ -73,3 +73,35 @@
 
 // calcAverageHumanAge(data1);
 // calcAverageHumanAge(data2);
+
+// *******************
+// Coding Challenge #3
+// *******************
+
+// TEST DATA:
+const dogs = [
+  { weight: 22, curFood: 250, owners: ["Alice", "Bob"] },
+  { weight: 8, curFood: 200, owners: ["Matilda"] },
+  { weight: 13, curFood: 275, owners: ["Sarah", "John"] },
+  { weight: 32, curFood: 340, owners: ["Michael"] },
+];
+
+// 1.
+dogs.forEach((dog) => (dog.recFood = Math.round(dog.weight ** 0.75 * 28)));
+console.log(dogs);
+
+// 2.
+// find sarahs dog (owners property contains array) how do I access it?? chaining?? split() method?
+// then compare 'currFood' to 'recFood'
+// log string
+console.log(dogs.owners.includes("Sarah"));
+
+// 3.
+// create new array
+// compare curfood and recfood
+
+// const ownersEatTooMuch = dogs.filter(function () {
+//   if(dogs.currFood > dogs.recFood * 0.9 && dogs.curr < dogs.recFood * 1.1) {
+//     console.log('your dog is fine');
+//   }
+// });
