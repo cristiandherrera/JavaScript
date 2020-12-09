@@ -381,12 +381,12 @@ btnSort.addEventListener("click", function (e) {
 // **************
 
 /*
- The some() method: tests if ANY element in the array passes the conditional implemented by the provided function. It returns a Boolean value.
+ The some() method: tests if ANY element in the array passes the CONDITIONAL implemented by the provided function. It returns a Boolean value.
 
    SYNTAX: arr.some(callback(element, index, array), thisArg)
    COMPARISON: includes() method ONLY checks for equality, where as the some() method checks a condition 
 
- The every() method: tests if ALL elements in the array passes the conditional implemented by the provided function. It returns a Boolean value.
+ The every() method: tests if ALL elements in the array passes the CONDITIONAL implemented by the provided function. It returns a Boolean value.
 
    SYNTAX: arr.every(callback(element, index, array), thisArg)
 
@@ -511,7 +511,7 @@ The findIndex() method: Returns the index of the FIRST element in the array that
 // *****************
 
 /*
- REMEMBER: Creates a NEW ARRAY with all elements that pass the test implemented by the provided callback function.
+ REMEMBER: Creates a NEW ARRAY with all elements that pass the CONDITIONAL implemented by the provided callback function.
 
    SYNTAX: 'let newArray = arr.filter(callback (value, index, array) {})'
    return element; (if true) 
@@ -553,7 +553,7 @@ The findIndex() method: Returns the index of the FIRST element in the array that
 
  NOTE: We do not call this function by ourselves. It is the map method who we'll call this function for each of the array elements in the movement array.
  
- USE: loops over arrays just like the forEach() EXCEPT the map() creates a whole NEW array and the elements values will be the result of a callback functions execution!!
+ USE: loops over arrays just like the forEach() EXCEPT the map() creates a NEW ARRAY and the elements values will be the result of a callback functions execution!!
 */
 
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];

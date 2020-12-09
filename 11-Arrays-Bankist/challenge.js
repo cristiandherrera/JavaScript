@@ -75,33 +75,58 @@
 // calcAverageHumanAge(data2);
 
 // *******************
-// Coding Challenge #3
+// Coding Challenge #4
 // *******************
 
-// TEST DATA:
-const dogs = [
-  { weight: 22, curFood: 250, owners: ["Alice", "Bob"] },
-  { weight: 8, curFood: 200, owners: ["Matilda"] },
-  { weight: 13, curFood: 275, owners: ["Sarah", "John"] },
-  { weight: 32, curFood: 340, owners: ["Michael"] },
-];
+// // TEST DATA:
+// const dogs = [
+//   { weight: 22, curFood: 250, owners: ["Alice", "Bob"] },
+//   { weight: 8, curFood: 200, owners: ["Matilda"] },
+//   { weight: 13, curFood: 275, owners: ["Sarah", "John"] },
+//   { weight: 32, curFood: 340, owners: ["Michael"] },
+// ];
 
-// 1.
-dogs.forEach((dog) => (dog.recFood = Math.round(dog.weight ** 0.75 * 28)));
-console.log(dogs);
+// // 1.
+// dogs.forEach((dog) => (dog.recFood = Math.trunc(dog.weight ** 0.75 * 28)));
+// console.log(dogs);
 
-// 2.
-// find sarahs dog (owners property contains array) how do I access it?? chaining?? split() method?
-// then compare 'currFood' to 'recFood'
-// log string
-console.log(dogs.owners.includes("Sarah"));
+// // 2.
+// const sarahsDog = dogs.find((dog) => dog.owners.includes("Sarah"));
+// console.log(sarahsDog);
+// console.log(
+//   `Sarah's dog is eating too ${
+//     sarahsDog.curFood > sarahsDog.recFood ? "much" : "little"
+//   } `
+// );
 
-// 3.
-// create new array
-// compare curfood and recfood
+// // 3.
+// const ownersEatTooMuch = dogs
+//   .filter((dog) => dog.curFood > dog.recFood)
+//   .map((dog) => dog.owners)
+//   .flat();
+// console.log(ownersEatTooMuch);
 
-// const ownersEatTooMuch = dogs.filter(function () {
-//   if(dogs.currFood > dogs.recFood * 0.9 && dogs.curr < dogs.recFood * 1.1) {
-//     console.log('your dog is fine');
-//   }
-// });
+// const ownersEatTooLittle = dogs
+//   .filter((dogs) => dogs.curFood < dogs.recFood)
+//   .flatMap((dog) => dog.owners);
+// console.log(ownersEatTooLittle);
+
+// // 4.
+// console.log(`${ownersEatTooMuch.join(" and ")} dogs eat too much!`);
+// console.log(`${ownersEatTooLittle.join(" and ")} dogs eat too little!`);
+
+// // 5.
+// const ownersEatExactly = dogs.some((dog) => dog.recFood === dog.curFood);
+// console.log(ownersEatExactly);
+
+// // 6.
+// const ownersEatOkay = (dog) =>
+//   dog.curFood > dog.recFood * 0.9 && dog.curFood < dog.recFood * 1.1;
+// console.log(dogs.some(ownersEatOkay));
+
+// // 7.
+// console.log(dogs.filter(ownersEatOkay));
+
+// // 8.
+// const sortedDogs = dogs.slice().sort((a, b) => a.recFood - b.recFood);
+// console.log(sortedDogs);
