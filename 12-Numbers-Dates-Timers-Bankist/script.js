@@ -264,6 +264,42 @@ btnSort.addEventListener("click", function (e) {
 /////////////////////////////////////////////////
 // LECTURES
 
+// **********************
+// The Remainder Operator
+// **********************
+
+/*
+ The remainder operator (%): returns the remainder left over when one operand is divided by a second operand. It always takes the sign of the dividend.
+*/
+
+// console.log(5 % 2); // 1
+// console.log(5 / 2); // 5 = 2 * 2 + 1
+
+// console.log(8 % 3); // 2
+// console.log(8 / 3); // 8 = 3 * 2 + 2
+
+// console.log(6 % 2); // 0
+// console.log(6 / 2); // 6 = 2 * 3 + 0
+
+// console.log(7 % 2); // 1
+// console.log(7 / 2); // 7 = 2 * 3 + 1
+
+// const isEven = (n) => n % 2 === 0;
+// console.log(isEven(8));
+// console.log(isEven(23));
+// console.log(isEven(644));
+
+// labelBalance.addEventListener("click", function () {
+//   [...document.querySelectorAll(".movements__row")].forEach(function (row, i) {
+//     if (i % 2 === 0) {
+//       row.style.backgroundColor = "#c6def1";
+//     }
+//     if (i % 3 === 0) {
+//       row.style.backgroundColor = "#c9e4de";
+//     }
+//   });
+// });
+
 // *****************
 // Math and Rounding
 // *****************
@@ -285,42 +321,42 @@ btnSort.addEventListener("click", function (e) {
    SYNTAX: numObj.toFixed([digits])
  */
 
-console.log(Math.sqrt(25)); // 5
-console.log(25 ** (1 / 2)); // 5
-console.log(8 ** (1 / 3)); // 2
+// console.log(Math.sqrt(25)); // 5
+// console.log(25 ** (1 / 2)); // 5
+// console.log(8 ** (1 / 3)); // 2
 
-console.log(Math.max(5, 12, 23, 11, 2)); // 23
-console.log(Math.max(5, 12, "23", 11, 2)); // 23
-console.log(Math.max(5, 12, "23px", 11, 2)); // NaN
+// console.log(Math.max(5, 12, 23, 11, 2)); // 23
+// console.log(Math.max(5, 12, "23", 11, 2)); // 23
+// console.log(Math.max(5, 12, "23px", 11, 2)); // NaN
 
-console.log(Math.min(5, 12, 23, 11, 2)); // 2
+// console.log(Math.min(5, 12, 23, 11, 2)); // 2
 
-console.log(Math.PI * Number.parseFloat("10px") ** 2);
+// console.log(Math.PI * Number.parseFloat("10px") ** 2);
 
-const randomInt = (min, max) =>
-  Math.trunc(Math.random() * (max - min) + 1) + min;
-console.log(randomInt(10, 20));
+// const randomInt = (min, max) =>
+//   Math.trunc(Math.random() * (max - min) + 1) + min;
+// console.log(randomInt(10, 20));
 
-// Rounding Integers
-console.log(Math.round(23.3)); // 23
-console.log(Math.round("23.9")); // 24
+// // Rounding Integers
+// console.log(Math.round(23.3)); // 23
+// console.log(Math.round("23.9")); // 24
 
-console.log(Math.ceil(23.3)); // 24
-console.log(Math.ceil("23.9")); // 24
+// console.log(Math.ceil(23.3)); // 24
+// console.log(Math.ceil("23.9")); // 24
 
-console.log(Math.floor(23.3)); // 23
-console.log(Math.floor("23.9")); // 23
+// console.log(Math.floor(23.3)); // 23
+// console.log(Math.floor("23.9")); // 23
 
-console.log(Math.trunc(23.3)); // 23
+// console.log(Math.trunc(23.3)); // 23
 
-console.log(Math.trunc(-23.3)); // -24
-console.log(Math.floor(-23.3)); // -23
+// console.log(Math.trunc(-23.3)); // -24
+// console.log(Math.floor(-23.3)); // -23
 
-// Rounding decimals
-console.log((2.7).toFixed(0)); // '3'
-console.log((2.7).toFixed(3)); // '2.700'
-console.log((2.345).toFixed(2)); // '2.35'
-console.log(+(2.345).toFixed(2)); // 2.35
+// // Rounding decimals
+// console.log((2.7).toFixed(0)); // '3'
+// console.log((2.7).toFixed(3)); // '2.700'
+// console.log((2.345).toFixed(2)); // '2.35'
+// console.log(+(2.345).toFixed(2)); // 2.35
 
 // *******************************
 // Converting and Checking Numbers
