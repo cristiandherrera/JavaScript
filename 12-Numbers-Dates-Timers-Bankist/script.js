@@ -264,6 +264,52 @@ btnSort.addEventListener("click", function (e) {
 /////////////////////////////////////////////////
 // LECTURES
 
+// **************
+// Creating Dates
+// **************
+
+/*
+ The Date() constructor: Creates a JavaScript Date instance that represents a single moment in time in a platform-independent format. Date objects contain a Number that represents milliseconds since 1 January 1970 UTC.
+
+
+ Date: Object that represents a single moment in time in a platform-independent format. Date objects contain a Number that represents milliseconds since 1 January 1970 UTC.
+*/
+
+// // Create a date
+// const now = new Date();
+// console.log(now);
+
+// console.log(new Date("Aug 02 2020 18:05:41")); // Sun Aug 02 2020 18:05:41 GMT-0700
+// console.log(new Date("December 24, 2020")); // Thu Dec 24 2020 00:00:00 GMT-0800
+// console.log(new Date(account1.movementsDates[0])); // Mon Nov 18 2019 13:31:17 GMT-0800
+
+// console.log(new Date(2037, 10, 19, 15, 23, 5)); // Thu Nov 19 2037 15:23:05 GMT-0800
+// console.log(new Date(2037, 10, 31)); // Tue Dec 01 2037 00:00:00 GMT-0800
+
+// console.log(new Date(0)); // Wed Dec 31 1969 16:00:00 GMT-0800
+// console.log(new Date(3 * 24 * 60 * 60 * 1000)); // Sat Jan 03 1970 16:00:00 GMT-0800 (3 days later)
+
+// // Working with dates
+// const future = new Date(2037, 10, 19, 15, 23);
+// console.log(future);
+
+// console.log(future.getFullYear()); // 2037
+// console.log(future.getMonth() + 1); // 11
+// console.log(future.getDate()); // 19
+// console.log(future.getDay()); // 4
+// console.log(future.getHours()); // 15
+// console.log(future.getMinutes()); // 23
+// console.log(future.getSeconds()); // 0
+// console.log(future.toISOString()); // 2037-11-19T23:23:00.000Z
+// console.log(future.getTime()); // 2142285780000 (time stamp)
+
+// console.log(new Date(2142285780000)); // Thu Nov 19 2037 15:23:00 GMT-0800
+
+// console.log(Date.now()); // 1607671348244
+
+// future.setFullYear(2040); // Mon Nov 19 2040 15:23:00 GMT-0800
+// console.log(future);
+
 // ****************************
 // Working with BigInt (ES2020)
 // ****************************
@@ -279,36 +325,35 @@ btnSort.addEventListener("click", function (e) {
 
  Number.MAX_SAFE_INTEGER: is constant represents the maximum safe integer in JavaScript. (2**53 - 1)
 
-
 */
 
-console.log(2 ** 53 - 1);
-console.log(Number.MAX_SAFE_INTEGER);
-console.log(2 ** 53 + 1);
-console.log(2 ** 53 + 2);
-console.log(2 ** 53 + 3);
-console.log(2 ** 53 + 4);
+// console.log(2 ** 53 - 1);
+// console.log(Number.MAX_SAFE_INTEGER);
+// console.log(2 ** 53 + 1);
+// console.log(2 ** 53 + 2);
+// console.log(2 ** 53 + 3);
+// console.log(2 ** 53 + 4);
 
-console.log(156674646748465449648774878946787787946n);
-console.log(BigInt(1566746467));
+// console.log(156674646748465449648774878946787787946n);
+// console.log(BigInt(1566746467));
 
-// Operations
-console.log(1000n + 1000n);
-console.log(45456464646494876764984787845378676n * 10000000n);
+// // Operations
+// console.log(1000n + 1000n);
+// console.log(45456464646494876764984787845378676n * 10000000n);
 
-const huge = 1564646464634644564694n;
-const num = 25;
-console.log(huge * BigInt(num));
+// const huge = 1564646464634644564694n;
+// const num = 25;
+// console.log(huge * BigInt(num));
 
-// Exceptions
-console.log(20n > 15); // true
-console.log(20n === 20); // false
-console.log(typeof 20n); // bigint
-console.log(20n == "20"); // true
+// // Exceptions
+// console.log(20n > 15); // true
+// console.log(20n === 20); // false
+// console.log(typeof 20n); // bigint
+// console.log(20n == "20"); // true
 
-// Divisons
-console.log(10n / 3n); // 3n
-console.log(10 / 3); // 3.3333...
+// // Divisons
+// console.log(10n / 3n); // 3n
+// console.log(10 / 3); // 3.3333...
 
 // **********************
 // The Remainder Operator
