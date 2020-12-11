@@ -97,7 +97,7 @@ const displayMovements = function (movements, sort = true) {
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov}</div>
+        <div class="movements__value">${mov.toFixed(2)}</div>
       </div>
      `;
     // Inserting HTML using the string from variable 'html'
@@ -110,7 +110,7 @@ const calcDisplayBalance = function (acc) {
   // Using reduce() to create the sum of withdrawls and deposits
   acc.balance = acc.movements.reduce((acc, curr) => acc + curr, 0);
   // Updating text to display calculations
-  labelBalance.textContent = `${acc.balance} EUR`;
+  labelBalance.textContent = `${acc.balance.toFixed(2)} EUR`;
 };
 
 // CALCULATING AND DISPLAYING SUMMARY
@@ -119,13 +119,13 @@ const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter((mov) => mov > 0)
     .reduce((acc, mov) => acc + mov);
-  labelSumIn.textContent = `${incomes}€`;
+  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
 
   // Display out
   const out = acc.movements
     .filter((mov) => mov < 0)
     .reduce((acc, mov) => acc + mov);
-  labelSumOut.textContent = `${Math.abs(out)}€`;
+  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
 
   // Display interest
   const interest = acc.movements
@@ -135,7 +135,7 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int);
-  labelSumInterest.textContent = `${interest}€`;
+  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
 };
 
 // COMPUTING USERNAME OBJECTS
@@ -175,7 +175,7 @@ btnLogin.addEventListener("click", function (e) {
   );
   console.log(currentAccount);
   // Checking if value of the input pin is matached to the 'currentAccount' pin
-  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+  if (currentAccount?.pin === +inputLoginPin.value) {
     // Display UI and message
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(" ")[0]
@@ -192,7 +192,7 @@ btnLogin.addEventListener("click", function (e) {
 // TRANSFER MONEY LOGIC
 btnTransfer.addEventListener("click", function (e) {
   e.preventDefault();
-  const amount = Number(inputTransferAmount.value);
+  const amount = +inputTransferAmount.value;
   const recieverAcc = accounts.find(
     (acc) => acc.username === inputTransferTo.value
   );
@@ -217,7 +217,7 @@ btnTransfer.addEventListener("click", function (e) {
 btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
   // Variable of input value
-  const amount = Number(inputLoanAmount.value);
+  const amount = Math.floor(inputLoanAmount.value);
   // Checking loan conditions
   if (
     amount > 0 &&
@@ -238,7 +238,7 @@ btnClose.addEventListener("click", function (e) {
 
   if (
     currentAccount.username === inputCloseUsername.value &&
-    currentAccount.pin === Number(inputClosePin.value)
+    currentAccount.pin === +inputClosePin.value
   ) {
     const index = accounts.findIndex(
       (acc) => acc.username === currentAccount.username
@@ -263,6 +263,64 @@ btnSort.addEventListener("click", function (e) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
+
+// *****************
+// Math and Rounding
+// *****************
+
+/*
+ Math: is a build in project that has properties and methods for mathematical constants and functions. It is NOT a function object.
+
+   Math.sqrt(): returns square root of a given number
+   Math.max(): returns the largest of zero or more numbers
+   Math.min(): returns the smallest of zero or more numbers
+   Math.random(): returns a pseudo-random number between 0 and 1
+   Math.trunc(): returns the integer part of a number by removing any fractional digits
+   Math.round(): return a number rounded to the nearest integer
+   Math.ceil(): rounds up a number up to the next largest integer
+   Math.floor(): returns largest integer less than or equal to a given number
+   Math.PI: contains the value of PI(circles circumference)
+
+ The toFixed() method: formats a number using fixed-point notation
+   SYNTAX: numObj.toFixed([digits])
+ */
+
+console.log(Math.sqrt(25)); // 5
+console.log(25 ** (1 / 2)); // 5
+console.log(8 ** (1 / 3)); // 2
+
+console.log(Math.max(5, 12, 23, 11, 2)); // 23
+console.log(Math.max(5, 12, "23", 11, 2)); // 23
+console.log(Math.max(5, 12, "23px", 11, 2)); // NaN
+
+console.log(Math.min(5, 12, 23, 11, 2)); // 2
+
+console.log(Math.PI * Number.parseFloat("10px") ** 2);
+
+const randomInt = (min, max) =>
+  Math.trunc(Math.random() * (max - min) + 1) + min;
+console.log(randomInt(10, 20));
+
+// Rounding Integers
+console.log(Math.round(23.3)); // 23
+console.log(Math.round("23.9")); // 24
+
+console.log(Math.ceil(23.3)); // 24
+console.log(Math.ceil("23.9")); // 24
+
+console.log(Math.floor(23.3)); // 23
+console.log(Math.floor("23.9")); // 23
+
+console.log(Math.trunc(23.3)); // 23
+
+console.log(Math.trunc(-23.3)); // -24
+console.log(Math.floor(-23.3)); // -23
+
+// Rounding decimals
+console.log((2.7).toFixed(0)); // '3'
+console.log((2.7).toFixed(3)); // '2.700'
+console.log((2.345).toFixed(2)); // '2.35'
+console.log(+(2.345).toFixed(2)); // 2.35
 
 // *******************************
 // Converting and Checking Numbers
@@ -298,31 +356,31 @@ btnSort.addEventListener("click", function (e) {
  MODERN JS: calling all these functions on the 'Number' object. (ECMA script 2015)
 */
 
-console.log(23 === 23.0); // true
+// console.log(23 === 23.0); // true
 
-console.log(0.1 + 0.2); // 0.30000000000000004
-console.log(0.1 + 0.2 === 0.3); // false
+// console.log(0.1 + 0.2); // 0.30000000000000004
+// console.log(0.1 + 0.2 === 0.3); // false
 
-// CONVERSION
-console.log(Number("23")); // 23
-console.log(+"23"); // 23
+// // CONVERSION
+// console.log(Number("23")); // 23
+// console.log(+"23"); // 23
 
-// PARSING
-console.log(Number.parseInt("30px", 10)); // 30
-console.log(Number.parseInt("e23", 10)); // NaN - must start with a number
+// // PARSING
+// console.log(Number.parseInt("30px", 10)); // 30
+// console.log(Number.parseInt("e23", 10)); // NaN - must start with a number
 
-console.log(Number.parseInt("2.5rem")); // 2
-console.log(Number.parseFloat("2.5rem")); // 2.5
+// console.log(Number.parseInt("2.5rem")); // 2
+// console.log(Number.parseFloat("2.5rem")); // 2.5
 
-// CHECKING VALUE FOR NUMBER
+// // CHECKING VALUE FOR NUMBER
 
-// Check if value is 'NaN'
-console.log(Number.isNaN(20)); // false
-console.log(Number.isNaN("20")); // false
-console.log(Number.isNaN(+"20X")); // true
-console.log(Number.isNaN(23 / 0)); // false
+// // Check if value is 'NaN'
+// console.log(Number.isNaN(20)); // false
+// console.log(Number.isNaN("20")); // false
+// console.log(Number.isNaN(+"20X")); // true
+// console.log(Number.isNaN(23 / 0)); // false
 
-// Check if value is a number
-console.log(Number.isFinite(20)); // true
-console.log(Number.isFinite("20")); // false
-console.log(Number.isFinite(23 / 0)); // false
+// // Check if value is a number
+// console.log(Number.isFinite(20)); // true
+// console.log(Number.isFinite("20")); // false
+// console.log(Number.isFinite(23 / 0)); // false
