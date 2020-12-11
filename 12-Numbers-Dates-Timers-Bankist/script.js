@@ -264,6 +264,52 @@ btnSort.addEventListener("click", function (e) {
 /////////////////////////////////////////////////
 // LECTURES
 
+// ****************************
+// Working with BigInt (ES2020)
+// ****************************
+
+/*
+ BigInt: is a built-in object that provides a way to represent whole numbers larger than (2**53 - 1), which is the largest number JavaScript can reliably represent with the Number primitive.
+
+   OPERATIONS: is created by appending n to the end of an integer literal — 10n — or by calling the function BigInt().
+
+   DIFFERENCES: CANNOT be used with methods in the built-in Math object and CANNOT be mixed with instances of Number
+
+   EXCEPTIONS: behaves like a Number when it is converted to a BOOLEAN, when used with LOGICAL OPERATORS, can be CONCATENATED into string, within a CONDITIONAL test like an if statement.
+
+ Number.MAX_SAFE_INTEGER: is constant represents the maximum safe integer in JavaScript. (2**53 - 1)
+
+
+*/
+
+console.log(2 ** 53 - 1);
+console.log(Number.MAX_SAFE_INTEGER);
+console.log(2 ** 53 + 1);
+console.log(2 ** 53 + 2);
+console.log(2 ** 53 + 3);
+console.log(2 ** 53 + 4);
+
+console.log(156674646748465449648774878946787787946n);
+console.log(BigInt(1566746467));
+
+// Operations
+console.log(1000n + 1000n);
+console.log(45456464646494876764984787845378676n * 10000000n);
+
+const huge = 1564646464634644564694n;
+const num = 25;
+console.log(huge * BigInt(num));
+
+// Exceptions
+console.log(20n > 15); // true
+console.log(20n === 20); // false
+console.log(typeof 20n); // bigint
+console.log(20n == "20"); // true
+
+// Divisons
+console.log(10n / 3n); // 3n
+console.log(10 / 3); // 3.3333...
+
 // **********************
 // The Remainder Operator
 // **********************
