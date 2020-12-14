@@ -79,7 +79,7 @@ const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
 /////////////////////////////////////////////////
-// Functions
+// FUNCTIONS
 
 const formatMovementDates = function (date, locale) {
   const calcDaysPassed = (date1, date2) =>
@@ -96,6 +96,13 @@ const formatMovementDates = function (date, locale) {
   // const month = `${date.getMonth() + 1}`.padStart(2, 0);
   // const year = date.getFullYear();
   return new Intl.DateTimeFormat(locale).format(date);
+};
+
+const formatCur = function (value, locale, currency) {
+  return Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  }).format(value);
 };
 
 // DISPLAYING TRANSACTIONS
@@ -115,6 +122,8 @@ const displayMovements = function (acc, sort = true) {
     const date = new Date(acc.movementsDates[i]);
     const displayDate = formatMovementDates(date, acc.locale);
 
+    const formattedMov = formatCur(mov, acc.locale, acc.currency);
+
     // Creating string of html to create a new row to display withdrawals and deposits
     const html = `
       <div class="movements__row">
@@ -122,7 +131,7 @@ const displayMovements = function (acc, sort = true) {
       i + 1
     } ${type}</div>
         <div class="movements__date">${displayDate}</div>
-        <div class="movements__value">${mov.toFixed(2)}</div>
+        <div class="movements__value">${formattedMov}</div>
       </div>
      `;
     // Inserting HTML using the string from variable 'html'
@@ -135,7 +144,8 @@ const calcDisplayBalance = function (acc) {
   // Using reduce() to create the sum of withdrawls and deposits
   acc.balance = acc.movements.reduce((acc, curr) => acc + curr, 0);
   // Updating text to display calculations
-  labelBalance.textContent = `${acc.balance.toFixed(2)} EUR`;
+  labelBalance.textContent = formatCur(acc.balance, acc.locale, acc.currency);
+  // labelBalance.textContent = `${acc.balance.toFixed(2)} EUR`;
 };
 
 // CALCULATING AND DISPLAYING SUMMARY
@@ -144,13 +154,15 @@ const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter((mov) => mov > 0)
     .reduce((acc, mov) => acc + mov);
-  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
+  labelSumIn.textContent = formatCur(incomes, acc.locale, acc.currency);
+  // labelSumIn.textContent = `${incomes.toFixed(2)}€`;
 
   // Display out
   const out = acc.movements
     .filter((mov) => mov < 0)
     .reduce((acc, mov) => acc + mov);
-  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
+  labelSumOut.textContent = formatCur(Math.abs(out), acc.locale, acc.currency);
+  // labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
 
   // Display interest
   const interest = acc.movements
@@ -160,7 +172,8 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int);
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+  labelSumInterest.textContent = formatCur(interest, acc.locale, acc.currency);
+  // labelSumInterest.textContent = `${interest.toFixed(2)}€`;
 };
 
 // COMPUTING USERNAME OBJECTS
@@ -189,6 +202,7 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+// EVENT LISTENERS
 let currentAccount;
 
 // FAKE LOGGED IN
@@ -329,6 +343,31 @@ btnSort.addEventListener("click", function (e) {
 /////////////////////////////////////////////////
 // LECTURES
 
+// *********************************
+// Internationalizing Numbers (Intl)
+// *********************************
+
+/*
+ The Intl.NumberFormat() constructor: creates objects the enable language sensitive number formating.
+ SYNTAX: new Intl.NumberFormat([locales[, options]])
+*/
+
+const num = 3245785.69;
+
+const options = {
+  // style: "unit",
+  style: "currency",
+  // unit: "celsius",
+  currency: "USD",
+  // notation: "compact",
+  // useGrouping: false,
+};
+
+console.log("US: ", new Intl.NumberFormat("en-US", options).format(num));
+console.log("Germany: ", new Intl.NumberFormat("de-DE", options).format(num));
+console.log("Syria: ", new Intl.NumberFormat("ar-SY", options).format(num));
+console.log(navigator.language);
+
 // *******************************
 // Internationalizing Dates (Intl)
 // *******************************
@@ -336,9 +375,8 @@ btnSort.addEventListener("click", function (e) {
 /*
  The Intl object: is the namespace for the ECMAScript Internationalization API, which provides language sensitive string comparison, number formatting, and date and time formatting.
 
- Intl constructor: 
 
-   Intl.DateTimeFormat(): constructor for objects the enable language-sensitive date and time formatting.
+   The Intl.DateTimeFormat() constructor:  for objects the enable language-sensitive date and time formatting.
    SYNTAX: new Intl.DateTimeFormat([locales[, options]])
 */
 
