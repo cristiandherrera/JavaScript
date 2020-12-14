@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -10,239 +10,372 @@
 // DIFFERENT DATA! Contains movement dates, currency and locale
 
 const account1 = {
-  owner: 'Jonas Schmedtmann',
+  owner: "Jonas Schmedtmann",
   movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   interestRate: 1.2, // %
   pin: 1111,
 
   movementsDates: [
-    '2019-11-18T21:31:17.178Z',
-    '2019-12-23T07:42:02.383Z',
-    '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    "2019-11-18T21:31:17.178Z",
+    "2019-12-23T07:42:02.383Z",
+    "2020-01-28T09:15:04.904Z",
+    "2020-04-01T10:17:24.185Z",
+    "2020-05-08T14:11:59.604Z",
+    "2020-12-05T17:01:17.194Z",
+    "2020-12-10T23:36:17.929Z",
+    "2020-12-12T10:51:36.790Z",
   ],
-  currency: 'EUR',
-  locale: 'pt-PT', // de-DE
+  currency: "EUR",
+  locale: "pt-PT", // de-DE
 };
 
 const account2 = {
-  owner: 'Jessica Davis',
+  owner: "Jessica Davis",
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
 
   movementsDates: [
-    '2019-11-01T13:15:33.035Z',
-    '2019-11-30T09:48:16.867Z',
-    '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
+    "2019-11-01T13:15:33.035Z",
+    "2019-11-30T09:48:16.867Z",
+    "2019-12-25T06:04:23.907Z",
+    "2020-01-25T14:18:46.235Z",
+    "2020-02-05T16:33:06.386Z",
+    "2020-04-10T14:43:26.374Z",
+    "2020-06-25T18:49:59.371Z",
+    "2020-07-26T12:01:20.894Z",
   ],
-  currency: 'USD',
-  locale: 'en-US',
+  currency: "USD",
+  locale: "en-US",
 };
 
 const accounts = [account1, account2];
 
 /////////////////////////////////////////////////
 // Elements
-const labelWelcome = document.querySelector('.welcome');
-const labelDate = document.querySelector('.date');
-const labelBalance = document.querySelector('.balance__value');
-const labelSumIn = document.querySelector('.summary__value--in');
-const labelSumOut = document.querySelector('.summary__value--out');
-const labelSumInterest = document.querySelector('.summary__value--interest');
-const labelTimer = document.querySelector('.timer');
+const labelWelcome = document.querySelector(".welcome");
+const labelDate = document.querySelector(".date");
+const labelBalance = document.querySelector(".balance__value");
+const labelSumIn = document.querySelector(".summary__value--in");
+const labelSumOut = document.querySelector(".summary__value--out");
+const labelSumInterest = document.querySelector(".summary__value--interest");
+const labelTimer = document.querySelector(".timer");
 
-const containerApp = document.querySelector('.app');
-const containerMovements = document.querySelector('.movements');
+const containerApp = document.querySelector(".app");
+const containerMovements = document.querySelector(".movements");
 
-const btnLogin = document.querySelector('.login__btn');
-const btnTransfer = document.querySelector('.form__btn--transfer');
-const btnLoan = document.querySelector('.form__btn--loan');
-const btnClose = document.querySelector('.form__btn--close');
-const btnSort = document.querySelector('.btn--sort');
+const btnLogin = document.querySelector(".login__btn");
+const btnTransfer = document.querySelector(".form__btn--transfer");
+const btnLoan = document.querySelector(".form__btn--loan");
+const btnClose = document.querySelector(".form__btn--close");
+const btnSort = document.querySelector(".btn--sort");
 
-const inputLoginUsername = document.querySelector('.login__input--user');
-const inputLoginPin = document.querySelector('.login__input--pin');
-const inputTransferTo = document.querySelector('.form__input--to');
-const inputTransferAmount = document.querySelector('.form__input--amount');
-const inputLoanAmount = document.querySelector('.form__input--loan-amount');
-const inputCloseUsername = document.querySelector('.form__input--user');
-const inputClosePin = document.querySelector('.form__input--pin');
+const inputLoginUsername = document.querySelector(".login__input--user");
+const inputLoginPin = document.querySelector(".login__input--pin");
+const inputTransferTo = document.querySelector(".form__input--to");
+const inputTransferAmount = document.querySelector(".form__input--amount");
+const inputLoanAmount = document.querySelector(".form__input--loan-amount");
+const inputCloseUsername = document.querySelector(".form__input--user");
+const inputClosePin = document.querySelector(".form__input--pin");
 
 /////////////////////////////////////////////////
-// Functions
+// FUNCTIONS
 
-const displayMovements = function (movements, sort = false) {
-  containerMovements.innerHTML = '';
+const formatMovementDates = function (date, locale) {
+  const calcDaysPassed = (date1, date2) =>
+    Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
 
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  const daysPassed = calcDaysPassed(new Date(), date);
+  // console.log(daysPassed);
 
+  if (daysPassed === 0) return "Today";
+  if (daysPassed === 1) return "Yesterday";
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
+
+  // const day = `${date.getDate()}`.padStart(2, 0);
+  // const month = `${date.getMonth() + 1}`.padStart(2, 0);
+  // const year = date.getFullYear();
+  return new Intl.DateTimeFormat(locale).format(date);
+};
+
+const formatCur = function (value, locale, currency) {
+  return Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  }).format(value);
+};
+
+// DISPLAYING TRANSACTIONS
+const displayMovements = function (acc, sort = false) {
+  // Setting HTML within '.movements' class to empty
+  containerMovements.innerHTML = "";
+  // Variable to sort based on 'sort' boolean value
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
+
+  // Looping through function argument 'acc'
   movs.forEach(function (mov, i) {
-    const type = mov > 0 ? 'deposit' : 'withdrawal';
+    // Creating string on whether value is below or above 0
+    const type = mov > 0 ? "deposit" : "withdrawal";
 
+    const date = new Date(acc.movementsDates[i]);
+    const displayDate = formatMovementDates(date, acc.locale);
+
+    const formattedMov = formatCur(mov, acc.locale, acc.currency);
+
+    // Creating string of html to create a new row to display withdrawals and deposits
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov}€</div>
+        <div class="movements__date">${displayDate}</div>
+        <div class="movements__value">${formattedMov}</div>
       </div>
-    `;
-
-    containerMovements.insertAdjacentHTML('afterbegin', html);
+     `;
+    // Inserting HTML using the string from variable 'html'
+    containerMovements.insertAdjacentHTML("afterbegin", html);
   });
 };
 
+// CALCULATING AND DISPLAYING BALANCE
 const calcDisplayBalance = function (acc) {
-  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance}€`;
+  // Using reduce() to create the sum of withdrawls and deposits
+  acc.balance = acc.movements.reduce((acc, curr) => acc + curr, 0);
+  // Updating text to display calculations
+  labelBalance.textContent = formatCur(acc.balance, acc.locale, acc.currency);
+  // labelBalance.textContent = `${acc.balance.toFixed(2)} EUR`;
 };
 
+// CALCULATING AND DISPLAYING SUMMARY
 const calcDisplaySummary = function (acc) {
+  // Display incomes
   const incomes = acc.movements
-    .filter(mov => mov > 0)
-    .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes}€`;
+    .filter((mov) => mov > 0)
+    .reduce((acc, mov) => acc + mov);
+  labelSumIn.textContent = formatCur(incomes, acc.locale, acc.currency);
+  // labelSumIn.textContent = `${incomes.toFixed(2)}€`;
 
+  // Display out
   const out = acc.movements
-    .filter(mov => mov < 0)
-    .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out)}€`;
+    .filter((mov) => mov < 0)
+    .reduce((acc, mov) => acc + mov);
+  labelSumOut.textContent = formatCur(Math.abs(out), acc.locale, acc.currency);
+  // labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
 
+  // Display interest
   const interest = acc.movements
-    .filter(mov => mov > 0)
-    .map(deposit => (deposit * acc.interestRate) / 100)
+    .filter((mov) => mov > 0)
+    .map((mov) => (mov * acc.interestRate) / 100)
     .filter((int, i, arr) => {
-      // console.log(arr);
       return int >= 1;
     })
-    .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest}€`;
+    .reduce((acc, int) => acc + int);
+  labelSumInterest.textContent = formatCur(interest, acc.locale, acc.currency);
+  // labelSumInterest.textContent = `${interest.toFixed(2)}€`;
 };
 
+// COMPUTING USERNAME OBJECTS
 const createUsernames = function (accs) {
+  // Looing through 'accs' arg using forEach() SO we can mutate the ORIGINAL accounts array.("side effects")
   accs.forEach(function (acc) {
+    // Creating property 'username' for each account object using the property 'owner' as a beginning value
     acc.username = acc.owner
+      // Manipulating the string to create intials of the name
       .toLowerCase()
-      .split(' ')
-      .map(name => name[0])
-      .join('');
+      .split(" ")
+      // Creating new simple array with map() to actually grab the intials
+      .map((name) => name[0])
+      .join("");
   });
 };
 createUsernames(accounts);
 
+// UPDATE UI LOGIC
 const updateUI = function (acc) {
   // Display movements
-  displayMovements(acc.movements);
-
+  displayMovements(acc);
   // Display balance
   calcDisplayBalance(acc);
-
   // Display summary
   calcDisplaySummary(acc);
 };
 
-///////////////////////////////////////
-// Event handlers
-let currentAccount;
+const startLogOutTimer = function () {
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
 
-btnLogin.addEventListener('click', function (e) {
-  // Prevent form from submitting
+    // In each call, print the remaining time to the UI
+    labelTimer.textContent = `${min}:${sec}`;
+
+    // When 0 seconds, stop timer and log out user
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = `Log in to get started`;
+      containerApp.style.opacity = 0;
+    }
+
+    // Decrease 1s
+    time--;
+  };
+
+  // Set time to 5 minutes
+  let time = 300;
+
+  // Call the timer every 5 seconds
+  tick();
+  const timer = setInterval(tick, 1000);
+  return timer;
+};
+
+// EVENT LISTENERS
+let currentAccount, timer;
+
+// FAKE LOGGED IN
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 100;
+
+// LOGIN LOGIC
+btnLogin.addEventListener("click", function (e) {
+  // Stops the html element 'form' automatic reload of page when 'click' event is fired
   e.preventDefault();
-
+  // Setting 'currentAccount' to value of input user login
   currentAccount = accounts.find(
-    acc => acc.username === inputLoginUsername.value
+    (acc) => acc.username === inputLoginUsername.value
   );
   console.log(currentAccount);
-
-  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+  // Checking if value of the input pin is matached to the 'currentAccount' pin
+  if (currentAccount?.pin === +inputLoginPin.value) {
     // Display UI and message
     labelWelcome.textContent = `Welcome back, ${
-      currentAccount.owner.split(' ')[0]
+      currentAccount.owner.split(" ")[0]
     }`;
     containerApp.style.opacity = 100;
 
+    // Create current date and time
+    const now = new Date();
+    const object = {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      // weekday: "long",
+    };
+    labelDate.textContent = new Intl.DateTimeFormat(
+      currentAccount.locale,
+      object
+    ).format(now);
+
+    // const day = `${now.getDate()}`.padStart(2, 0);
+    // const month = `${now.getMonth() + 1}`.padStart(2, 0);
+    // const year = now.getFullYear();
+    // const hour = `${now.getHours()}`.padStart(2, 0);
+    // const min = `${now.getMinutes()}`.padStart(2, 0);
+    // labelDate.textContent = `${day}/${month}/${year}, ${hour}:${min}`;
+
     // Clear input fields
-    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginUsername.value = inputLoginPin.value = "";
     inputLoginPin.blur();
+
+    // Timer
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
 
     // Update UI
     updateUI(currentAccount);
   }
 });
 
-btnTransfer.addEventListener('click', function (e) {
+// TRANSFER MONEY LOGIC
+btnTransfer.addEventListener("click", function (e) {
   e.preventDefault();
-  const amount = Number(inputTransferAmount.value);
-  const receiverAcc = accounts.find(
-    acc => acc.username === inputTransferTo.value
+  const amount = +inputTransferAmount.value;
+  const recieverAcc = accounts.find(
+    (acc) => acc.username === inputTransferTo.value
   );
-  inputTransferAmount.value = inputTransferTo.value = '';
+  console.log(amount, recieverAcc);
+
+  inputTransferAmount.value = inputTransferTo.value = "";
 
   if (
     amount > 0 &&
-    receiverAcc &&
+    recieverAcc &&
     currentAccount.balance >= amount &&
-    receiverAcc?.username !== currentAccount.username
+    recieverAcc?.username !== currentAccount.username
   ) {
     // Doing the transfer
     currentAccount.movements.push(-amount);
-    receiverAcc.movements.push(amount);
+    recieverAcc.movements.push(amount);
+
+    // Add transfer date
+    currentAccount.movementsDates.push(new Date().toISOString());
+    recieverAcc.movementsDates.push(new Date().toISOString());
 
     // Update UI
     updateUI(currentAccount);
+
+    // Reset timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 });
 
-btnLoan.addEventListener('click', function (e) {
+// REQUEST LOAN LOGIC
+btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
+  // Variable of input value
+  const amount = Math.floor(inputLoanAmount.value);
+  // Checking loan conditions
+  if (
+    amount > 0 &&
+    currentAccount.movements.some((mov) => mov >= amount * 0.1)
+  ) {
+    setTimeout(function () {
+      // Add movement
+      currentAccount.movements.push(amount);
 
-  const amount = Number(inputLoanAmount.value);
+      // Add loan date
+      currentAccount.movementsDates.push(new Date().toISOString());
 
-  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    // Add movement
-    currentAccount.movements.push(amount);
+      // Update UI
+      updateUI(currentAccount);
 
-    // Update UI
-    updateUI(currentAccount);
+      // Reset timer
+      clearInterval(timer);
+      timer = startLogOutTimer();
+    }, 2500);
   }
-  inputLoanAmount.value = '';
+  // reset input text
+  inputLoanAmount.value = "";
 });
 
-btnClose.addEventListener('click', function (e) {
+// CLOSE ACCOUNT LOGIC
+btnClose.addEventListener("click", function (e) {
   e.preventDefault();
 
   if (
-    inputCloseUsername.value === currentAccount.username &&
-    Number(inputClosePin.value) === currentAccount.pin
+    currentAccount.username === inputCloseUsername.value &&
+    currentAccount.pin === +inputClosePin.value
   ) {
     const index = accounts.findIndex(
-      acc => acc.username === currentAccount.username
+      (acc) => acc.username === currentAccount.username
     );
-    console.log(index);
-    // .indexOf(23)
-
     // Delete account
     accounts.splice(index, 1);
-
     // Hide UI
     containerApp.style.opacity = 0;
   }
-
-  inputCloseUsername.value = inputClosePin.value = '';
+  // Removing inputs
+  inputCloseUsername.value = inputClosePin = "";
 });
 
+// SORT BUTTON LOGIC
 let sorted = false;
-btnSort.addEventListener('click', function (e) {
+btnSort.addEventListener("click", function (e) {
   e.preventDefault();
   displayMovements(currentAccount.movements, !sorted);
   sorted = !sorted;
@@ -251,3 +384,333 @@ btnSort.addEventListener('click', function (e) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
+
+// **********************************
+// Timers: setTimeout and setInterval
+// **********************************
+
+/*
+ The setTimeout() method: sets a timer which executes a function or specified piece of code once the timer expires.
+
+ The clearTimeout() method: cancels a timeout previously established by calling setTimeout().
+
+
+*/
+
+// // setTimeout
+// const ingredients = ["pepperoni", "jalepeno"];
+// const pizzaTimer = setTimeout(
+//   (ing1, ing2) =>
+//     console.log(
+//       `You will pizza with ${ing1} and ${ing2} will arrive in 3 seconds.`
+//     ),
+//   3000,
+//   ...ingredients
+// );
+// console.log("waiting...");
+
+// if (ingredients.includes("jalepeno")) clearTimeout(pizzaTimer);
+
+// // setInterval
+// setInterval(function () {
+//   const now = new Date();
+//   console.log(now);
+// }, 1000);
+
+// *********************************
+// Internationalizing Numbers (Intl)
+// *********************************
+
+/*
+ The Intl.NumberFormat() constructor: creates objects the enable language sensitive number formating.
+ SYNTAX: new Intl.NumberFormat([locales[, options]])
+*/
+
+// const num = 3245785.69;
+
+// const options = {
+//   // style: "unit",
+//   style: "currency",
+//   // unit: "celsius",
+//   currency: "USD",
+//   // notation: "compact",
+//   // useGrouping: false,
+// };
+
+// console.log("US: ", new Intl.NumberFormat("en-US", options).format(num));
+// console.log("Germany: ", new Intl.NumberFormat("de-DE", options).format(num));
+// console.log("Syria: ", new Intl.NumberFormat("ar-SY", options).format(num));
+// console.log(navigator.language);
+
+// *******************************
+// Internationalizing Dates (Intl)
+// *******************************
+
+/*
+ The Intl object: is the namespace for the ECMAScript Internationalization API, which provides language sensitive string comparison, number formatting, and date and time formatting.
+
+
+   The Intl.DateTimeFormat() constructor:  for objects the enable language-sensitive date and time formatting.
+   SYNTAX: new Intl.DateTimeFormat([locales[, options]])
+*/
+
+// *********************
+// Operations with Dates
+// *********************
+
+// const future = new Date(2037, 10, 19, 15, 23);
+// console.log(+future);
+
+// const calcDaysPassed = (date1, date2) =>
+//   Math.abs(date2 - date1) / (1000 * 60 * 60 * 24);
+
+// const days1 = calcDaysPassed(new Date(2037, 3, 4), new Date(2037, 3, 14));
+// console.log(days1);
+
+// **************
+// Creating Dates
+// **************
+
+/*
+ The Date() constructor: Creates a JavaScript Date instance that represents a single moment in time in a platform-independent format. Date objects contain a Number that represents milliseconds since 1 January 1970 UTC.
+
+
+ Date: Object that represents a single moment in time in a platform-independent format. Date objects contain a Number that represents milliseconds since 1 January 1970 UTC.
+*/
+
+// // Create a date
+// const now = new Date();
+// console.log(now);
+
+// console.log(new Date("Aug 02 2020 18:05:41")); // Sun Aug 02 2020 18:05:41 GMT-0700
+// console.log(new Date("December 24, 2020")); // Thu Dec 24 2020 00:00:00 GMT-0800
+// console.log(new Date(account1.movementsDates[0])); // Mon Nov 18 2019 13:31:17 GMT-0800
+
+// console.log(new Date(2037, 10, 19, 15, 23, 5)); // Thu Nov 19 2037 15:23:05 GMT-0800
+// console.log(new Date(2037, 10, 31)); // Tue Dec 01 2037 00:00:00 GMT-0800
+
+// console.log(new Date(0)); // Wed Dec 31 1969 16:00:00 GMT-0800
+// console.log(new Date(3 * 24 * 60 * 60 * 1000)); // Sat Jan 03 1970 16:00:00 GMT-0800 (3 days later)
+
+// // Working with dates
+// const future = new Date(2037, 10, 19, 15, 23);
+// console.log(future);
+
+// console.log(future.getFullYear()); // 2037
+// console.log(future.getMonth() + 1); // 11
+// console.log(future.getDate()); // 19
+// console.log(future.getDay()); // 4
+// console.log(future.getHours()); // 15
+// console.log(future.getMinutes()); // 23
+// console.log(future.getSeconds()); // 0
+// console.log(future.toISOString()); // 2037-11-19T23:23:00.000Z
+// console.log(future.getTime()); // 2142285780000 (time stamp)
+
+// console.log(new Date(2142285780000)); // Thu Nov 19 2037 15:23:00 GMT-0800
+
+// console.log(Date.now()); // 1607671348244
+
+// future.setFullYear(2040); // Mon Nov 19 2040 15:23:00 GMT-0800
+// console.log(future);
+
+// ****************************
+// Working with BigInt (ES2020)
+// ****************************
+
+/*
+ BigInt: is a built-in object that provides a way to represent whole numbers larger than (2**53 - 1), which is the largest number JavaScript can reliably represent with the Number primitive.
+
+   OPERATIONS: is created by appending n to the end of an integer literal — 10n — or by calling the function BigInt().
+
+   DIFFERENCES: CANNOT be used with methods in the built-in Math object and CANNOT be mixed with instances of Number
+
+   EXCEPTIONS: behaves like a Number when it is converted to a BOOLEAN, when used with LOGICAL OPERATORS, can be CONCATENATED into string, within a CONDITIONAL test like an if statement.
+
+ Number.MAX_SAFE_INTEGER: is constant represents the maximum safe integer in JavaScript. (2**53 - 1)
+
+*/
+
+// console.log(2 ** 53 - 1);
+// console.log(Number.MAX_SAFE_INTEGER);
+// console.log(2 ** 53 + 1);
+// console.log(2 ** 53 + 2);
+// console.log(2 ** 53 + 3);
+// console.log(2 ** 53 + 4);
+
+// console.log(156674646748465449648774878946787787946n);
+// console.log(BigInt(1566746467));
+
+// // Operations
+// console.log(1000n + 1000n);
+// console.log(45456464646494876764984787845378676n * 10000000n);
+
+// const huge = 1564646464634644564694n;
+// const num = 25;
+// console.log(huge * BigInt(num));
+
+// // Exceptions
+// console.log(20n > 15); // true
+// console.log(20n === 20); // false
+// console.log(typeof 20n); // bigint
+// console.log(20n == "20"); // true
+
+// // Divisons
+// console.log(10n / 3n); // 3n
+// console.log(10 / 3); // 3.3333...
+
+// **********************
+// The Remainder Operator
+// **********************
+
+/*
+ The remainder operator (%): returns the remainder left over when one operand is divided by a second operand. It always takes the sign of the dividend.
+*/
+
+// console.log(5 % 2); // 1
+// console.log(5 / 2); // 5 = 2 * 2 + 1
+
+// console.log(8 % 3); // 2
+// console.log(8 / 3); // 8 = 3 * 2 + 2
+
+// console.log(6 % 2); // 0
+// console.log(6 / 2); // 6 = 2 * 3 + 0
+
+// console.log(7 % 2); // 1
+// console.log(7 / 2); // 7 = 2 * 3 + 1
+
+// const isEven = (n) => n % 2 === 0;
+// console.log(isEven(8));
+// console.log(isEven(23));
+// console.log(isEven(644));
+
+// labelBalance.addEventListener("click", function () {
+//   [...document.querySelectorAll(".movements__row")].forEach(function (row, i) {
+//     if (i % 2 === 0) {
+//       row.style.backgroundColor = "#c6def1";
+//     }
+//     if (i % 3 === 0) {
+//       row.style.backgroundColor = "#c9e4de";
+//     }
+//   });
+// });
+
+// *****************
+// Math and Rounding
+// *****************
+
+/*
+ Math: is a build in project that has properties and methods for mathematical constants and functions. It is NOT a function object.
+
+   Math.sqrt(): returns square root of a given number
+   Math.max(): returns the largest of zero or more numbers
+   Math.min(): returns the smallest of zero or more numbers
+   Math.random(): returns a pseudo-random number between 0 and 1
+   Math.trunc(): returns the integer part of a number by removing any fractional digits
+   Math.round(): return a number rounded to the nearest integer
+   Math.ceil(): rounds up a number up to the next largest integer
+   Math.floor(): returns largest integer less than or equal to a given number
+   Math.PI: contains the value of PI(circles circumference)
+
+ The toFixed() method: formats a number using fixed-point notation
+   SYNTAX: numObj.toFixed([digits])
+ */
+
+// console.log(Math.sqrt(25)); // 5
+// console.log(25 ** (1 / 2)); // 5
+// console.log(8 ** (1 / 3)); // 2
+
+// console.log(Math.max(5, 12, 23, 11, 2)); // 23
+// console.log(Math.max(5, 12, "23", 11, 2)); // 23
+// console.log(Math.max(5, 12, "23px", 11, 2)); // NaN
+
+// console.log(Math.min(5, 12, 23, 11, 2)); // 2
+
+// console.log(Math.PI * Number.parseFloat("10px") ** 2);
+
+// const randomInt = (min, max) =>
+//   Math.trunc(Math.random() * (max - min) + 1) + min;
+// console.log(randomInt(10, 20));
+
+// // Rounding Integers
+// console.log(Math.round(23.3)); // 23
+// console.log(Math.round("23.9")); // 24
+
+// console.log(Math.ceil(23.3)); // 24
+// console.log(Math.ceil("23.9")); // 24
+
+// console.log(Math.floor(23.3)); // 23
+// console.log(Math.floor("23.9")); // 23
+
+// console.log(Math.trunc(23.3)); // 23
+
+// console.log(Math.trunc(-23.3)); // -24
+// console.log(Math.floor(-23.3)); // -23
+
+// // Rounding decimals
+// console.log((2.7).toFixed(0)); // '3'
+// console.log((2.7).toFixed(3)); // '2.700'
+// console.log((2.345).toFixed(2)); // '2.35'
+// console.log(+(2.345).toFixed(2)); // 2.35
+
+// *******************************
+// Converting and Checking Numbers
+// *******************************
+
+/*
+ How Javascript represents numbers...
+
+   In JS all numbers are presented internally as floating point numbers. So basically, always as decimals, no matter if we actually write them as integers or as decimals. 
+
+   Base-2 format: Numbers are always stored in a BINARY format. So basically, they're only composed of zeros and ones. Ex. 0s, and 1s.
+
+   NOT base-10: Known as system decimal. Ex. numbers 0 - 9
+
+   USE: CANNOT use JS to do percise scientific or financial calculations because of its base-2 format
+
+ Pasrsing functions: 
+
+   The parseInt() function: parses a string arg and returns an integer of the specified radix(base)
+     SYNTAX: parseInt(string [, radix]) 
+
+   The parseFloat() function: parses an argument(converting first into string if needed) and returns floating point number.
+     SYNTAX: parseFloat(string) 
+
+ Checking for value functions: 
+  
+   The isNaN() function: determines whether a value is 'NaN' or not.
+     SYNTAX: isNaN(value)
+
+   The isFinite() function:  determines whether the passed value is a finite number.
+    SYNTAX: isFinite(testValue)
+
+ MODERN JS: calling all these functions on the 'Number' object. (ECMA script 2015)
+*/
+
+// console.log(23 === 23.0); // true
+
+// console.log(0.1 + 0.2); // 0.30000000000000004
+// console.log(0.1 + 0.2 === 0.3); // false
+
+// // CONVERSION
+// console.log(Number("23")); // 23
+// console.log(+"23"); // 23
+
+// // PARSING
+// console.log(Number.parseInt("30px", 10)); // 30
+// console.log(Number.parseInt("e23", 10)); // NaN - must start with a number
+
+// console.log(Number.parseInt("2.5rem")); // 2
+// console.log(Number.parseFloat("2.5rem")); // 2.5
+
+// // CHECKING VALUE FOR NUMBER
+
+// // Check if value is 'NaN'
+// console.log(Number.isNaN(20)); // false
+// console.log(Number.isNaN("20")); // false
+// console.log(Number.isNaN(+"20X")); // true
+// console.log(Number.isNaN(23 / 0)); // false
+
+// // Check if value is a number
+// console.log(Number.isFinite(20)); // true
+// console.log(Number.isFinite("20")); // false
+// console.log(Number.isFinite(23 / 0)); // false
