@@ -86,7 +86,7 @@ const formatMovementDates = function (date, locale) {
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
 
   const daysPassed = calcDaysPassed(new Date(), date);
-  console.log(daysPassed);
+  // console.log(daysPassed);
 
   if (daysPassed === 0) return "Today";
   if (daysPassed === 1) return "Yesterday";
@@ -106,7 +106,7 @@ const formatCur = function (value, locale, currency) {
 };
 
 // DISPLAYING TRANSACTIONS
-const displayMovements = function (acc, sort = true) {
+const displayMovements = function (acc, sort = false) {
   // Setting HTML within '.movements' class to empty
   containerMovements.innerHTML = "";
   // Variable to sort based on 'sort' boolean value
@@ -280,8 +280,8 @@ btnTransfer.addEventListener("click", function (e) {
     recieverAcc.movements.push(amount);
 
     // Add transfer date
-    currentAccount.movementDates.push(new Date().toISOString());
-    recieverAcc.movementDates.push(new Date().toISOString());
+    currentAccount.movementsDates.push(new Date().toISOString());
+    recieverAcc.movementsDates.push(new Date().toISOString());
 
     // Update UI
     updateUI(currentAccount);
@@ -298,14 +298,16 @@ btnLoan.addEventListener("click", function (e) {
     amount > 0 &&
     currentAccount.movements.some((mov) => mov >= amount * 0.1)
   ) {
-    // Add movement
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      // Add movement
+      currentAccount.movements.push(amount);
 
-    // Add loan date
-    currentAccount.movementDates.push(new Date().toISOString());
+      // Add loan date
+      currentAccount.movementsDates.push(new Date().toISOString());
 
-    // Update UI
-    updateUI(currentAccount);
+      // Update UI
+      updateUI(currentAccount);
+    }, 2500);
   }
   // reset input text
   inputLoanAmount.value = "";
@@ -343,6 +345,38 @@ btnSort.addEventListener("click", function (e) {
 /////////////////////////////////////////////////
 // LECTURES
 
+// **********************************
+// Timers: setTimeout and setInterval
+// **********************************
+
+/*
+ The setTimeout() method: sets a timer which executes a function or specified piece of code once the timer expires.
+
+ The clearTimeout() method: cancels a timeout previously established by calling setTimeout().
+
+
+*/
+
+// // setTimeout
+// const ingredients = ["pepperoni", "jalepeno"];
+// const pizzaTimer = setTimeout(
+//   (ing1, ing2) =>
+//     console.log(
+//       `You will pizza with ${ing1} and ${ing2} will arrive in 3 seconds.`
+//     ),
+//   3000,
+//   ...ingredients
+// );
+// console.log("waiting...");
+
+// if (ingredients.includes("jalepeno")) clearTimeout(pizzaTimer);
+
+// // setInterval
+// setInterval(function () {
+//   const now = new Date();
+//   console.log(now);
+// }, 1000);
+
 // *********************************
 // Internationalizing Numbers (Intl)
 // *********************************
@@ -352,21 +386,21 @@ btnSort.addEventListener("click", function (e) {
  SYNTAX: new Intl.NumberFormat([locales[, options]])
 */
 
-const num = 3245785.69;
+// const num = 3245785.69;
 
-const options = {
-  // style: "unit",
-  style: "currency",
-  // unit: "celsius",
-  currency: "USD",
-  // notation: "compact",
-  // useGrouping: false,
-};
+// const options = {
+//   // style: "unit",
+//   style: "currency",
+//   // unit: "celsius",
+//   currency: "USD",
+//   // notation: "compact",
+//   // useGrouping: false,
+// };
 
-console.log("US: ", new Intl.NumberFormat("en-US", options).format(num));
-console.log("Germany: ", new Intl.NumberFormat("de-DE", options).format(num));
-console.log("Syria: ", new Intl.NumberFormat("ar-SY", options).format(num));
-console.log(navigator.language);
+// console.log("US: ", new Intl.NumberFormat("en-US", options).format(num));
+// console.log("Germany: ", new Intl.NumberFormat("de-DE", options).format(num));
+// console.log("Syria: ", new Intl.NumberFormat("ar-SY", options).format(num));
+// console.log(navigator.language);
 
 // *******************************
 // Internationalizing Dates (Intl)
