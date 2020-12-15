@@ -31,6 +31,45 @@ btnScrollTo.addEventListener("click", function (e) {
 
 // =================================================================================================== //
 
+// **********************************
+// Types of Events and Event Handlers
+// **********************************
+
+/*
+ REMEMBER: The Event interface represents an event which takes place in the DOM.
+
+ The EventTarget method addEventListener() sets up a function that will be called whenever the specified event is delivered to the target.
+ 
+ SYNTAX: target.addEventListener(type, listener [, options]);
+         target.addEventListener(type, listener [, useCapture]);
+
+ The EventTarget.removeEventListener() method removes from the EventTarget an event listener previously registered with EventTarget.addEventListener().
+
+ SYNTAX: target.removeEventListener(type, listener[, options]);
+         target.removeEventListener(type, listener[, useCapture]);
+*/
+
+const h1 = document.querySelector("h1");
+
+// old-school
+h1.onmouseenter = function (e) {
+  alert("onmouseenver: Great! You are reading the heading :D");
+};
+
+// exporting function to remove event listener
+const alertH1 = function (e) {
+  alert("addEventListener: Great! You are reading the heading :D");
+
+  // h1.removeEventListener("mouseenter");
+};
+
+h1.addEventListener("mouseenter", alertH1);
+
+// another way of removing event listener
+setTimeout(() => {
+  h1.removeEventListener("mouseenter");
+}, 3000);
+
 // *****************************
 // Implementing Smooth Scrolling
 // *****************************
