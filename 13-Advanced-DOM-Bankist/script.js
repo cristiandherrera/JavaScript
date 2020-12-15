@@ -90,6 +90,72 @@ document.querySelector(".nav__links").addEventListener("click", function (e) {
 });
 // =================================================================================================== //
 
+// **************
+// DOM Traversing
+// **************
+
+/*
+ Dom traversing is basically walking through the Dom. Which means that we can select an element based on another element.
+
+   Downwards(child):
+
+      The Node.childNodes: read-only property retunrs a live NodeList of child nodes of the given element where te first child node is assigned index 0. Child nodes include elements, text and comments.
+
+      The ParentNode.children: property children is a read-only property that returns a live HTMLCollection which contains all of the child elements of the node upon which it was called.
+    
+   Upwards(parent): 
+
+      The Node.parentNode: read-only property returns the parent of the specified node in the DOM tree.
+      
+      The Node.parentElement: read-only property returns the DOM node's parent Element, or null if the node either has no parent, or its parent isn't a DOM Element.
+
+      The closest() method traverses the Element and its parents until it finds a node that matches the provided selecor string.
+
+  Sideways(sibling):
+
+    NonDocumentTypeChildNode.previousElementSibling: read-only property returns the ELEMENT immediately PRIOR to the specified one in its parent's children list.
+    
+    NonDocumentTypeChildNode.nextElementSibling: read-only property returns the ELEMENT immediately FOLLOWING the specified one in its parent's children list.
+
+    The Node.nextSibling: read-only property returns the NODE immediately FOLLOWING the specified one in their parent's childNodes list.
+
+    The Node.previousSibling read-only property returns the NODE immediately PRECEDING the specified one in its parent's childNodes list.
+
+    TRICK: Call the '.parentElement' and read out its '.children' to get ALL the siblings including itself.
+
+ COMPARISON: 'querySelector' finds CHILDREN, no matter how deep in the Dom tree, while the closest method finds PARENTS.
+*/
+
+const h1 = document.querySelector("h1");
+
+// Going downwards: child
+console.log(h1.querySelectorAll(".highlight")); // NodeList [span.highlight, span.highlight]
+console.log(h1.childNodes); // NodeList [text, comment, text, span.highlight, text, br, text, span.highlight, text]
+console.log(h1.children); // HTMLCollection [span.highlight, br, span.highlight]
+
+h1.firstElementChild.style.color = "white";
+h1.lastElementChild.style.color = "orangered";
+
+// Going upwards: parents
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+h1.closest(".header").style.background = "var(--gradient-secondary)";
+h1.closest("h1").style.background = "var(--gradient-primary)";
+
+// Going sideways: siblings
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+// sideways trick
+console.log(h1.parentElement.children);
+[...h1.parentElement.children].forEach(function (el) {
+  if (el !== h1) el.style.transform = "scale(0.5)";
+});
+
 // **********************************************
 // Event Delegation: Implementing Page Navigation
 // **********************************************
