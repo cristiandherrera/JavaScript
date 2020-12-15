@@ -32,6 +32,113 @@ document.addEventListener("keydown", function (e) {
 
 // =================================================================================================== //
 
+// *******************************
+// Styles, Attributes, and Classes
+// *******************************
+
+/*
+ The .style property: is used to get ONLY the INLINE style of an element.
+
+ The Window.getComputedStyle(): returns an object containing the values of all CSS properties of an element, AFTER applying active stylesheets and resolving any basic computation those values may contain.
+   SYNTAX: const style = window.getComputedStyle(element [, pseudoElt]);
+
+ The CSSStyleDeclaration: interface represents an object that is a CSS declaration block, and exposes style information and various style-related methods and properties. 
+
+   Methods: 
+
+     The setProperty(): method interface sets a new value for a property on a CSS style delcaration object.
+       SYNTAX: tyle.setProperty(propertyName, value, priority);
+
+   Can be exposed by three different APIs...
+    
+     HTMLElement.style: which deals with the inline styles of a single element
+
+     CSSStyleSheet: returns a CSSStyleDeclaration object on the first CSS rule in the document's first stylesheet.
+
+     Window.getComputedStyle(): which exposes the CSSStyleDeclaration object as a READ-ONLY interface.
+
+ Attributes: 
+
+   The setAttribute(): methodnsets the value of an attribute on the specified element. If the attribute already exists, the value is updated; otherwise a new attribute is added with the specified name and value.
+     SYNTAX: Element.setAttribute(name, value);
+
+   The getAttribute(): method of the Element interface returns the value of a specified attribute on the element. If the given attribute does not exist, the value returned will either be null or "".
+     SYNTAX: let attribute = element.getAttribute(attributeName);
+
+ Classes: 
+  
+   The DOMTokenList interface: represents a set of space-separated tokens... 
+   Such a set is returned by Element.classList, HTMLLinkElement.relList, HTMLAnchorElement.relList, HTMLAreaElement.relList, HTMLIframeElement.sandbox, or HTMLOutputElement.htmlFor.
+  
+     The add(): method of the DOMTokenList interface ADDS the given token to the list.
+   
+     The remove(): method of the DOMTokenList interface REMOVES the specified tokens from the list.
+
+     The toggle(): method of the DOMTokenList interface removes a given token from the list and RETURNS FALSE. If token doesn't exist it's added and the function RETURNS TRUE.
+
+     The contains(): method of the DOMTokenList interface returns a Boolean — true if the underlying list contains the given token, otherwise false.
+
+ REMEMBER: Number.parseFloat() method parses an argument and returns a floating point number. SYNTAX: 'Number.parseFloat(string)'
+
+ CSS: Property names that are prefixed with --, like --example-name, represent custom properties that contain a value that can be used in other declarations using the var() function.
+*/
+
+// FROM PREVIOUS LECTURE
+const header = document.querySelector(".header");
+const message = document.createElement("div");
+message.classList.add("cookie-message");
+message.innerHTML =
+  'We use cookies for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>';
+header.append(message);
+
+// STYLES
+message.style.backgroundColor = "#37383d";
+message.style.width = "120%";
+
+console.log(message.style.backgroundColor);
+console.log(message.style.color); // logs nothing because no inline style exists
+
+// console.log(getComputedStyle(message)); // logs entire CSSStyleDeclaration object
+console.log(getComputedStyle(message).color);
+console.log(getComputedStyle(message).height);
+
+message.style.height =
+  Number.parseFloat(getComputedStyle(message).height, 10) + 30 + "px";
+console.log(getComputedStyle(message).height);
+
+document.documentElement.style.setProperty("--color-primary", "orangered");
+
+// ATTRIBUTES
+const logo = document.querySelector(".nav__logo");
+console.log(logo.alt);
+console.log(logo.className);
+
+logo.alt = "Beautiful minimalist logo";
+console.log(logo.alt);
+
+// non-standard atr
+console.log(logo.designer); // undefined
+console.log(logo.getAttribute("designer"));
+
+logo.setAttribute("company", "Bankist");
+console.log(logo.company);
+
+console.log(logo.src); // returns absolute value
+console.log(logo.getAttribute("src")); // returns as written in html
+
+const link = document.querySelector(".nav__link--btn");
+console.log(link.href); // returns absolute value
+console.log(link.getAttribute("href")); // returns as written in html
+
+// Data attributes
+console.log(logo.dataset.versionNumber);
+
+// Classes
+logo.classList.add("c");
+logo.classList.remove("c");
+logo.classList.toggle("c");
+logo.classList.contains("c");
+
 // ******************************************
 // Selecting, Creating, and Deleting Elements
 // ******************************************
@@ -47,6 +154,8 @@ document.addEventListener("keydown", function (e) {
       When NodeList is live, it means that changes in the DOM automatically update the collection. Ex. 'Node.childNodes' is live
 
       When NodeList is static, any changes in the DOM does not affect the content of the collection. Ex. 'document.querySelectorAll()'
+
+ Document.documentElement: returns the Element that is the root element of the document./
 
  Selecting Elements: 
    querySelectorAll() returns a static NodeList representing a list of the document's elements
@@ -65,45 +174,45 @@ document.addEventListener("keydown", function (e) {
 
 */
 
-// SELECTING ELEMENTS
+// // SELECTING ELEMENTS
 
-console.log(document.documentElement);
-console.log(document.head);
-console.log(document.body);
+// console.log(document.documentElement);
+// console.log(document.head);
+// console.log(document.body);
 
-const header = document.querySelector(".header");
-const allSections = document.querySelectorAll(".section");
-console.log(allSections); // returns a nodelist
+// const header = document.querySelector(".header");
+// const allSections = document.querySelectorAll(".section");
+// console.log(allSections); // returns a nodelist
 
-document.getElementById("secion--1");
-const allButtons = document.getElementsByTagName("button");
-console.log(allButtons); // returns an HTML collection
+// document.getElementById("secion--1");
+// const allButtons = document.getElementsByTagName("button");
+// console.log(allButtons); // returns an HTML collection
 
-console.log(document.getElementsByClassName("btn")); // returns an HTML collection
+// console.log(document.getElementsByClassName("btn")); // returns an HTML collection
 
-// CREATING AND INSERTING ELEMENTS
+// // CREATING AND INSERTING ELEMENTS
 
-// .insertAdjacentHTML
-const message = document.createElement("div");
-message.classList.add("cookie-message");
-// message.textContent = 'We use cookies for improved functionality and analytics.';
-message.innerHTML =
-  'We use cookies for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>';
+// // .insertAdjacentHTML
+// const message = document.createElement("div");
+// message.classList.add("cookie-message");
+// // message.textContent = 'We use cookies for improved functionality and analytics.';
+// message.innerHTML =
+//   'We use cookies for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>';
 
-// header.prepend(message);
-header.append(message);
-// header.append(message.cloneNode(true));
+// // header.prepend(message);
+// header.append(message);
+// // header.append(message.cloneNode(true));
 
-// header.before(message);
-// header.after(message);
+// // header.before(message);
+// // header.after(message);
 
-// DELETE ELEMENTS
-document
-  .querySelector(".btn--close-cookie")
-  .addEventListener("click", function () {
-    message.remove();
-    // message.parentElement.removeChild(message) // OLD WAY - DOM TRAVERSING;
-  });
+// // DELETE ELEMENTS
+// document
+//   .querySelector(".btn--close-cookie")
+//   .addEventListener("click", function () {
+//     message.remove();
+//     // message.parentElement.removeChild(message) // OLD WAY - DOM TRAVERSING;
+//   });
 
 // ************************
 // How the DOM Really Works
