@@ -31,18 +31,62 @@ btnScrollTo.addEventListener("click", function (e) {
 
 // =================================================================================================== //
 
+// *****************************
+// Event Propagation in Practice
+// *****************************
+
+/*
+ The Event.target: property of the Event interface is a refererence to the object onto which the event was dispatched.
+
+ The Event.currentTarget: read-only property of the Event interface identifies the current target for the event, as the event traverses the DOM.
+
+   target vs. currentTarget: 
+   The currentTarget always refers to the element to which the event handler has been attached. Opposed to Event.target, which identifies the element on which the event occurred and which may be its descendant.
+ 
+ The stopPropagation(): method of the Event interface PREVENTS further propagation of the current event in the capturing and bubbling phases. It DOES NOT, however, prevent any default behaviors from occurring.
+ BAD PRACTICE: stopPropagation() is not reccomended for use often.
+
+ NOTE: The 'this' keyword, when used in an evet listener is the SAME as the 'Event.target'
+*/
+
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)})`;
+
+document.querySelector(".nav__link").addEventListener("click", function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log("LINK", e.target, e.currentTarget);
+  console.log(e.target === this); // true
+
+  // Stop propagation
+  // e.stopPropagation();
+});
+
+document.querySelector(".nav__links").addEventListener("click", function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log("LIST", e.target, e.currentTarget);
+});
+
+document.querySelector("nav").addEventListener("click", function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log("NAV", e.target, e.currentTarget);
+});
+
 // *****************************************
 // Event Propagation: Bubbling and Capturing
 // *****************************************
 
 /*
-Event Capturing: is the first phase that occurs when the event moves all the way down the elements from the top (window) to the event target.
+ Event propagation: is a way to describe the “stack” of events that are fired in a web browser. 
 
-Target Phase:  the second 'target' phase that occurs when the event.target element is reached, is not handled separately like the others.
+   Event Capturing: is the first phase that occurs when the event moves all the way down the elements from the top (window) to the event target.(never really used in practice anymore)
 
-Event Bubbling: is the last phase that involves running the target element’s handlers, and then “bubbling” upwards to the next parent element’s handlers, then the grandparent element above that, and so on.
+   Target Phase:  the second 'target' phase that occurs when the event.target element is reached, is not handled separately like the others.
 
-NOTE: When bubbling, if a parent element of the event.target has the SAME event listener, when the event.target is fired, when bubbling up the parente elements event listener will ALSO fire! 
+   Event Bubbling: is the last phase that involves running the target element’s handlers, and then “bubbling” upwards to the next parent element’s handlers, then the grandparent element above that, and so on.
+
+ NOTE: When bubbling, if a parent element of the event.target has the SAME event listener, when the event.target is fired, when bubbling up the parente elements event listener will ALSO fire! 
 */
 
 // **********************************
@@ -103,8 +147,6 @@ NOTE: When bubbling, if a parent element of the event.target has the SAME event 
  The Element.scrollIntoView(): method scrolls the element's parent container such that the element on which scrollIntoView() is called is visible to the user.
    SYNTAX: element.scrollIntoView(alignToTop); // Boolean parameter
            element.scrollIntoView(scrollIntoViewOptions); // Object parameter
-
- The target property: of the Event interface is a refererence to the object onto which the event was dispatched.
 */
 
 // *******************************
