@@ -3,34 +3,56 @@
 ///////////////////////////////////////
 // Modal window
 
-const modal = document.querySelector(".modal");
-const overlay = document.querySelector(".overlay");
-const btnCloseModal = document.querySelector(".btn--close-modal");
-const btnsOpenModal = document.querySelectorAll(".btn--show-modal");
+const btnScrollTo = document.querySelector(".btn--scroll-to");
+const section1 = document.querySelector("#section--1");
 
-const openModal = function (e) {
-  e.preventDefault();
-  modal.classList.remove("hidden");
-  overlay.classList.remove("hidden");
-};
+btnScrollTo.addEventListener("click", function (e) {
+  const s1coords = section1.getBoundingClientRect();
+  console.log(s1coords);
 
-const closeModal = function () {
-  modal.classList.add("hidden");
-  overlay.classList.add("hidden");
-};
+  console.log(e.target.getBoundingClientRect());
 
-btnsOpenModal.forEach((btn) => btn.addEventListener("click", openModal));
+  console.log("Current scroll (X/Y)", window.pageXOffset, pageYOffset);
 
-btnCloseModal.addEventListener("click", closeModal);
-overlay.addEventListener("click", closeModal);
+  console.log(
+    "height/width viewport",
+    document.documentElement.clientHeight,
+    document.documentElement.clientWidth
+  );
 
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-    closeModal();
-  }
+  // Scrolling
+  section1.scrollIntoView({ behavior: "smooth" });
+  // window.scrollTo({
+  //   left: s1coords.left + window.pageXOffset,
+  //   top: s1coords.top + window.pageYOffset,
+  //   behavior: "smooth",
+  // });
 });
 
 // =================================================================================================== //
+
+// *****************************
+// Implementing Smooth Scrolling
+// *****************************
+
+/*
+ The Element.getBoundingClientRect(): returns a DOMRect (describes the size and position of a rectangle.) object providing information about the size of an element and its of an element and its position relative to the viewport.
+   SYNTAX: domRect = element.getBoundingClientRect()
+ 
+ Window.pageXOffset(scrollX): property of the Window interface returns the number of pixels the document is currently SCROLLED HORIZONTALLY. 
+
+ Window.pageYOffset(scrollY): property of the Window interface returns the number of pixels the document is currently SCROLLED VERTCALLY. 
+
+ Element.clientHeight: the inner HEIGHT of an ELEMENT in pixels. It includes padding but excludes borders, margins, and HORIZONTAL scrollbars. The viewport's height is returned when used on the root element
+
+ Element.clientWidth: the inner WIDTH of an ELEMENT in pixels. It includes padding but excludes borders, margins, and VERTICAL scrollbars. The VIEWPORTS WIDTH is returned when used on the root element
+
+ The Element.scrollIntoView(): method scrolls the element's parent container such that the element on which scrollIntoView() is called is visible to the user.
+   SYNTAX: element.scrollIntoView(alignToTop); // Boolean parameter
+           element.scrollIntoView(scrollIntoViewOptions); // Object parameter
+
+ The target property: of the Event interface is a refererence to the object onto which the event was dispatched.
+*/
 
 // *******************************
 // Styles, Attributes, and Classes
@@ -83,61 +105,61 @@ document.addEventListener("keydown", function (e) {
  CSS: Property names that are prefixed with --, like --example-name, represent custom properties that contain a value that can be used in other declarations using the var() function.
 */
 
-// FROM PREVIOUS LECTURE
-const header = document.querySelector(".header");
-const message = document.createElement("div");
-message.classList.add("cookie-message");
-message.innerHTML =
-  'We use cookies for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>';
-header.append(message);
+// // FROM PREVIOUS LECTURE
+// const header = document.querySelector(".header");
+// const message = document.createElement("div");
+// message.classList.add("cookie-message");
+// message.innerHTML =
+//   'We use cookies for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>';
+// header.append(message);
 
-// STYLES
-message.style.backgroundColor = "#37383d";
-message.style.width = "120%";
+// // STYLES
+// message.style.backgroundColor = "#37383d";
+// message.style.width = "120%";
 
-console.log(message.style.backgroundColor);
-console.log(message.style.color); // logs nothing because no inline style exists
+// console.log(message.style.backgroundColor);
+// console.log(message.style.color); // logs nothing because no inline style exists
 
-// console.log(getComputedStyle(message)); // logs entire CSSStyleDeclaration object
-console.log(getComputedStyle(message).color);
-console.log(getComputedStyle(message).height);
+// // console.log(getComputedStyle(message)); // logs entire CSSStyleDeclaration object
+// console.log(getComputedStyle(message).color);
+// console.log(getComputedStyle(message).height);
 
-message.style.height =
-  Number.parseFloat(getComputedStyle(message).height, 10) + 30 + "px";
-console.log(getComputedStyle(message).height);
+// message.style.height =
+//   Number.parseFloat(getComputedStyle(message).height, 10) + 30 + "px";
+// console.log(getComputedStyle(message).height);
 
-document.documentElement.style.setProperty("--color-primary", "orangered");
+// document.documentElement.style.setProperty("--color-primary", "orangered");
 
-// ATTRIBUTES
-const logo = document.querySelector(".nav__logo");
-console.log(logo.alt);
-console.log(logo.className);
+// // ATTRIBUTES
+// const logo = document.querySelector(".nav__logo");
+// console.log(logo.alt);
+// console.log(logo.className);
 
-logo.alt = "Beautiful minimalist logo";
-console.log(logo.alt);
+// logo.alt = "Beautiful minimalist logo";
+// console.log(logo.alt);
 
-// non-standard atr
-console.log(logo.designer); // undefined
-console.log(logo.getAttribute("designer"));
+// // non-standard atr
+// console.log(logo.designer); // undefined
+// console.log(logo.getAttribute("designer"));
 
-logo.setAttribute("company", "Bankist");
-console.log(logo.company);
+// logo.setAttribute("company", "Bankist");
+// console.log(logo.company);
 
-console.log(logo.src); // returns absolute value
-console.log(logo.getAttribute("src")); // returns as written in html
+// console.log(logo.src); // returns absolute value
+// console.log(logo.getAttribute("src")); // returns as written in html
 
-const link = document.querySelector(".nav__link--btn");
-console.log(link.href); // returns absolute value
-console.log(link.getAttribute("href")); // returns as written in html
+// const link = document.querySelector(".nav__link--btn");
+// console.log(link.href); // returns absolute value
+// console.log(link.getAttribute("href")); // returns as written in html
 
-// Data attributes
-console.log(logo.dataset.versionNumber);
+// // Data attributes
+// console.log(logo.dataset.versionNumber);
 
-// Classes
-logo.classList.add("c");
-logo.classList.remove("c");
-logo.classList.toggle("c");
-logo.classList.contains("c");
+// // Classes
+// logo.classList.add("c");
+// logo.classList.remove("c");
+// logo.classList.toggle("c");
+// logo.classList.contains("c");
 
 // ******************************************
 // Selecting, Creating, and Deleting Elements
@@ -230,3 +252,34 @@ logo.classList.contains("c");
    DOM is a very complex API that contains lots of methods and properties to interact with the DOM tree.
    Ex. .querySelctor() / .addEventListener() / .createElement() / .innerHTML / .textContent / etc...
 */
+
+// **************************
+// PROJECT: "Bankist" Website
+// **************************
+
+// const modal = document.querySelector(".modal");
+// const overlay = document.querySelector(".overlay");
+// const btnCloseModal = document.querySelector(".btn--close-modal");
+// const btnsOpenModal = document.querySelectorAll(".btn--show-modal");
+
+// const openModal = function (e) {
+//   e.preventDefault();
+//   modal.classList.remove("hidden");
+//   overlay.classList.remove("hidden");
+// };
+
+// const closeModal = function () {
+//   modal.classList.add("hidden");
+//   overlay.classList.add("hidden");
+// };
+
+// btnsOpenModal.forEach((btn) => btn.addEventListener("click", openModal));
+
+// btnCloseModal.addEventListener("click", closeModal);
+// overlay.addEventListener("click", closeModal);
+
+// document.addEventListener("keydown", function (e) {
+//   if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+//     closeModal();
+//   }
+// });
