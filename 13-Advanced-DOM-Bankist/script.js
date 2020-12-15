@@ -31,6 +31,20 @@ btnScrollTo.addEventListener("click", function (e) {
 
 // =================================================================================================== //
 
+// *****************************************
+// Event Propagation: Bubbling and Capturing
+// *****************************************
+
+/*
+Event Capturing: is the first phase that occurs when the event moves all the way down the elements from the top (window) to the event target.
+
+Target Phase:  the second 'target' phase that occurs when the event.target element is reached, is not handled separately like the others.
+
+Event Bubbling: is the last phase that involves running the target element’s handlers, and then “bubbling” upwards to the next parent element’s handlers, then the grandparent element above that, and so on.
+
+NOTE: When bubbling, if a parent element of the event.target has the SAME event listener, when the event.target is fired, when bubbling up the parente elements event listener will ALSO fire! 
+*/
+
 // **********************************
 // Types of Events and Event Handlers
 // **********************************
@@ -49,26 +63,26 @@ btnScrollTo.addEventListener("click", function (e) {
          target.removeEventListener(type, listener[, useCapture]);
 */
 
-const h1 = document.querySelector("h1");
+// const h1 = document.querySelector("h1");
 
-// old-school
-h1.onmouseenter = function (e) {
-  alert("onmouseenver: Great! You are reading the heading :D");
-};
+// // old-school
+// h1.onmouseenter = function (e) {
+//   alert("onmouseenver: Great! You are reading the heading :D");
+// };
 
-// exporting function to remove event listener
-const alertH1 = function (e) {
-  alert("addEventListener: Great! You are reading the heading :D");
+// // exporting function to remove event listener
+// const alertH1 = function (e) {
+//   alert("addEventListener: Great! You are reading the heading :D");
 
-  // h1.removeEventListener("mouseenter");
-};
+//   // h1.removeEventListener("mouseenter");
+// };
 
-h1.addEventListener("mouseenter", alertH1);
+// h1.addEventListener("mouseenter", alertH1);
 
-// another way of removing event listener
-setTimeout(() => {
-  h1.removeEventListener("mouseenter");
-}, 3000);
+// // another way of removing event listener
+// setTimeout(() => {
+//   h1.removeEventListener("mouseenter");
+// }, 3000);
 
 // *****************************
 // Implementing Smooth Scrolling
