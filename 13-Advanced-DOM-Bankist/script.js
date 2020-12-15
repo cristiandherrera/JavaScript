@@ -1,10 +1,42 @@
 "use strict";
+// **************************
+// PROJECT: "Bankist" Website
+// **************************
+
+const modal = document.querySelector(".modal");
+const overlay = document.querySelector(".overlay");
+const btnCloseModal = document.querySelector(".btn--close-modal");
+const btnsOpenModal = document.querySelectorAll(".btn--show-modal");
+const btnScrollTo = document.querySelector(".btn--scroll-to");
+const section1 = document.querySelector("#section--1");
 
 ///////////////////////////////////////
 // Modal window
 
-const btnScrollTo = document.querySelector(".btn--scroll-to");
-const section1 = document.querySelector("#section--1");
+const openModal = function (e) {
+  e.preventDefault();
+  modal.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+};
+
+const closeModal = function () {
+  modal.classList.add("hidden");
+  overlay.classList.add("hidden");
+};
+
+btnsOpenModal.forEach((btn) => btn.addEventListener("click", openModal));
+
+btnCloseModal.addEventListener("click", closeModal);
+overlay.addEventListener("click", closeModal);
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+    closeModal();
+  }
+});
+
+///////////////////////////////////////
+// Button scrolling
 
 btnScrollTo.addEventListener("click", function (e) {
   const s1coords = section1.getBoundingClientRect();
@@ -29,7 +61,114 @@ btnScrollTo.addEventListener("click", function (e) {
   // });
 });
 
+///////////////////////////////////////
+// Page navigation
+
+// document.querySelectorAll(".nav__link").forEach(function (el) {
+//   el.addEventListener("click", function (e) {
+//     e.preventDefault();
+//     const id = this.getAttribute("href");
+//     console.log(id);
+//     console.log(this);
+//     console.log(e.target);
+//     document.querySelector(id).scrollIntoView({ behavior: "smooth" });
+//   });
+// });
+
+// 1. Add event listener to common parent element
+// 2. Determine what element originated the event
+
+document.querySelector(".nav__links").addEventListener("click", function (e) {
+  e.preventDefault();
+
+  // Matching Strategy
+  if (e.target.classList.contains("nav__link"));
+  const id = e.target.getAttribute("href");
+  console.log(this);
+  console.log(e.target);
+  document.querySelector(id).scrollIntoView({ behavior: "smooth" });
+});
 // =================================================================================================== //
+
+// **********************************************
+// Event Delegation: Implementing Page Navigation
+// **********************************************
+
+/*
+ Capturing and bubbling allow us to implement one of most powerful event handling patterns called event delegation.
+
+ Event Delegation?
+  
+   The idea is that if we have a lot of elements handled in a similar way, then instead of assigning a handler to each of them – we put a single handler on their common ancestor. (EFFICIENT) (PERFORMANCE)
+
+ Two steps of using event delegation...
+
+   1. First, we add the event listener to a common parent element of all the elements that we're interested in.
+
+   2. And then in that event listener, determine what element originated the event. So that we can then work with that element where the event was actually created.
+
+ IMPORTANT: use case of event delegation, which is when we are working with elements that are not yet on the page on runtime. We will be able to handle events on elements that don't exist at the beginning of the page by using event delegation.
+
+ HTML: when using '#' as an attribute for an 'href', it means that it points NOT to a different URL, but rather to another id or name tag on the same page!
+*/
+
+// *****************************
+// Event Propagation in Practice
+// *****************************
+
+/*
+ The Event.target: property of the Event interface is a refererence to the object onto which the event was dispatched.
+
+ The Event.currentTarget: read-only property of the Event interface identifies the current target for the event, as the event traverses the DOM.
+
+   target vs. currentTarget: 
+   The currentTarget always refers to the element to which the event handler has been attached. Opposed to Event.target, which identifies the element on which the event occurred and which may be its descendant.
+ 
+ The stopPropagation(): method of the Event interface PREVENTS further propagation of the current event in the capturing and bubbling phases. It DOES NOT, however, prevent any default behaviors from occurring.
+ BAD PRACTICE: stopPropagation() is not reccomended for use often.
+
+ NOTE: The 'this' keyword, when used in an event listener is the SAME as the 'Event.target' IF what the user clicks on ('e.target') is the SAME as item as the event listener ('this').
+*/
+
+// const randomInt = (min, max) =>
+//   Math.floor(Math.random() * (max - min + 1) + min);
+// const randomColor = () =>
+//   `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)})`;
+
+// document.querySelector(".nav__link").addEventListener("click", function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log("LINK", e.target, e.currentTarget);
+//   console.log(e.target === this); // true
+
+//   // Stop propagation
+//   // e.stopPropagation();
+// });
+
+// document.querySelector(".nav__links").addEventListener("click", function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log("LIST", e.target, e.currentTarget);
+// });
+
+// document.querySelector("nav").addEventListener("click", function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log("NAV", e.target, e.currentTarget);
+// });
+
+// *****************************************
+// Event Propagation: Bubbling and Capturing
+// *****************************************
+
+/*
+ Event propagation: is a way to describe the “stack” of events that are fired in a web browser. 
+
+   Event Capturing: is the first phase that occurs when the event moves all the way down the elements from the top (window) to the event target.(never really used in practice anymore)
+
+   Target Phase:  the second 'target' phase that occurs when the event.target element is reached, is not handled separately like the others.
+
+   Event Bubbling: is the last phase that involves running the target element’s handlers, and then “bubbling” upwards to the next parent element’s handlers, then the grandparent element above that, and so on.
+
+ NOTE: When bubbling, if a parent element of the event.target has the SAME event listener, when the event.target is fired, when bubbling up the parente elements event listener will ALSO fire! 
+*/
 
 // **********************************
 // Types of Events and Event Handlers
@@ -49,26 +188,26 @@ btnScrollTo.addEventListener("click", function (e) {
          target.removeEventListener(type, listener[, useCapture]);
 */
 
-const h1 = document.querySelector("h1");
+// const h1 = document.querySelector("h1");
 
-// old-school
-h1.onmouseenter = function (e) {
-  alert("onmouseenver: Great! You are reading the heading :D");
-};
+// // old-school
+// h1.onmouseenter = function (e) {
+//   alert("onmouseenver: Great! You are reading the heading :D");
+// };
 
-// exporting function to remove event listener
-const alertH1 = function (e) {
-  alert("addEventListener: Great! You are reading the heading :D");
+// // exporting function to remove event listener
+// const alertH1 = function (e) {
+//   alert("addEventListener: Great! You are reading the heading :D");
 
-  // h1.removeEventListener("mouseenter");
-};
+//   // h1.removeEventListener("mouseenter");
+// };
 
-h1.addEventListener("mouseenter", alertH1);
+// h1.addEventListener("mouseenter", alertH1);
 
-// another way of removing event listener
-setTimeout(() => {
-  h1.removeEventListener("mouseenter");
-}, 3000);
+// // another way of removing event listener
+// setTimeout(() => {
+//   h1.removeEventListener("mouseenter");
+// }, 3000);
 
 // *****************************
 // Implementing Smooth Scrolling
@@ -89,8 +228,6 @@ setTimeout(() => {
  The Element.scrollIntoView(): method scrolls the element's parent container such that the element on which scrollIntoView() is called is visible to the user.
    SYNTAX: element.scrollIntoView(alignToTop); // Boolean parameter
            element.scrollIntoView(scrollIntoViewOptions); // Object parameter
-
- The target property: of the Event interface is a refererence to the object onto which the event was dispatched.
 */
 
 // *******************************
@@ -291,34 +428,3 @@ setTimeout(() => {
    DOM is a very complex API that contains lots of methods and properties to interact with the DOM tree.
    Ex. .querySelctor() / .addEventListener() / .createElement() / .innerHTML / .textContent / etc...
 */
-
-// **************************
-// PROJECT: "Bankist" Website
-// **************************
-
-// const modal = document.querySelector(".modal");
-// const overlay = document.querySelector(".overlay");
-// const btnCloseModal = document.querySelector(".btn--close-modal");
-// const btnsOpenModal = document.querySelectorAll(".btn--show-modal");
-
-// const openModal = function (e) {
-//   e.preventDefault();
-//   modal.classList.remove("hidden");
-//   overlay.classList.remove("hidden");
-// };
-
-// const closeModal = function () {
-//   modal.classList.add("hidden");
-//   overlay.classList.add("hidden");
-// };
-
-// btnsOpenModal.forEach((btn) => btn.addEventListener("click", openModal));
-
-// btnCloseModal.addEventListener("click", closeModal);
-// overlay.addEventListener("click", closeModal);
-
-// document.addEventListener("keydown", function (e) {
-//   if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-//     closeModal();
-//   }
-// });
