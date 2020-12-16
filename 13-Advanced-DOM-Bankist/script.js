@@ -139,11 +139,31 @@ const handleHover = function (e) {
   }
 };
 
+// Passing "argument" into handler (essentially)
 nav.addEventListener("mouseover", handleHover.bind(0.5));
 
 nav.addEventListener("mouseout", handleHover.bind(1));
 
+// Sticky navigation
+const initialCoords = section1.getBoundingClientRect();
+console.log(initialCoords);
+
+window.addEventListener("scroll", function () {
+  console.log(window.scrollY);
+
+  window.scrollY > initialCoords.top
+    ? nav.classList.add("sticky")
+    : nav.classList.remove("sticky");
+});
 // =================================================================================================== //
+
+// **************************************************
+// Implementing a Sticky Navigation: The Scroll Event
+// **************************************************
+
+/*
+ NOTE: using the scroll event for performing a certain action at a certain position of the page is really not the way to go because it has TERRIBLE PERFORMANCE.
+*/
 
 // ************************************
 // Passing Arguments to Event Handlers
