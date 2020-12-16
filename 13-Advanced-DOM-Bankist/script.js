@@ -88,7 +88,51 @@ document.querySelector(".nav__links").addEventListener("click", function (e) {
   console.log(e.target);
   document.querySelector(id).scrollIntoView({ behavior: "smooth" });
 });
+
+// Tabbed Component
+
+const tabs = document.querySelectorAll(".operations__tab");
+const tabsContainer = document.querySelector(".operations__tab-container");
+const tabsContent = document.querySelectorAll(".operations__content");
+
+tabsContainer.addEventListener("click", function (e) {
+  // e.preventDefault();
+  const clicked = e.target.closest(".operations__tab");
+  console.log(clicked);
+
+  // Gaurd clause
+  if (!clicked) return;
+
+  // Remove active classes
+  tabs.forEach((t) => t.classList.remove("operations__tab--active"));
+
+  tabsContent.forEach((tc) =>
+    tc.classList.remove("operations__content--active")
+  );
+
+  // Activate Tab
+  clicked.classList.add("operations__tab--active");
+
+  // Activate content area
+  console.log(clicked.dataset.tab);
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add("operations__content--active");
+});
+
 // =================================================================================================== //
+
+// ***************************
+// Building a Tabbed Component
+// ***************************
+
+/*
+ Gaurd Clause?
+
+   The idea is that when you have something to assert in the beginning of a method — do this using a fast return.
+
+ The dataset read-only property of the HTMLOrForeignElement interface provides read/write access to custom data attributes (data-*) on elements.
+*/
 
 // **************
 // DOM Traversing
@@ -126,35 +170,35 @@ document.querySelector(".nav__links").addEventListener("click", function (e) {
  COMPARISON: 'querySelector' finds CHILDREN, no matter how deep in the Dom tree, while the closest method finds PARENTS.
 */
 
-const h1 = document.querySelector("h1");
+// const h1 = document.querySelector("h1");
 
-// Going downwards: child
-console.log(h1.querySelectorAll(".highlight")); // NodeList [span.highlight, span.highlight]
-console.log(h1.childNodes); // NodeList [text, comment, text, span.highlight, text, br, text, span.highlight, text]
-console.log(h1.children); // HTMLCollection [span.highlight, br, span.highlight]
+// // Going downwards: child
+// console.log(h1.querySelectorAll(".highlight")); // NodeList [span.highlight, span.highlight]
+// console.log(h1.childNodes); // NodeList [text, comment, text, span.highlight, text, br, text, span.highlight, text]
+// console.log(h1.children); // HTMLCollection [span.highlight, br, span.highlight]
 
-h1.firstElementChild.style.color = "white";
-h1.lastElementChild.style.color = "orangered";
+// h1.firstElementChild.style.color = "white";
+// h1.lastElementChild.style.color = "orangered";
 
-// Going upwards: parents
-console.log(h1.parentNode);
-console.log(h1.parentElement);
+// // Going upwards: parents
+// console.log(h1.parentNode);
+// console.log(h1.parentElement);
 
-h1.closest(".header").style.background = "var(--gradient-secondary)";
-h1.closest("h1").style.background = "var(--gradient-primary)";
+// h1.closest(".header").style.background = "var(--gradient-secondary)";
+// h1.closest("h1").style.background = "var(--gradient-primary)";
 
-// Going sideways: siblings
-console.log(h1.previousElementSibling);
-console.log(h1.nextElementSibling);
+// // Going sideways: siblings
+// console.log(h1.previousElementSibling);
+// console.log(h1.nextElementSibling);
 
-console.log(h1.previousSibling);
-console.log(h1.nextSibling);
+// console.log(h1.previousSibling);
+// console.log(h1.nextSibling);
 
-// sideways trick
-console.log(h1.parentElement.children);
-[...h1.parentElement.children].forEach(function (el) {
-  if (el !== h1) el.style.transform = "scale(0.5)";
-});
+// // sideways trick
+// console.log(h1.parentElement.children);
+// [...h1.parentElement.children].forEach(function (el) {
+//   if (el !== h1) el.style.transform = "scale(0.5)";
+// });
 
 // **********************************************
 // Event Delegation: Implementing Page Navigation
