@@ -10,6 +10,12 @@ const btnsOpenModal = document.querySelectorAll(".btn--show-modal");
 const btnScrollTo = document.querySelector(".btn--scroll-to");
 const section1 = document.querySelector("#section--1");
 
+const tabs = document.querySelectorAll(".operations__tab");
+const tabsContainer = document.querySelector(".operations__tab-container");
+const tabsContent = document.querySelectorAll(".operations__content");
+
+const nav = document.querySelector(".nav");
+
 ///////////////////////////////////////
 // Modal window
 
@@ -88,7 +94,143 @@ document.querySelector(".nav__links").addEventListener("click", function (e) {
   console.log(e.target);
   document.querySelector(id).scrollIntoView({ behavior: "smooth" });
 });
+
+// Tabbed Component
+
+tabsContainer.addEventListener("click", function (e) {
+  // e.preventDefault();
+  const clicked = e.target.closest(".operations__tab");
+  console.log(clicked);
+
+  // Gaurd clause
+  if (!clicked) return;
+
+  // Remove active classes
+  tabs.forEach((t) => t.classList.remove("operations__tab--active"));
+
+  tabsContent.forEach((tc) =>
+    tc.classList.remove("operations__content--active")
+  );
+
+  // Activate Tab
+  clicked.classList.add("operations__tab--active");
+
+  // Activate content area
+  console.log(clicked.dataset.tab);
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add("operations__content--active");
+});
+
+// Menu fade animation
+const handleHover = function (e) {
+  if (e.target.classList.contains("nav__link")) {
+    const link = e.target;
+    // console.log(link, this);
+    const siblings = link.closest(".nav").querySelectorAll(".nav__link");
+    // console.log(siblings);
+    const logo = link.closest(".nav").querySelector("img");
+    // console.log(logo);
+
+    siblings.forEach((el) => {
+      if (el !== link) el.style.opacity = this;
+    });
+    logo.style.opacity = this;
+  }
+};
+
+nav.addEventListener("mouseover", handleHover.bind(0.5));
+
+nav.addEventListener("mouseout", handleHover.bind(1));
+
 // =================================================================================================== //
+
+// ************************************
+// Passing Arguments to Event Handlers
+// ************************************
+
+/*
+ The Function.prototype.bind() method: creates a new function that, when called, has its 'this' keyword set to the PROVIDED VALUE, with a given sequence of arguments preceding any provided when the new function is called.
+   SYNTAX: let boundFunc = func.bind(thisArg[, arg1[, arg2[, ...argN]]])
+*/
+
+// ***************************
+// Building a Tabbed Component
+// ***************************
+
+/*
+ Gaurd Clause?
+
+   The idea is that when you have something to assert in the beginning of a method — do this using a fast return.
+
+ The dataset read-only property of the HTMLOrForeignElement interface provides read/write access to custom data attributes (data-*) on elements.
+*/
+
+// **************
+// DOM Traversing
+// **************
+
+/*
+ Dom traversing is basically walking through the Dom. Which means that we can select an element based on another element.
+
+   Downwards(child):
+
+      The Node.childNodes: read-only property retunrs a live NodeList of child nodes of the given element where te first child node is assigned index 0. Child nodes include elements, text and comments.
+
+      The ParentNode.children: property children is a read-only property that returns a live HTMLCollection which contains all of the child elements of the node upon which it was called.
+    
+   Upwards(parent): 
+
+      The Node.parentNode: read-only property returns the parent of the specified node in the DOM tree.
+      
+      The Node.parentElement: read-only property returns the DOM node's parent Element, or null if the node either has no parent, or its parent isn't a DOM Element.
+
+      The closest() method traverses the Element and its parents until it finds a node that matches the provided selecor string.
+
+  Sideways(sibling):
+
+    NonDocumentTypeChildNode.previousElementSibling: read-only property returns the ELEMENT immediately PRIOR to the specified one in its parent's children list.
+    
+    NonDocumentTypeChildNode.nextElementSibling: read-only property returns the ELEMENT immediately FOLLOWING the specified one in its parent's children list.
+
+    The Node.nextSibling: read-only property returns the NODE immediately FOLLOWING the specified one in their parent's childNodes list.
+
+    The Node.previousSibling read-only property returns the NODE immediately PRECEDING the specified one in its parent's childNodes list.
+
+    TRICK: Call the '.parentElement' and read out its '.children' to get ALL the siblings including itself.
+
+ COMPARISON: 'querySelector' finds CHILDREN, no matter how deep in the Dom tree, while the closest method finds PARENTS.
+*/
+
+// const h1 = document.querySelector("h1");
+
+// // Going downwards: child
+// console.log(h1.querySelectorAll(".highlight")); // NodeList [span.highlight, span.highlight]
+// console.log(h1.childNodes); // NodeList [text, comment, text, span.highlight, text, br, text, span.highlight, text]
+// console.log(h1.children); // HTMLCollection [span.highlight, br, span.highlight]
+
+// h1.firstElementChild.style.color = "white";
+// h1.lastElementChild.style.color = "orangered";
+
+// // Going upwards: parents
+// console.log(h1.parentNode);
+// console.log(h1.parentElement);
+
+// h1.closest(".header").style.background = "var(--gradient-secondary)";
+// h1.closest("h1").style.background = "var(--gradient-primary)";
+
+// // Going sideways: siblings
+// console.log(h1.previousElementSibling);
+// console.log(h1.nextElementSibling);
+
+// console.log(h1.previousSibling);
+// console.log(h1.nextSibling);
+
+// // sideways trick
+// console.log(h1.parentElement.children);
+// [...h1.parentElement.children].forEach(function (el) {
+//   if (el !== h1) el.style.transform = "scale(0.5)";
+// });
 
 // **********************************************
 // Event Delegation: Implementing Page Navigation
