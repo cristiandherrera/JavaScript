@@ -96,7 +96,6 @@ document.querySelector(".nav__links").addEventListener("click", function (e) {
 });
 
 // Tabbed Component
-
 tabsContainer.addEventListener("click", function (e) {
   // e.preventDefault();
   const clicked = e.target.closest(".operations__tab");
@@ -149,9 +148,9 @@ const header = document.querySelector(".header");
 const navHeight = nav.getBoundingClientRect().height;
 
 const stickyNav = function (entries) {
-  console.log(entries);
+  // console.log(entries);
   const [entry] = entries;
-  console.log(entry);
+  // console.log(entry);
 
   if (!entry.isIntersecting) nav.classList.add("sticky");
   else nav.classList.remove("sticky");
@@ -166,8 +165,40 @@ const navOptions = {
 const headerObserver = new IntersectionObserver(stickyNav, navOptions);
 headerObserver.observe(header);
 
+// Reveal sections
+
+const allSections = document.querySelectorAll(".section");
+
+const revealSections = function (entries, observer) {
+  const [entry] = entries;
+  console.log(entry);
+
+  if (!entry.isIntersecting) return;
+
+  entry.target.classList.remove("section--hidden");
+  observer.unobserve(entry.target);
+};
+
+const secOptions = {
+  root: null,
+  threshold: 0.15,
+};
+
+const sectionObserver = new IntersectionObserver(revealSections, secOptions);
+allSections.forEach(function (section) {
+  sectionObserver.observe(section);
+  section.classList.add("section--hidden");
+});
 // });
 // =================================================================================================== //
+
+// ***************************
+// Revealing Elements on Scroll
+// ****************************
+
+/*
+ The IntersectionObserver method unobserve() instructs the IntersectionObserver to stop observing the specified target element.
+*/
 
 // *******************************************
 // A Better Way: The Intersection Observer API
