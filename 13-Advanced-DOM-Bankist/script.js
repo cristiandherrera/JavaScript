@@ -171,7 +171,6 @@ const allSections = document.querySelectorAll(".section");
 
 const revealSections = function (entries, observer) {
   const [entry] = entries;
-  console.log(entry);
 
   if (!entry.isIntersecting) return;
 
@@ -189,9 +188,45 @@ allSections.forEach(function (section) {
   sectionObserver.observe(section);
   section.classList.add("section--hidden");
 });
+
+// Lazy loading images
+const imageTagets = document.querySelectorAll("img[data-src]");
+
+const loadImage = function (entries, observer) {
+  const [entry] = entries;
+  console.log(entry.target);
+
+  if (!entry.isIntersecting) return;
+
+  // Replace src with data src
+  console.log(entry.target);
+  entry.target.src = entry.target.dataset.src;
+
+  entry.target.addEventListener("load", function () {
+    entry.target.classList.remove("lazy-img");
+  });
+
+  observer.unobserve(entry.target);
+};
+
+const imgObserver = new IntersectionObserver(loadImage, {
+  root: null,
+  threshold: 0,
+  rootMargin: "200px",
+});
+
+imageTagets.forEach((img) => imgObserver.observe(img));
+
 // });
 // =================================================================================================== //
 
+// *******************
+// Lazy Loading Images
+// *******************
+
+/*
+ Images have by far the biggest impact on page loading. And so it's very important that images are optimized on any page. And for that, we can use a strategy called Lazy Loading Images.
+*/
 // ***************************
 // Revealing Elements on Scroll
 // ****************************
