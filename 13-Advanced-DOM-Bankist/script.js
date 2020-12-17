@@ -145,17 +145,76 @@ nav.addEventListener("mouseover", handleHover.bind(0.5));
 nav.addEventListener("mouseout", handleHover.bind(1));
 
 // Sticky navigation
-const initialCoords = section1.getBoundingClientRect();
-console.log(initialCoords);
 
-window.addEventListener("scroll", function () {
-  console.log(window.scrollY);
+// // callback function fired at threshold
+// const obsCallback = function (entries, observer) {
+//   entries.forEach((entry) => {
+//     console.log(entry);
+//   });
+// };
 
-  window.scrollY > initialCoords.top
-    ? nav.classList.add("sticky")
-    : nav.classList.remove("sticky");
-});
+// // customize the observer object
+// const obsOptions = {
+//   root: null,
+//   threshold: [0, 0.2],
+// };
+
+// // creating observer object
+// const observer = new IntersectionObserver(obsCallback, obsOptions);
+
+// // target element of observer object
+// observer.observe(section1);
+
+// const initialCoords = section1.getBoundingClientRect();
+// console.log(initialCoords);
+
+// window.addEventListener("scroll", function () {
+//   console.log(window.scrollY);
+
+//   window.scrollY > initialCoords.top
+//     ? nav.classList.add("sticky")
+//     : nav.classList.remove("sticky");
+
+// });
 // =================================================================================================== //
+
+// *******************************************
+// A Better Way: The Intersection Observer API
+// *******************************************
+
+/*
+ Why is it so helpful?
+
+   Well, this API allows our code to basically observe changes to the way that a certain target element intersects another element, or the way it intersects the view port.
+
+   The Intersection Observer API lets code register a callback function that is executed whenever an element they wish to monitor enters or exits another element (or the viewport), or when the amount by which the two intersect changes by a requested amount.
+
+ How does it work?
+
+ The callback function of IntersectionObserver(), will get called each time that the observed element, so our target element here is intersecting the route element at the threshold that we defined.
+
+ A TARGET element intersects either the device's viewport or a specified element. That specified element is called the ROOT element or root for the purposes of the Intersection Observer API. (done in options)
+
+   To watch for intersection relative to the root element, specify null. (the viewport)
+
+ The IntersectionObserverEntry interface of the Intersection Observer API describes the intersection between the target element and its root container at a specific moment of transition.
+
+ Methods & Constructors!
+
+ The observe() method: adds a TARGET element to the set of target elements being watched by the IntersectionObserver.
+
+ The IntersectionObserver() constructor creates and returns a new IntersectionObserver object. 
+   SYNTAX: var observer = new IntersectionObserver(callback[, options]);
+
+   callback:
+    A function which is called when the percentage of the target element is visible crosses a threshold. The callback receives as input two parameters:
+     entries:
+       An array of IntersectionObserverEntry objects, each representing one threshold which was crossed, either becoming more or less visible than the percentage specified by that threshold.
+     observer:
+       The IntersectionObserver for which the callback is being invoked.
+
+  
+*/
 
 // **************************************************
 // Implementing a Sticky Navigation: The Scroll Event
@@ -163,6 +222,8 @@ window.addEventListener("scroll", function () {
 
 /*
  NOTE: using the scroll event for performing a certain action at a certain position of the page is really not the way to go because it has TERRIBLE PERFORMANCE.
+
+ ALTERNATIVE: intersection of server API
 */
 
 // ************************************
