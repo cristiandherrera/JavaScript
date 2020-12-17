@@ -145,35 +145,26 @@ nav.addEventListener("mouseover", handleHover.bind(0.5));
 nav.addEventListener("mouseout", handleHover.bind(1));
 
 // Sticky navigation
+const header = document.querySelector(".header");
+const navHeight = nav.getBoundingClientRect().height;
 
-// // callback function fired at threshold
-// const obsCallback = function (entries, observer) {
-//   entries.forEach((entry) => {
-//     console.log(entry);
-//   });
-// };
+const stickyNav = function (entries) {
+  console.log(entries);
+  const [entry] = entries;
+  console.log(entry);
 
-// // customize the observer object
-// const obsOptions = {
-//   root: null,
-//   threshold: [0, 0.2],
-// };
+  if (!entry.isIntersecting) nav.classList.add("sticky");
+  else nav.classList.remove("sticky");
+};
 
-// // creating observer object
-// const observer = new IntersectionObserver(obsCallback, obsOptions);
+const navOptions = {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
+};
 
-// // target element of observer object
-// observer.observe(section1);
-
-// const initialCoords = section1.getBoundingClientRect();
-// console.log(initialCoords);
-
-// window.addEventListener("scroll", function () {
-//   console.log(window.scrollY);
-
-//   window.scrollY > initialCoords.top
-//     ? nav.classList.add("sticky")
-//     : nav.classList.remove("sticky");
+const headerObserver = new IntersectionObserver(stickyNav, navOptions);
+headerObserver.observe(header);
 
 // });
 // =================================================================================================== //
@@ -206,15 +197,50 @@ nav.addEventListener("mouseout", handleHover.bind(1));
  The IntersectionObserver() constructor creates and returns a new IntersectionObserver object. 
    SYNTAX: var observer = new IntersectionObserver(callback[, options]);
 
-   callback:
-    A function which is called when the percentage of the target element is visible crosses a threshold. The callback receives as input two parameters:
-     entries:
-       An array of IntersectionObserverEntry objects, each representing one threshold which was crossed, either becoming more or less visible than the percentage specified by that threshold.
-     observer:
-       The IntersectionObserver for which the callback is being invoked.
+    callback: A function which is called when the percentage of the target element is visible crosses a threshold. 
 
-  
+      entries: An array of IntersectionObserverEntry objects, each representing one threshold which was crossed, either becoming more or less visible than the percentage specified by that threshold.
+
+      observer: The IntersectionObserver for which the callback is being invoked.
+      
+    options: An optional object which customizes the observer.
+      
+      root: An Element or Document object which is an ancestor of the intended target.
+
+      rootMargin: A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections, effectively shrinking or growing the root for calculation purposes.
+
+      threshold: Either a single number or an array of numbers between 0.0 and 1.0, specifying a ratio of intersection area to total bounding box area for the observed target.
 */
+
+// // callback function fired at threshold
+// const obsCallback = function (entries, observer) {
+//   entries.forEach((entry) => {
+//     console.log(entry);
+//   });
+// };
+
+// // customize the observer object
+// const obsOptions = {
+//   root: null,
+//   threshold: [0, 0.2],
+// };
+
+// // creating observer object
+// const observer = new IntersectionObserver(obsCallback, obsOptions);
+
+// // target element of observer object
+// observer.observe(section1);
+
+// const initialCoords = section1.getBoundingClientRect();
+// console.log(initialCoords);
+
+// // NOT using API
+// window.addEventListener("scroll", function () {
+//   console.log(window.scrollY);
+
+//   window.scrollY > initialCoords.top
+//     ? nav.classList.add("sticky")
+//     : nav.classList.remove("sticky");
 
 // **************************************************
 // Implementing a Sticky Navigation: The Scroll Event
