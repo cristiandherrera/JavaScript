@@ -96,7 +96,6 @@ document.querySelector(".nav__links").addEventListener("click", function (e) {
 });
 
 // Tabbed Component
-
 tabsContainer.addEventListener("click", function (e) {
   // e.preventDefault();
   const clicked = e.target.closest(".operations__tab");
@@ -139,11 +138,329 @@ const handleHover = function (e) {
   }
 };
 
+// Passing "argument" into handler (essentially)
 nav.addEventListener("mouseover", handleHover.bind(0.5));
 
 nav.addEventListener("mouseout", handleHover.bind(1));
 
+// Sticky navigation
+const header = document.querySelector(".header");
+const navHeight = nav.getBoundingClientRect().height;
+
+const stickyNav = function (entries) {
+  // console.log(entries);
+  const [entry] = entries;
+  // console.log(entry);
+
+  if (!entry.isIntersecting) nav.classList.add("sticky");
+  else nav.classList.remove("sticky");
+};
+
+const navOptions = {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, navOptions);
+headerObserver.observe(header);
+
+// Reveal sections
+const allSections = document.querySelectorAll(".section");
+
+const revealSections = function (entries, observer) {
+  const [entry] = entries;
+
+  if (!entry.isIntersecting) return;
+
+  entry.target.classList.remove("section--hidden");
+  observer.unobserve(entry.target);
+};
+
+const secOptions = {
+  root: null,
+  threshold: 0.15,
+};
+
+const sectionObserver = new IntersectionObserver(revealSections, secOptions);
+allSections.forEach(function (section) {
+  sectionObserver.observe(section);
+  section.classList.add("section--hidden");
+});
+
+// Lazy loading images
+const imageTagets = document.querySelectorAll("img[data-src]");
+
+const loadImage = function (entries, observer) {
+  const [entry] = entries;
+
+  if (!entry.isIntersecting) return;
+
+  // Replace src with data src
+  entry.target.src = entry.target.dataset.src;
+
+  entry.target.addEventListener("load", function () {
+    entry.target.classList.remove("lazy-img");
+  });
+
+  observer.unobserve(entry.target);
+};
+
+const imgObserver = new IntersectionObserver(loadImage, {
+  root: null,
+  threshold: 0,
+  rootMargin: "200px",
+});
+
+imageTagets.forEach((img) => imgObserver.observe(img));
+
+// Slider
+const slider = function () {
+  const slides = document.querySelectorAll(".slide");
+  const btnLeft = document.querySelector(".slider__btn--left");
+  const btnRight = document.querySelector(".slider__btn--right");
+  const dotContainer = document.querySelector(".dots");
+
+  let curSlide = 0;
+  const maxSlide = slides.length;
+
+  // Functions
+  const createDots = function () {
+    slides.forEach(function (_, i) {
+      dotContainer.insertAdjacentHTML(
+        "beforeend",
+        `<button class="dots__dot" data-slide="${i}"></button>`
+      );
+    });
+  };
+
+  const activateDot = function (slide) {
+    document
+      .querySelectorAll(".dots__dot")
+      .forEach((dot) => dot.classList.remove("dots__dot--active"));
+    document
+      .querySelector(`.dots__dot[data-slide="${slide}"]`)
+      .classList.add("dots__dot--active");
+  };
+
+  const goToSlide = function (slide) {
+    slides.forEach(
+      (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+    );
+  };
+
+  const nextSlide = function () {
+    if (curSlide === maxSlide - 1) {
+      curSlide = 0;
+    } else {
+      curSlide++;
+    }
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  const prevSlide = function () {
+    if (curSlide === 0) {
+      curSlide = maxSlide - 1;
+    } else {
+      curSlide--;
+    }
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  const init = function () {
+    createDots();
+    activateDot(0);
+    goToSlide(0);
+  };
+  init();
+
+  // add event listener
+  btnRight.addEventListener("click", nextSlide);
+  btnLeft.addEventListener("click", prevSlide);
+
+  document.addEventListener("keydown", function (e) {
+    console.log(e);
+    e.key === "ArrowRight" && nextSlide();
+    e.key === "ArrowLeft" && prevSlide();
+  });
+
+  dotContainer.addEventListener("click", function (e) {
+    if (e.target.classList.contains("dots__dot")) {
+      const { slide } = e.target.dataset;
+      goToSlide(slide);
+      activateDot(slide);
+    }
+  });
+};
+slider();
+
+// });
 // =================================================================================================== //
+
+// *****************************************
+// Efficient Script Loading: defer and async
+// *****************************************
+
+/*
+ Regular vs. Async vs. Defer
+   
+   End of body:
+
+      Scripts are fetched and executed after the HTML is completely parsedd.
+
+   Async in head: 
+
+      Scripts are fetched asynchronously and executed immediately
+
+      Usually the 'DOMContentLoaded' event waits for all scripts to execute, execept for async scripts. So, DOMContentLoaded does NOT wait for an async script
+
+      Scripts NOT guatanteed to execute in order
+
+      USE for 3rd-party scripts where order doesn't matter (e.g. Google analytics)
+
+   Defer in head: (overall best solution)
+
+      Scripts are fetched asynchronously and executed after the HTML is completely
+      parsed
+
+      DOMContentLoaded event fires after defer script is executed
+
+      Scripts are executed in ORDER
+
+      USE for your own scripts, and when order matters (e.g. including a library)
+
+ NOTE: You can of course, use different stratagies for different scripts. Usually a complete web application includes more than just one script.
+*/
+
+// ********************
+// Lifecycle DOM Events
+// ********************
+
+/*
+ The life cycle DOM means right from the moment that the page is first accessed, until the user leaves it.
+ 
+   DOM content loaded: this event is fired by the document as soon as the HTML is completely parsed, which means that the HTML has been downloaded and been converted to the DOM tree.
+
+   The load event: is fired when the whole page has loaded, including all dependent resources such as stylesheets and images.
+
+   The beforeunload event is fired when the window, the document and its resources are about to be unloaded. The document is still visible and the event is still cancelable at this point.
+*/
+
+// document.addEventListener("DOMContentLoaded", function (e) {
+//   console.log(`HTML parsed and DOM tree build!`, e);
+// });
+
+// window.addEventListener("load", function (e) {
+//   console.log("Page fully loaded", e);
+// });
+
+// window.addEventListener("beforeunload", function (e) {
+//   preventDefault(e);
+//   console.log(e);
+
+//   e.returnValue = "";
+// });
+
+// *******************
+// Lazy Loading Images
+// *******************
+
+/*
+ Images have by far the biggest impact on page loading. And so it's very important that images are optimized on any page. And for that, we can use a strategy called Lazy Loading Images.
+*/
+
+// ***************************
+// Revealing Elements on Scroll
+// ****************************
+
+/*
+ The IntersectionObserver method unobserve() instructs the IntersectionObserver to stop observing the specified target element.
+*/
+
+// *******************************************
+// A Better Way: The Intersection Observer API
+// *******************************************
+
+/*
+ Why is it so helpful?
+
+   Well, this API allows our code to basically observe changes to the way that a certain target element intersects another element, or the way it intersects the view port.
+
+   The Intersection Observer API lets code register a callback function that is executed whenever an element they wish to monitor enters or exits another element (or the viewport), or when the amount by which the two intersect changes by a requested amount.
+
+ How does it work?
+
+ The callback function of IntersectionObserver(), will get called each time that the observed element, so our target element here is intersecting the route element at the threshold that we defined.
+
+ A TARGET element intersects either the device's viewport or a specified element. That specified element is called the ROOT element or root for the purposes of the Intersection Observer API. (done in options)
+
+   To watch for intersection relative to the root element, specify null. (the viewport)
+
+ The IntersectionObserverEntry interface of the Intersection Observer API describes the intersection between the target element and its root container at a specific moment of transition.
+
+ Methods & Constructors!
+
+ The observe() method: adds a TARGET element to the set of target elements being watched by the IntersectionObserver.
+
+ The IntersectionObserver() constructor creates and returns a new IntersectionObserver object. 
+   SYNTAX: var observer = new IntersectionObserver(callback[, options]);
+
+    callback: A function which is called when the percentage of the target element is visible crosses a threshold. 
+
+      entries: An array of IntersectionObserverEntry objects, each representing one threshold which was crossed, either becoming more or less visible than the percentage specified by that threshold.
+
+      observer: The IntersectionObserver for which the callback is being invoked.
+      
+    options: An optional object which customizes the observer.
+      
+      root: An Element or Document object which is an ancestor of the intended target.
+
+      rootMargin: A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections, effectively shrinking or growing the root for calculation purposes.
+
+      threshold: Either a single number or an array of numbers between 0.0 and 1.0, specifying a ratio of intersection area to total bounding box area for the observed target.
+*/
+
+// // callback function fired at threshold
+// const obsCallback = function (entries, observer) {
+//   entries.forEach((entry) => {
+//     console.log(entry);
+//   });
+// };
+
+// // customize the observer object
+// const obsOptions = {
+//   root: null,
+//   threshold: [0, 0.2],
+// };
+
+// // creating observer object
+// const observer = new IntersectionObserver(obsCallback, obsOptions);
+
+// // target element of observer object
+// observer.observe(section1);
+
+// const initialCoords = section1.getBoundingClientRect();
+// console.log(initialCoords);
+
+// // NOT using API
+// window.addEventListener("scroll", function () {
+//   console.log(window.scrollY);
+
+//   window.scrollY > initialCoords.top
+//     ? nav.classList.add("sticky")
+//     : nav.classList.remove("sticky");
+
+// **************************************************
+// Implementing a Sticky Navigation: The Scroll Event
+// **************************************************
+
+/*
+ NOTE: using the scroll event for performing a certain action at a certain position of the page is really not the way to go because it has TERRIBLE PERFORMANCE.
+
+ ALTERNATIVE: intersection of server API
+*/
 
 // ************************************
 // Passing Arguments to Event Handlers
