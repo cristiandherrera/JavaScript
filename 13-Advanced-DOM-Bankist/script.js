@@ -299,6 +299,35 @@ slider();
 // });
 // =================================================================================================== //
 
+// ********************
+// Lifecycle DOM Events
+// ********************
+
+/*
+ The life cycle DOM means right from the moment that the page is first accessed, until the user leaves it.
+ 
+   DOM content loaded: this event is fired by the document as soon as the HTML is completely parsed, which means that the HTML has been downloaded and been converted to the DOM tree.
+
+   The load event: is fired when the whole page has loaded, including all dependent resources such as stylesheets and images.
+
+   The beforeunload event is fired when the window, the document and its resources are about to be unloaded. The document is still visible and the event is still cancelable at this point.
+*/
+
+document.addEventListener("DOMContentLoaded", function (e) {
+  console.log(`HTML parsed and DOM tree build!`, e);
+});
+
+window.addEventListener("load", function (e) {
+  console.log("Page fully loaded", e);
+});
+
+// window.addEventListener("beforeunload", function (e) {
+//   preventDefault(e);
+//   console.log(e);
+
+//   e.returnValue = "";
+// });
+
 // ***********************************
 // Building a Slider Component
 // ***********************************
