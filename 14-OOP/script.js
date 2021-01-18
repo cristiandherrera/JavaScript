@@ -7,19 +7,30 @@
 /*
  What is Object-Oriented Programming?
 
-   Object-oriented programming (OOP) is programming paradigm based on the concept of objects.
+   - Object-oriented programming (OOP) is a programming paradigm based on the concept of objects.
 
-   We use objects  to model (describe) real-world or abstract features.
+   - We use objects to model (describe) real-world or abstract features.
 
-   Objects may contain data (properties) and code (methods). By using objects, we pack data and the corresponding behavior into one block.
+   - Objects may contain data (properties) and code (methods). By using objects, we pack data and the corresponding behavior into one block.
 
-   In OOP, objects are self-contained pieces/blocks of code.
+   - In OOP, objects are self-contained pieces/blocks of code.
 
-   Objects are building blocks of applications, and interact with one another
+   - Objects are building blocks of applications, and interact with one another.
 
-   Interaction happen through a public interface (API): methods that the code outside of the object can acess and use to communicate with the object.
+   - Interaction happen through a public interface (API): methods that the code outside of the object can acess and use to communicate with the object.
 
-   OOP was developed with the goal of organizing code, to make it more flexible and easier to maintain (avoid "spaghetti code").
+   - OOP was developed with the goal of organizing code, to make it more flexible and easier to maintain (avoid "spaghetti code").
+
+ Classes and Instances (Traditional OOP)
+   
+   - In OOP we need a way to generate, to create, new objects from our code. And to do that in traditional OOP, we use something called classes.
+  
+   - A 'class' in OOP is a blueprint, which can then be used to create new objects based on the rules described in the class.
+
+   - All objects created through a class are called 'instances' of that class. 
+
+   NOTE: An 'instance' is a real object that we can use in our code, which was created from a 'class', and a class itself is not an object.
+   
 
  The 4 Fumdemntal OOP Principle
 
