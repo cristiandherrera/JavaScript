@@ -29,6 +29,8 @@
 
    - All objects created through a class are called 'instances' of that class. 
 
+      Instantiation: The proccess of creating an instance. (classes creating objects)
+
    NOTE: An 'instance' is a real object that we can use in our code, which was created from a 'class', and a class itself is not an object.
    
 
@@ -41,4 +43,30 @@
    3. Inheritance: Making all properties of a certain class available to a child class, forming a hierarchical relationship between classes. This alows us to reuse common logic and to model real-world relationships.
 
    4. Polymorphism: A child class can overwrite a method it inherited from a parent class [it's more complex than that, but enough for our purposes]
+*/
+
+// *****************
+// OOP in Javascript
+// *****************
+
+/*
+ How does OOP actually work in JS?
+
+   All objects are linke to a prototype object.
+   
+   Prototypal inheritance: The prototype object contains methods (behavior) and properties that all the objects that are linked to that prototype can access and use.
+
+ In practice, how do we implement OOP?
+  
+   1. Constructor functions
+   - Technique to create objects from a function;
+   - This is houw built-in objects like Arrays, Maps or Sets are actually implemented.
+
+   2. ES6 Classes
+   - Modern alternative to constructor function syntax;
+   - "Syntactic surgar": behind the scenes, ES6 classes work exactly like constuctor functions;
+   - ES6 classes do NOT behave like classes in "classical OOP".
+
+   3. Object.create()
+   - The easiest and most straight forward way of linking an object to a prototypw object.
 */
