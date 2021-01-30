@@ -94,7 +94,7 @@
 
    USE: We can use constructor functions, to programmatically build an object using a function.
 
-   DIFFERENCE: The only difference between a regular function and a function that we CALL a constructor function with the 'new' keyword.
+   DIFFERENCE: The only difference between a regular function and a function that we CALL a constructor function with the 'new' keyword. And creates a 'this' keyword will be set to newly created object.
 
    CONVENTION: In OOP there is a convention that constructor functions always start with a capital letter.
 
@@ -113,47 +113,118 @@
    SYNTAX: object instanceof constructor
 */
 
+// CONSTRUCTOR FUNCTION
+// const Person = function (firstName, birthYear) {
+//   // Instance properties: will be available on all instances that are created through this function.
+//   this.firstName = firstName;
+//   this.birthYear = birthYear;
+
+//   // Never create a method in a constructor function - POOR PERFORMANCE
+
+//   // this.calcAge = function () {
+//   //   console.log(2037 - this.birthYear);
+//   // };
+// };
+
+// // Creating a object INSTANCE of 'Person' named 'cristian'
+// const cristian = new Person("Cristian", 1995);
+// console.log(cristian);
+
+// /*
+//  result of calling the function...
+
+//    1. new empty object is created {}
+//    2. function is calls, 'this' = {}
+//    3. {} linked to prototype
+//    4. function automatically return {}
+// */
+
+// MORE INSTANCES
+// const matilda = new Person("Matilda", 1996);
+// const jack = new Person("Jack", 2017);
+// console.log(matilda, jack);
+
+// console.log(cristian instanceof Person);
+
+// **********
+// Prototypes
+// **********
+
+/*
+ Prototypes: are the mechanism by which JavaScript objects inherit features from one another.
+
+   Each and every function created in JavaScript automatically has a property called prototype. 
+
+   Every object that's created by a certain constructor function will get access to all the methods and properties that we define on the constructors prototype property.
+
+   So to provide inheritance, objects can have a prototype object, which acts as a template object that it inherits methods and properties from.
+
+ '__proto__' vs. 'prototype'
+
+   'prototype' i the constructors property that is used to BUILD '__proto__' when you create an object with 'new'
+
+   '__proto__' is an object (in every class instance) that points to the 'prototype' it was created from. 
+
+   DIFFERENCE: The only true difference between 'prototype' and '__proto__' is that the former is a property of a class constructor, while the latter is a property of a class instance.
+
+     EX: Person.prototype provides a blueprint while 'cristian' or 'jack' affirm that the object has been made to that specific blueprint. BUT the properties and methods inside both are exactly the same.
+
+     * BELOW: 'person.prototype' is NOT the prototype of the constructor function 'Person' even though it is called on it. But instead, it is what's gonna be used as the prototype of all the objects that are created with the person constructor function. 
+
+     HELPFUL: Try to think of the property 'prototype' as '.prototypeOfLinkedObjects'
+
+ The isPrototypeOf(): method checks if an object exists in another object's prototype chain.
+   SYNTAX: prototypeObj.isPrototypeOf(object)
+ 
+ The hasOwnProperty(): method returns a boolean indicating whether the object has the specified property as its own property (as opposed to inheriting it).
+   SYNTAX: obj.hasOwnProperty(prop)
+   
+ REMEMBER: The 'this' keyword is set to the object that is calling the method.
+
+ LINK: https://medium.com/javascript-in-plain-english/proto-vs-prototype-in-js-140b9b9c8cd5
+*/
+
+// USING FROM PREVIOUS SECTION
 const Person = function (firstName, birthYear) {
   // Instance properties: will be available on all instances that are created through this function.
   this.firstName = firstName;
   this.birthYear = birthYear;
 
-  // Never create a method in a constructor function - POOR PERFORMANCE
-
-  // this.calcAge = function () {
-  //   console.log(2037 - this.birthYear);
-  // };
+  // NEVER create a method in a constructor function - POOR PERFORMANCE
+  this.calcAgeBad = function () {
+    console.log(2020 - this.birthYear);
+  };
 };
-
 // Creating a object INSTANCE of 'Person' named 'cristian'
 const cristian = new Person("Cristian", 1995);
-console.log(cristian);
-
-/*
- result of calling the function...
-
-   1. new empty object is created {}
-   2. function is calls, 'this' = {}
-   3. {} linked to prototype
-   4. function automatically return {}
-*/
-
 const matilda = new Person("Matilda", 1996);
 const jack = new Person("Jack", 2017);
-console.log(matilda, jack);
 
-console.log(cristian instanceof Person);
+console.log(cristian);
+console.log(matilda);
+console.log(jack);
 
-// **********
-// Prototypes
-// **********
+// PROTOTYPE
+// setting a method on the prototype
+Person.prototype.calcAgeGood = function () {
+  console.log(2020 - this.birthYear);
+};
 
-/*
- 
-*/
+cristian.calcAgeBad(); // method on the object itself < BAD
+cristian.calcAgeGood(); // method on the prototype < GOOD
 
-// Prototypes
+console.log(cristian.__proto__); // prototype property of the class instance 'cristian'
+console.log(cristian.__proto__ === Person.prototype); // TRUE
 
-// const cristian = new Person("Cristian", 1995);
-// const matilda = new Person("Matilda", 1996);
-// const jack = new Person("Jack", 2017);
+// The '.prototype' property is NOT the prototype of the constructor function
+console.log(Person.prototype.isPrototypeOf(cristian)); // TRUE
+console.log(Person.prototype.isPrototypeOf(matilda)); // TRUE
+console.log(Person.prototype.isPrototypeOf(Person)); // FALSE
+
+//setting a property on the prototype
+Person.prototype.species = "Homo Sapiens";
+console.log(cristian.species, matilda.species);
+
+// checking object if a property is actually IN the object
+console.log(cristian.hasOwnProperty("species")); // FALSE < IN the prototype
+console.log(cristian.hasOwnProperty("firstName")); // TRUE
