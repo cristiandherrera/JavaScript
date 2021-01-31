@@ -159,6 +159,8 @@
 
    So to provide inheritance, objects can have a prototype object, which acts as a template object that it inherits methods and properties from.
 
+   And if a property or a method cannot be found in a certain object JavaScript will look into its prototype.
+
  '__proto__' vs. 'prototype'
 
    'prototype' i the constructors property that is used to BUILD '__proto__' when you create an object with 'new'
@@ -178,7 +180,7 @@
  
  The hasOwnProperty(): method returns a boolean indicating whether the object has the specified property as its own property (as opposed to inheriting it).
    SYNTAX: obj.hasOwnProperty(prop)
-   
+
  REMEMBER: The 'this' keyword is set to the object that is calling the method.
 
  LINK: https://medium.com/javascript-in-plain-english/proto-vs-prototype-in-js-140b9b9c8cd5
@@ -228,3 +230,13 @@ console.log(cristian.species, matilda.species);
 // checking object if a property is actually IN the object
 console.log(cristian.hasOwnProperty("species")); // FALSE < IN the prototype
 console.log(cristian.hasOwnProperty("firstName")); // TRUE
+
+// **********************************************
+// Prototypal Inheritance and The Prototype Chain
+// **********************************************
+
+/*
+  Prototype Chain: Series of links between objects linked though prototypes. (similar to the scope chain)
+
+  And if a property or a method cannot be found in a certain object JavaScript will look into its prototype
+*/
