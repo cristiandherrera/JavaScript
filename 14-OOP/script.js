@@ -363,7 +363,7 @@
 
  Classes: in JavaScript do not work like traditional classes in other languages like Java or C++. So instead classes in JavaScript are just synthetic sugar. (same prototypal inheritance behind the scenes BUT new modern syntax in practice)
 
-   The 'constructor()' method: is a special method of a 'class' for creating and initializing an object of that class.
+   The 'constructor()' method: is a special method of a 'class' for creating and initializing an object of that class. Can only contain 1 'constructor()' in a class or will receive a reference error.
 
    Classes are a special type of functions, therefore we have class declarations and expressions
 
@@ -374,29 +374,128 @@
      1. Classes are NOT hoisted (can NOT be used before declaration)
      2. Classes are first-class citizens (can pass into and from functions)
      3. Classes are executed in strict mode 
+     4. Classes do NOT use commas between methods and properties.
 */
 
-// Class expression
-const PersonExp = class {};
+// // Class expression (unnamed)
+// const PersonExp = class {};
 
-// Class declaration
-class PersonDec {
-  constructor(firstName, birthYear) {
-    this.firstName = firstName;
+// // Class declaration
+// class PersonDec {
+//   constructor(firstName, birthYear) {
+//     this.firstName = firstName;
+//     this.birthYear = birthYear;
+//   }
+
+//   calcAge() {
+//     console.log(2020 - this.birthYear);
+//   }
+// }
+
+// const jessica = new PersonDec("Jessica,", 1996);
+// console.log(jessica);
+// console.log(jessica.__proto__ === PersonDec.prototype); // TRUE
+
+// // Setting method without ES6 syntax
+// PersonDec.prototype.greet = function () {
+//   console.log(`Hey my name is ${this.firstName}`);
+// };
+// jessica.greet();
+
+// *******************
+// Setters and Getters
+// *******************
+
+/*
+ Every object in JS can have 'setter' and 'getter' properties. And we call these special properties assessor properties, while normal properties are called data properties.
+
+ The get syntax: binds an object property to a function that will be called when that property is looked up.
+
+   USE: Sometimes it is desirable to allow access to a property that returns a dynamically computed value, or you may want to reflect the status of an internal variable without requiring the use of explicit method calls.
+
+   NOTE: 
+    1. It can have an identifier which is either a number or a string.
+    2. It must have exactly zero parameters
+    3. It must NOT appear in an object literal with another 'get' or with a data entry for the same property.
+
+ The set syntax: binds an object property to a function to be called when there is an attempt to set that property.
+
+   USE: A setter can be used to execute a function whenever a specified property is attempted to be changed. Setters are most often used in conjunction with getters to create a type of pseudo-property.
+
+   CONVENTION: When we have a 'setter' which is trying to set a property that already exists we add an underscore. However, when we do this we are actually creating a new variable.
+
+   NOTE: 
+     1. It can have an identifier which is either a number or a string.
+     2. It must have exactly one parameter.
+     3. It must not appear in an object literal another set or with a data entry for the same property.
+
+ USE: 'setters' and 'getters' can be very USEFUL for data validation.
+*/
+
+// getters => access properties
+// setters => change (mutate) them
+
+// OBJECT 'get' and 'set'
+const account = {
+  owner: "Cristian",
+  movements: [200, 530, 120, 300],
+
+  get latest() {
+    return this.movements.slice(-1).pop();
+    // return this.movements[3];
+  },
+
+  set latest(mov) {
+    this.movements.push(mov);
+  },
+};
+// you call it like a property!
+console.log(account.latest); // 300
+
+// you set it like a property!
+account.latest = 50;
+console.log(account.latest); // 50
+console.log(account);
+
+// CLASS 'get' and 'set'
+class Person {
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
     this.birthYear = birthYear;
   }
 
   calcAge() {
     console.log(2020 - this.birthYear);
   }
+
+  greet() {
+    console.log(`Hello, my name is ${this.firstName}`);
+  }
+
+  get age() {
+    return 2020 - this.birthYear;
+  }
+
+  // Set a property that already exists
+  set fullName(name) {
+    console.log(name); // name = "Jessica"
+    if (name.includes(" ")) this._fullName = name;
+    else alert(`${name} is not a full name!`);
+  }
+
+  get fullName() {
+    return this._fullName;
+  }
 }
 
-const jessica = new PersonDec("Jessica,", 1996);
+const jessica = new Person("Jessica", 1996);
 console.log(jessica);
-console.log(jessica.__proto__ === PersonDec.prototype); // TRUE
 
-// Setting method without ES6 syntax
-PersonDec.prototype.greet = function () {
-  console.log(`Hey my name is ${this.firstName}`);
-};
-jessica.greet();
+jessica.fullName = "Jessica Davis";
+console.log(jessica);
+
+jessica.calcAge(); // 24
+console.log(jessica.age); // 24
+
+const walter = new Person("Walter White", 1965);
+console.log(walter);
