@@ -354,3 +354,49 @@
 
 // // function prototype
 // console.dir((x) => x + 1);
+
+// ***********
+// ES6 Classes
+// ***********
+
+/*
+
+ Classes: in JavaScript do not work like traditional classes in other languages like Java or C++. So instead classes in JavaScript are just synthetic sugar. (same prototypal inheritance behind the scenes BUT new modern syntax in practice)
+
+   The 'constructor()' method: is a special method of a 'class' for creating and initializing an object of that class.
+
+   Classes are a special type of functions, therefore we have class declarations and expressions
+
+   SYNTAX: All methods that we write in the class, so outside of the constructor, will be on the prototype of the objects and not on the objects themselves.
+
+   NOTES ON ES6 CLASSES:
+   
+     1. Classes are NOT hoisted (can NOT be used before declaration)
+     2. Classes are first-class citizens (can pass into and from functions)
+     3. Classes are executed in strict mode 
+*/
+
+// Class expression
+const PersonExp = class {};
+
+// Class declaration
+class PersonDec {
+  constructor(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  }
+
+  calcAge() {
+    console.log(2020 - this.birthYear);
+  }
+}
+
+const jessica = new PersonDec("Jessica,", 1996);
+console.log(jessica);
+console.log(jessica.__proto__ === PersonDec.prototype); // TRUE
+
+// Setting method without ES6 syntax
+PersonDec.prototype.greet = function () {
+  console.log(`Hey my name is ${this.firstName}`);
+};
+jessica.greet();
