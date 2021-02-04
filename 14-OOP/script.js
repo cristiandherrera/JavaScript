@@ -221,20 +221,10 @@
 // cristian.calcAgeBad(); // method on the object itself < BAD
 // cristian.calcAgeGood(); // method on the prototype < GOOD
 
+// // prototype and '__proto__'
 // console.log(cristian.__proto__); // object in the class instance of the prototype created from('cristian')
-// console.log(cristian.__proto__ === matilda.__proto__); // TRUE
-
-// // ex of the prototype chain
+// console.log(cristian.__proto__ === matilda.__proto__); // TRUE (share the same prototype)
 // console.log(cristian.__proto__ === Person.prototype); // TRUE
-// console.log(cristian.__proto__.__proto__ === Object.prototype); // TRUE
-// console.log(Person.prototype.__proto__ === Object.prototype); // TRUE
-
-// // .constructor property
-// console.log(Person.prototype.constructor); // points to back to constructor function
-// console.log(Person.prototype); // points to prototype of all objects used with the constructor func.
-
-// console.log(Person.prototype.constructor === Person); // /TRUE
-// console.log(Person.prototype === Person.prototype.constructor.prototype); // TRUE
 
 // // The '.prototype' property is NOT the prototype of the constructor function
 // console.log(Person.prototype.isPrototypeOf(cristian)); // TRUE
@@ -286,27 +276,7 @@
 
    LINK: https://medium.com/@chamikakasun/javascript-prototype-and-prototype-chain-explained-fdc2ec17dd04
 
-*/
-
-// // FROM PREVIOUS LECTURE
-// // ex of the prototype chain
-// console.log(cristian.__proto__ === Person.prototype); // TRUE
-// console.log(cristian.__proto__.__proto__ === Object.prototype); // TRUE
-// console.log(Person.prototype.__proto__ === Object.prototype); // TRUE
-
-// // .constructor property
-// console.log(Person.prototype.constructor); // points to back to constructor function
-// console.log(Person.prototype); // points to prototype of all objects used with the constructor func.
-
-// console.log(Person.prototype.constructor === Person); // /TRUE
-// console.log(Person.prototype === Person.prototype.constructor.prototype); // TRUE
-
-// ******************************************
-// Prototypal Inheritance on Built-In Objects
-// ******************************************
-
-/* 
- 
+ REMEMBER: that console.dir() displays an interactive list of the properties of the specified JavaScript object WHILE the console.log() method displays the 'toString' representation of any object passed to it..
 */
 
 // // USING FROM PREVIOUS SECTION
@@ -331,55 +301,56 @@
 //   console.log(2020 - this.birthYear);
 // };
 
-// Setup
-var collection = {
-  2548: {
-    albumTitle: "Slippery When Wet",
-    artist: "Bon Jovi",
-    tracks: ["Let It Rock", "You Give Love a Bad Name"],
-  },
-  2468: {
-    albumTitle: "1999",
-    artist: "Prince",
-    tracks: ["1999", "Little Red Corvette"],
-  },
-  1245: {
-    artist: "Robert Palmer",
-    tracks: [],
-  },
-  5439: {
-    albumTitle: "ABBA Gold",
-  },
-};
+// // MOVING UP THE PROTOTYPE CHAIN
+// console.log(cristian.__proto__ === Person.prototype); // TRUE
 
-// Only change code below this line
-function updateRecords(object, id, prop, value) {
-  // 1.
-  if (prop != "tracks" && value != "") {
-    object[id][prop] = value;
-  }
-  // 2.
-  if (prop === "tracks" && !object[id].hasOwnProperty("tracks")) {
-    object[id][prop] = [value];
-  }
-  // 3;
-  if (prop === "tracks" && value != "") {
-    object[id][prop].push(value);
-  }
-  // 4;
-  if (value === "") {
-    delete object[id][prop];
-  }
+// console.log(Person.prototype.__proto__ === Object.prototype); // TRUE
+// console.log(cristian.__proto__.__proto__ === Object.prototype); // TRUE
 
-  return object;
-}
+// console.log(cristian.__proto__.__proto__.__proto__ === null); // TRUE (END OF THE CHAIN)
 
-var myArray = [];
+// // CONSTRUCTOR PROPERTY
+// console.dir(Person.prototype.constructor); // points to back to constructor function itself
+// console.log(Person.prototype); // Is the prototype of all objects used with the constructor 'Person'.
 
-let i = 5;
-while (i >= 0) {
-  myArray.push(i);
-  i--;
-}
+// console.log(Person.prototype.constructor === Person); // /TRUE
+// console.log(Person.prototype === Person.prototype.constructor.prototype); // TRUE
 
-console.log(myArray);
+// ******************************************
+// Prototypal Inheritance on Built-In Objects
+// ******************************************
+
+/* 
+ REMEMBER: That any function is a object, therefore, it also has a prototype!
+
+ REMEMBER: The prototype property of the constructor is going to BE the prototype of all the objects created by that constructor.
+
+ REMEMBER: That all DOM elements behind the scenes are objects.
+
+ NOTE: When creating object or array literals, it is the same as creating them with the 'new' constructor functions 
+
+ BELOW: Added a new method ('unique') to the prototype property of the array constructor. And so therefore now all arrays will inherit this method. (BAD IDEA IN PRACTICE)
+
+    So all we would have to do is to say array.prototype And then here we can add any new method to this prototype and all the arrays will then inherit
+*/
+
+// // BUILT-IN OBJECTS
+
+// // Inheritance with Array constructor
+// const arr = [3, 6, 6, 5, 6, 9, 9]; // new Array === []
+
+// console.log(arr.__proto__);
+// console.log(arr.__proto__ === Array.prototype); // TRUE
+// console.log(arr.__proto__.__proto__ === Object.prototype); // TRUE
+
+// Array.prototype.unique = function () {
+//   return [...new Set(this)];
+// };
+// console.log(arr.unique());
+
+// // DOM element
+// const h1 = document.querySelector("h1");
+// console.dir(h1);
+
+// // function prototype
+// console.dir((x) => x + 1);
