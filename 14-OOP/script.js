@@ -574,29 +574,29 @@
  NOTE: Object.create in the real world is the LEAST used way of implementing prototypal inheritance.
 */
 
-// Creating regular object
-const PersonProto = {
-  calcAge() {
-    console.log(2020 - this.birthYear);
-  },
+// // Creating regular object
+// const PersonProto = {
+//   calcAge() {
+//     console.log(2020 - this.birthYear);
+//   },
 
-  // Regular function (NOT CONSTRUCTOR)
-  init(firstName, birthYear) {
-    this.firstName = firstName;
-    this.birthYear = birthYear;
-  },
-};
+//   // Regular function (NOT CONSTRUCTOR)
+//   init(firstName, birthYear) {
+//     this.firstName = firstName;
+//     this.birthYear = birthYear;
+//   },
+// };
 
-// Manually selecting 'PersonProto' to be prototype
-const jeffery = Object.create(PersonProto);
-console.log(jeffery);
-jeffery.name = "Jeffery";
-jeffery.birthYear = 1972;
-jeffery.calcAge();
+// // Manually selecting 'PersonProto' to be prototype
+// const jeffery = Object.create(PersonProto);
+// console.log(jeffery);
+// jeffery.name = "Jeffery";
+// jeffery.birthYear = 1972;
+// jeffery.calcAge();
 
-console.log(jeffery.__proto__ === PersonProto); // TRUE
+// console.log(jeffery.__proto__ === PersonProto); // TRUE
 
-const sarah = Object.create(PersonProto);
-sarah.init("Sarah", 1979);
-sarah.calcAge();
-console.log(sarah);
+// const sarah = Object.create(PersonProto);
+// sarah.init("Sarah", 1979);
+// sarah.calcAge();
+// console.log(sarah);

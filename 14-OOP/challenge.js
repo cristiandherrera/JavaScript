@@ -37,3 +37,33 @@
 // car2.accelerate();
 // car2.accelerate();
 // car2.brake();
+
+// *******************
+// Coding Challenge #2
+// *******************
+
+// 1.
+class Car {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+
+  // 2.
+  accelerate() {
+    this.speed += 10;
+    console.log(this);
+  }
+
+  // 3.
+  brake() {
+    this.speed -= 5;
+    console.log(this);
+  }
+}
+const ford = new Car("Ford", 120);
+
+// 4.
+ford.accelerate();
+ford.accelerate();
+ford.brake();
