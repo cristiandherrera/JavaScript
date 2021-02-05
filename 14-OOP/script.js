@@ -600,3 +600,83 @@
 // sarah.init("Sarah", 1979);
 // sarah.calcAge();
 // console.log(sarah);
+
+// ****************************************************
+// Inheritance Between "Classes": Constructor Functions
+// ****************************************************
+
+/*
+ "In this lecture, we will inherit between classes using constructor functions, so this will allow you to understand exactly how we set up the prototype chain in order to allow inheritance between the prototype properties of two different constructor functions." - Jonas
+
+ REMEMBER: 
+
+   The call() method: calls a function with a GIVEN 'this' value and arguments provided individually.
+
+   Object.create() creates a NEW OBJECT, and the prototype of the new object will be passed in as an argument. 
+
+ BELOW: 
+
+   CAREFUL:
+
+     When creating the link between 'Student' and 'Person', with Object.create(), we MUST place that connecting code BEFORE we add anymore methods to the prototype of 'Student' BECAUSE Object.create() will overwrite any methods placed AFTER itself.
+
+     And since we set the prototype property of the 'Student' using Object.create() this makes it so that the constructor of 'Student.prototype' is still 'Person'. So we must make sure to set 
+     ".prototype.constructor" BACK to 'Student'!!
+
+   Using the code "Student.prototype = Person.prototype" would NOT WORK at creating a prototype chain because it would make them the same object WHICH is why we need Object.create() to create a NEW object and link them in the argument so "Student" can inherit from "Person"!!
+
+   When call cristian.calcAge, we are effectively doing a property or a METHOD LOOKUP. So that is JavaScript trying to find the requested property or method. It has to look up the prototype chain, first checking on the object itself through its prototype then finds it in the 'Person' prototype.
+
+   CONCLUSION: We are now able to call a method that is on the 'Person.prototype' property, on a 
+   'Student' instance object, and it still works! YAY PROTOTYPE CHAIN!!
+*/
+
+// CREATING 'Person' CONSTRUCTOR
+const Person = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+};
+
+// METHOD ON 'Person' PROTOTYPE
+Person.prototype.calcAge = function () {
+  console.log(2020 - this.birthYear);
+};
+
+// CREATING 'Student' CONSTRUCTOR
+const Student = function (firstName, birthYear, course) {
+  // Person(firstName, birthYear); ERROR=> 'this' = undefined
+
+  Person.call(this, firstName, birthYear); // Calling constructor 'Person' to connect properties.
+  this.course = course;
+};
+
+// LINKING PROTOTYPES!
+Student.prototype = Object.create(Person.prototype);
+
+// SETTING CONSTRUCTOR BACK TO 'Student'
+console.dir(Student.prototype.constructor); // Person(firstName, birthYear)
+Student.prototype.constructor = Student;
+console.dir(Student.prototype.constructor); // Student(firstName, birthYear, course)
+
+// METHOD ON 'Student' PROTOTYPE
+Student.prototype.introduce = function () {
+  console.log(`Hello, my name is ${this.firstName} and I study ${this.course}`);
+};
+
+// STUDENT INSTANCE OBJECT !!
+const cristian = new Student("Cristian", 1995, "Computer Science");
+cristian.introduce();
+cristian.calcAge();
+console.log(cristian);
+
+console.log(cristian.__proto__);
+console.log(cristian.__proto__.__proto__);
+console.log(cristian.__proto__.__proto__.__proto__);
+
+console.log(cristian.__proto__ === Student.prototype); // TRUE
+console.log(cristian.__proto__.__proto__ === Person.prototype); // TRUE
+console.log(cristian.__proto__.__proto__.__proto__ === Object.prototype); // TRUE
+
+console.log(cristian instanceof Student); // TRUE
+console.log(cristian instanceof Person); // TRUE
+console.log(cristian instanceof Object); // TRUE

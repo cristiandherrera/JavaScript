@@ -43,27 +43,35 @@
 // *******************
 
 // 1.
-class Car {
-  constructor(make, speed) {
-    this.make = make;
-    this.speed = speed;
-  }
+// class CarCl {
+//   constructor(make, speed) {
+//     this.make = make;
+//     this.speed = speed;
+//   }
+//   accelerate() {
+//     this.speed += 10;
+//     console.log(this);
+//   }
+//   brake() {
+//     this.speed -= 5;
+//     console.log(this);
+//   }
 
-  // 2.
-  accelerate() {
-    this.speed += 10;
-    console.log(this);
-  }
+//   get speedUs() {
+//     return this.speed / 1.6;
+//   }
 
-  // 3.
-  brake() {
-    this.speed -= 5;
-    console.log(this);
-  }
-}
-const ford = new Car("Ford", 120);
+//   set speedUs(speed) {
+//     console.log(speed);
+//     return (this.speed = speed * 1.6);
+//   }
+// }
 
-// 4.
-ford.accelerate();
-ford.accelerate();
-ford.brake();
+// // 4.
+// const ford = new CarCl("Ford", 120);
+// console.log(ford.speedUs);
+// ford.accelerate();
+// ford.accelerate();
+// ford.brake();
+// ford.speedUs = 60;
+// console.log(ford);
