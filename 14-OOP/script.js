@@ -409,6 +409,9 @@
 /*
  Every object in JS can have 'setter' and 'getter' properties. And we call these special properties assessor properties, while normal properties are called data properties.
 
+   getters => access properties
+   setters => change (mutate) them
+
  The get syntax: binds an object property to a function that will be called when that property is looked up.
 
    USE: Sometimes it is desirable to allow access to a property that returns a dynamically computed value, or you may want to reflect the status of an internal variable without requiring the use of explicit method calls.
@@ -432,70 +435,123 @@
  USE: 'setters' and 'getters' can be very USEFUL for data validation.
 */
 
-// getters => access properties
-// setters => change (mutate) them
+// // OBJECT 'get' and 'set'
+// const account = {
+//   owner: "Cristian",
+//   movements: [200, 530, 120, 300],
 
-// OBJECT 'get' and 'set'
-const account = {
-  owner: "Cristian",
-  movements: [200, 530, 120, 300],
+//   get latest() {
+//     return this.movements.slice(-1).pop();
+//     // return this.movements[3];
+//   },
 
-  get latest() {
-    return this.movements.slice(-1).pop();
-    // return this.movements[3];
-  },
+//   set latest(mov) {
+//     this.movements.push(mov);
+//   },
+// };
+// // you access it like a property!
+// console.log(account.latest); // 300
 
-  set latest(mov) {
-    this.movements.push(mov);
-  },
+// // you set it like a property!
+// account.latest = 50;
+// console.log(account.latest); // 50
+// console.log(account);
+
+// // CLASS 'get' and 'set'
+// class Person {
+//   constructor(fullName, birthYear) {
+//     this.fullName = fullName;
+//     this.birthYear = birthYear;
+//   }
+
+//   calcAge() {
+//     console.log(2020 - this.birthYear);
+//   }
+
+//   greet() {
+//     console.log(`Hello, my name is ${this.firstName}`);
+//   }
+
+//   get age() {
+//     return 2020 - this.birthYear;
+//   }
+
+//   // Set a property that already exists
+//   set fullName(name) {
+//     console.log(name); // name = "Jessica"
+//     if (name.includes(" ")) this._fullName = name;
+//     else alert(`${name} is not a full name!`);
+//   }
+
+//   get fullName() {
+//     return this._fullName;
+//   }
+// }
+
+// const jessica = new Person("Jessica", 1996);
+// console.log(jessica); // NO name yet..
+
+// jessica.fullName = "Jessica Davis";
+// console.log(jessica);
+
+// jessica.calcAge(); // 24
+// console.log(jessica.age); // 24
+
+// const walter = new Person("Walter White", 1965);
+// console.log(walter);
+
+// *************
+// Static Method
+// *************
+
+/*
+ A static method: (or static function) is a method defined as a member of an object but is accessible directly from an API object's constructor (like Array), rather than from an object instance created via the constructor.
+
+ A instance method: is a method that will be added to the prototype property and will be availiable through the prototype chain.
+ 
+ REMEMBER: 
+
+   The JavaScript 'Array' class is a global object that is used in the construction of arrays; which are high-level, list-like objects.
+ 
+   The Array.from() method creates a new, shallow-copied Array instance from an array-like or iterable object.
+
+ BELOW: 'Person.hey()' is basically just a simple function, but its a function that's attached to the 'Person' constructor NOT the prototype. So NO instances will inherit this method!
+*/
+
+// USING FROM PREVIOUS SECTION
+const PersonObj = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
 };
-// you call it like a property!
-console.log(account.latest); // 300
+Person.prototype.calcAgeGood = function () {
+  console.log(2020 - this.birthYear);
+};
 
-// you set it like a property!
-account.latest = 50;
-console.log(account.latest); // 50
-console.log(account);
+// STATIC METHOD WITH OBJECT
+PersonObj.hey = function () {
+  console.log("Hello there.");
+  console.log(this); //=> points to the constructor func.
+};
+PersonObj.hey();
 
-// CLASS 'get' and 'set'
-class Person {
+// STATIC METHOD WITH CLASS (BOTTOM)
+class PersonCl {
   constructor(fullName, birthYear) {
     this.fullName = fullName;
     this.birthYear = birthYear;
   }
-
+  // Instance Methods (connected to prototype)
   calcAge() {
     console.log(2020 - this.birthYear);
   }
-
   greet() {
     console.log(`Hello, my name is ${this.firstName}`);
   }
 
-  get age() {
-    return 2020 - this.birthYear;
-  }
-
-  // Set a property that already exists
-  set fullName(name) {
-    console.log(name); // name = "Jessica"
-    if (name.includes(" ")) this._fullName = name;
-    else alert(`${name} is not a full name!`);
-  }
-
-  get fullName() {
-    return this._fullName;
+  // Static methods (connected to constructor)
+  static hey() {
+    console.log("Hey there");
+    console.log(this);
   }
 }
-
-const jessica = new Person("Jessica", 1996);
-console.log(jessica);
-
-jessica.fullName = "Jessica Davis";
-console.log(jessica);
-
-jessica.calcAge(); // 24
-console.log(jessica.age); // 24
-
-const walter = new Person("Walter White", 1965);
-console.log(walter);
+PersonCl.hey();
