@@ -360,7 +360,6 @@
 // ***********
 
 /*
-
  Classes: in JavaScript do not work like traditional classes in other languages like Java or C++. So instead classes in JavaScript are just synthetic sugar. (same prototypal inheritance behind the scenes BUT new modern syntax in practice)
 
    The 'constructor()' method: is a special method of a 'class' for creating and initializing an object of that class. Can only contain 1 'constructor()' in a class or will receive a reference error.
@@ -518,40 +517,86 @@
  BELOW: 'Person.hey()' is basically just a simple function, but its a function that's attached to the 'Person' constructor NOT the prototype. So NO instances will inherit this method!
 */
 
-// USING FROM PREVIOUS SECTION
-const PersonObj = function (firstName, birthYear) {
-  this.firstName = firstName;
-  this.birthYear = birthYear;
-};
-Person.prototype.calcAgeGood = function () {
-  console.log(2020 - this.birthYear);
-};
+// // (STATIC) ARRAY CONSTRUCTOR METHOD
+// console.log(Array.from(document.querySelectorAll("h1")));
 
-// STATIC METHOD WITH OBJECT
-PersonObj.hey = function () {
-  console.log("Hello there.");
-  console.log(this); //=> points to the constructor func.
-};
-PersonObj.hey();
+// // USING FROM PREVIOUS SECTION
+// const PersonObj = function (firstName, birthYear) {
+//   this.firstName = firstName;
+//   this.birthYear = birthYear;
+// };
+// PersonObj.prototype.calcAgeGood = function () {
+//   console.log(2020 - this.birthYear);
+// };
 
-// STATIC METHOD WITH CLASS (BOTTOM)
-class PersonCl {
-  constructor(fullName, birthYear) {
-    this.fullName = fullName;
-    this.birthYear = birthYear;
-  }
-  // Instance Methods (connected to prototype)
+// // STATIC METHOD WITH OBJECT
+// PersonObj.hey = function () {
+//   console.log("Hello there.");
+//   console.dir(this); //=> points to the constructor func.
+// };
+// PersonObj.hey();
+
+// // STATIC METHOD WITH CLASS (BOTTOM)
+// class PersonCl {
+//   constructor(fullName, birthYear) {
+//     this.fullName = fullName;
+//     this.birthYear = birthYear;
+//   }
+//   // Instance Methods (connected to prototype)
+//   calcAge() {
+//     console.log(2020 - this.birthYear);
+//   }
+//   greet() {
+//     console.log(`Hello, my name is ${this.firstName}`);
+//   }
+
+//   // Static methods (connected to constructor)
+//   static hey() {
+//     console.log("Hey there");
+//     console.dir(this);
+//   }
+// }
+// PersonCl.hey();
+
+// *************
+// Object.create
+// *************
+
+/*
+ The Object.create() method: creates a new object, and the prototype of that object will be the object that we passed in.
+
+ Object.create vs Constructor Functions 
+
+   In constructor functions or classes, it automatically sets the prototype of the instances to the constructors, prototype property automatically. BUT with Object.create, we can set the prototype of objects manually to any object that we want.
+
+   We did NOT need any constructor function, and also no prototype property at all, to achieve the exact same thing. 
+
+ NOTE: Object.create in the real world is the LEAST used way of implementing prototypal inheritance.
+*/
+
+// Creating regular object
+const PersonProto = {
   calcAge() {
     console.log(2020 - this.birthYear);
-  }
-  greet() {
-    console.log(`Hello, my name is ${this.firstName}`);
-  }
+  },
 
-  // Static methods (connected to constructor)
-  static hey() {
-    console.log("Hey there");
-    console.log(this);
-  }
-}
-PersonCl.hey();
+  // Regular function (NOT CONSTRUCTOR)
+  init(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  },
+};
+
+// Manually selecting 'PersonProto' to be prototype
+const jeffery = Object.create(PersonProto);
+console.log(jeffery);
+jeffery.name = "Jeffery";
+jeffery.birthYear = 1972;
+jeffery.calcAge();
+
+console.log(jeffery.__proto__ === PersonProto); // TRUE
+
+const sarah = Object.create(PersonProto);
+sarah.init("Sarah", 1979);
+sarah.calcAge();
+console.log(sarah);
