@@ -694,60 +694,113 @@
 
  SYNTAX: Always call the super function FIRST because it is responsible for creating the 'this' keyword in its subclass.
 
- NOTE: If you do not need any new properties, then you don't even need to bother writing a constructor method in the child class
+ NOTE: If you do not need any new properties, then you don't even need to bother writing a constructor method in the child class.
 
  REMEMBER: the 'class' syntax hides a lot of the details that are actually happening behind the scenes, because classes are really just a layer of obstruction over constructor function.
 
  WARNING: "Let me just say that this mechanism of inheritance that we explored here can actually be very problematic and dangerous in the real world when we are designing software." - Jonas
 */
 
-class Person {
-  constructor(fullName, birthYear) {
-    this.fullName = fullName;
-    this.birthYear = birthYear;
-  }
+// class Person {
+//   constructor(fullName, birthYear) {
+//     this.fullName = fullName;
+//     this.birthYear = birthYear;
+//   }
+//   calcAge() {
+//     console.log(2020 - this.birthYear);
+//   }
+//   greet() {
+//     console.log(`Hello, my name is ${this.firstName}`);
+//   }
+//   get age() {
+//     return 2020 - this.birthYear;
+//   }
+//   set fullName(name) {
+//     if (name.includes(" ")) this._fullName = name;
+//     else alert(`${name} is not a full name!`);
+//   }
+//   get fullName() {
+//     return this._fullName;
+//   }
+//   static hey() {
+//     console.log("Hey there");
+//     console.dir(this);
+//   }
+// }
+
+// class Student extends Person {
+//   constructor(fullName, birthYear, course, escape) {
+//     // Always needs to happen first!
+//     super(fullName, birthYear);
+//     this.course = course;
+//     this.escape = escape;
+//   }
+
+//   meeting() {
+//     console.log(
+//       `Hey, tell me why you're doing this. (white: 'money, same as you')  Nah. Naaah. Some straight like you, with a giant stick up his ass, age what? 50? Your just gonna break bad??`
+//     );
+//   }
+
+//   calcAge() {
+//     console.log(`I have lived in Alaska for ${2020 - this.escape} years now`);
+//   }
+// }
+
+// const jessie = new Student("Jessie Pinkman", 1984, "Chemistry", 2009);
+// console.log(jessie);
+// jessie.meeting();
+// jessie.calcAge();
+
+// ********************************************
+// Inheritance Between 'Classes': Object.create
+// ********************************************
+
+/*
+ With this way of creating inheritance between objects, we don't need to worry about constructors, prototype properties, and the new operator. So it's really just objects linked to other objects.
+
+ REMEMBER: 
+
+   The call() method: calls a function with a GIVEN 'this' value and arguments provided individually.
+
+   Object.create() creates a NEW OBJECT, and the prototype of the new object will be passed in as an argument. 
+
+ BELOW:
+ 
+   So it all starts with the PersonProto object, which used to be the prototype of all its objects, but now using Object.create, we make it so that PersonProto will actually become the prototype (parent) of StudentProto. SO basically 'student' will in inherit from 'person'.
+
+   Now to finish, all we need to do is to use Object.create again, but this time to create a new actual student object. So 'jay' in this course inherit from StudentProto, which is now jay's prototype.
+*/
+
+const PersonProto = {
   calcAge() {
     console.log(2020 - this.birthYear);
-  }
-  greet() {
-    console.log(`Hello, my name is ${this.firstName}`);
-  }
-  get age() {
-    return 2020 - this.birthYear;
-  }
-  set fullName(name) {
-    if (name.includes(" ")) this._fullName = name;
-    else alert(`${name} is not a full name!`);
-  }
-  get fullName() {
-    return this._fullName;
-  }
-  static hey() {
-    console.log("Hey there");
-    console.dir(this);
-  }
-}
+  },
+  init(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  },
+};
+console.log(PersonProto, "PERSON");
 
-class Student extends Person {
-  constructor(fullName, birthYear, course, escape) {
-    // Always needs to happen first!
-    super(fullName, birthYear);
-    this.course = course;
-    this.escape = escape;
-  }
+const mike = Object.create(PersonProto); // 'Person' becomes new prototype of 'mike'
+mike.init("Mike Stoklasa", 1980, "Film History");
+console.log(mike, "PERSON");
 
-  meeting() {
-    console.log(
-      `Tell me why your doing this. (white: 'money, same as you') Nah. Naaah. Some straight like you, with a giant stick up his ass, age what? 50? Your just gonna break bad?`
-    );
-  }
+const StudentProto = Object.create(PersonProto); // 'Person' becomes new prototype of 'Student'
+StudentProto.init = function (fullName, birthYear, course) {
+  PersonProto.init.call(this, fullName, birthYear);
+  this.course = course;
+};
+StudentProto.introduce = function () {
+  console.log(`My name is ${this.fullName} and I study ${this.course}`);
+};
+console.log(StudentProto, "STUDENT");
 
-  calcAge() {
-    console.log(`I have lived in Alaska for ${2020 - this.escape} years now`);
-  }
-}
+const jay = Object.create(StudentProto); // 'Student' becomes new prototype of 'Jay'
+jay.init("Jay Bauman", 1981, "Film History");
+console.log(jay, "STUDENT");
 
-const jessie = new Student("Jessie Pinkman", 1984, "Chemistry", 2009);
-console.log(jessie);
-jessie.meeting();
-jessie.calcAge();
+jay.introduce(); // method of prototype 'Student'
+jay.calcAge(); // method of prototype 'Person'
+console.log(jay.hasOwnProperty("fullName")); // method of prototype 'Object'
