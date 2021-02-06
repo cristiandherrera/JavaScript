@@ -819,32 +819,121 @@
    It's a lot better to create methods that interact with these properties rather than manually manipulate them ourselves. And that is especially true for important properties, like the 'movements' below.
 
    The withdraw() method below actually ABSTRACTS the fact that a withdrawal is basically a negative movement.The minus, is something that the user of this object, shouldn't be caring about.
+
+   In the real world, in a real bank app, we should NOT be allowed to access the approveLoan() method BECAUSE that kind of data is not safe in a users hand!!.So this is kind of an internal method that only the requestLoan method should be able to use. Which is what is know as ENCAPSULATION.
 */
 
-class Account {
-  constructor(owner, curren$y, pin) {
-    this.owner = owner;
-    this.curren$y = curren$y;
-    this.pin = pin;
+// class Account {
+//   constructor(owner, curren$y, pin) {
+//     this.owner = owner;
+//     this.curren$y = curren$y;
+//     this.pin = pin;
 
-    // Creating properties w/o inputs
-    this.movements = [];
-    this.locale = navigator.language;
+//     // Creating properties w/o inputs
+//     this.movements = [];
+//     this.locale = navigator.language;
 
-    // Executing code inside the constructor!
-    console.log(`Thanks for opening an account, ${owner}!`);
-  }
+//     // Executing code inside the constructor!
+//     console.log(`Thanks for opening an account, ${owner}!`);
+//   }
 
-  // Public Interface
-  deposit(val) {
-    this.movements.push(val);
-  }
-  withdrawal(val) {
-    this.deposit(-val);
-  }
-}
+//   // Public Interface (would be)
+//   deposit(val) {
+//     this.movements.push(val);
+//   }
+//   withdrawal(val) {
+//     this.deposit(-val);
+//   }
+//   requestLoan(val) {
+//     if (this.approveLoan(val)) {
+//       this.deposit(val);
+//       console.log(`Loan approved!`);
+//     }
+//   }
 
-const cristian = new Account("Cristian", "USD", 1234);
-console.log(cristian);
-cristian.deposit(250);
-cristian.withdrawal(50);
+//   // Private Interface (should be)
+//   approveLoan(val) {
+//     return true;
+//   }
+// }
+
+// const cristian = new Account("Cristian", "USD", 1234);
+// console.log(cristian);
+// cristian.deposit(250);
+// cristian.withdrawal(50);
+// cristian.requestLoan(1000);
+// cristian.approveLoan(1000); //  METHOD SHOULD BE ENCAPSULATED (NOT AVAILABLE TO USER)
+
+// ***********************************************
+// Encapsulation: Protected Properties and Methods
+// ***********************************************
+
+/*
+
+ Why do we need encapsulation and data privacy?
+
+   1. First it is to prevent code from outside of a class to accidentally manipulate or data inside the class.
+
+   2. Second is that when we expose only a small interface so a small API consisting only of a few public methods then we can change all the other internal methods with more confidence. Because then we can be sure that our external code does not rely on these private methods.
+
+   NOTE: JavaScript classes actually DO NOT yet SUPPORT real data privacy and encapsulation. Now there is a proposal to add truly private class fields and methods to the language, but it's not completely ready yet.
+
+ CONVENTION: 
+
+   Because JavaScript does not support real privacy, we will basically FAKE ENCAPSULATION by simply using a convention.
+
+   Protected Properties: Among developers when using the underscore symbol it notifies you and your team that this property is not supposed to be touched outside the class.
+
+   Developers need to know about this convention and need to follow it because otherwise everything will still be public.
+
+ BELOW: 
+
+   If we still wanted to give access to the private property '_movements' from the outside then we would have to implement a public method for that. And 'getMovements()' does exactly that because everyone can still access them without being able to override them!
+
+ REMEMBER: 
+
+   Encapsulation basically means to keep some properties and methods private inside the class so that they are not accessible from outside of the class.
+
+   Also the rest of the methods are basically exposed as a public interface, which we can also call API.
+   
+*/
+
+// class Account {
+//   constructor(owner, curren$y, pin) {
+//     this.owner = owner;
+//     this.curren$y = curren$y;
+//     this.locale = navigator.language;
+
+//     // Protected properties with '_'
+//     this._pin = pin;
+//     this._movements = [];
+
+//     // Executing code inside the constructor!
+//     console.log(`Thanks for opening an account, ${owner}!`);
+//   }
+
+//   // Public Interface
+//   getMovements() {
+//     return this._movements;
+//   }
+//   deposit(val) {
+//     this._movements.push(val);
+//   }
+//   withdrawal(val) {
+//     this.deposit(-val);
+//   }
+//   requestLoan(val) {
+//     if (this.approveLoan(val)) {
+//       this.deposit(val);
+//       console.log(`Loan approved!`);
+//     }
+//   }
+
+//   // Private Interface
+//   _approveLoan(val) {
+//     return true;
+//   }
+// }
+
+// const cristian = new Account("Cristian", "USD", 1234);
+// console.log(cristian.getMovements());
