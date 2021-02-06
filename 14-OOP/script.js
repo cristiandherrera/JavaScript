@@ -506,7 +506,7 @@
 /*
  A static method: (or static function) is a method defined as a member of an object but is accessible directly from an API object's constructor (like Array), rather than from an object instance created via the constructor.
 
- A instance method: is a method that will be added to the prototype property and will be availiable through the prototype chain.
+ A instance method: is a method that will be added to the prototype property and will be available through the prototype chain.
  
  REMEMBER: 
 
@@ -680,3 +680,74 @@
 // console.log(cristian instanceof Student); // TRUE
 // console.log(cristian instanceof Person); // TRUE
 // console.log(cristian instanceof Object); // TRUE
+
+// ******************************************
+// Inheritance Between 'Classes': ES6 Classes
+// ******************************************
+
+/*
+ To implement inheritance between ES6 classes, we only need two ingredients. We need the 'extends' keywords and we need the 'super' function. 
+
+   1. The 'extends' keyword replaces the need to manually set up the prototype chain!
+
+   2. The 'super' keyword is used to access and call functions on an object's parent. (replaces the use of call() method inside constructor functions.) 
+
+ SYNTAX: Always call the super function FIRST because it is responsible for creating the 'this' keyword in its subclass.
+
+ NOTE: If you do not need any new properties, then you don't even need to bother writing a constructor method in the child class
+
+ REMEMBER: the 'class' syntax hides a lot of the details that are actually happening behind the scenes, because classes are really just a layer of obstruction over constructor function.
+
+ WARNING: "Let me just say that this mechanism of inheritance that we explored here can actually be very problematic and dangerous in the real world when we are designing software." - Jonas
+*/
+
+class Person {
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  }
+  calcAge() {
+    console.log(2020 - this.birthYear);
+  }
+  greet() {
+    console.log(`Hello, my name is ${this.firstName}`);
+  }
+  get age() {
+    return 2020 - this.birthYear;
+  }
+  set fullName(name) {
+    if (name.includes(" ")) this._fullName = name;
+    else alert(`${name} is not a full name!`);
+  }
+  get fullName() {
+    return this._fullName;
+  }
+  static hey() {
+    console.log("Hey there");
+    console.dir(this);
+  }
+}
+
+class Student extends Person {
+  constructor(fullName, birthYear, course, escape) {
+    // Always needs to happen first!
+    super(fullName, birthYear);
+    this.course = course;
+    this.escape = escape;
+  }
+
+  meeting() {
+    console.log(
+      `Tell me why your doing this. (white: 'money, same as you') Nah. Naaah. Some straight like you, with a giant stick up his ass, age what? 50? Your just gonna break bad?`
+    );
+  }
+
+  calcAge() {
+    console.log(`I have lived in Alaska for ${2020 - this.escape} years now`);
+  }
+}
+
+const jessie = new Student("Jessie Pinkman", 1984, "Chemistry", 2009);
+console.log(jessie);
+jessie.meeting();
+jessie.calcAge();
