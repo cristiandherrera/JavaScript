@@ -772,35 +772,79 @@
    Now to finish, all we need to do is to use Object.create again, but this time to create a new actual student object. So 'jay' in this course inherit from StudentProto, which is now jay's prototype.
 */
 
-const PersonProto = {
-  calcAge() {
-    console.log(2020 - this.birthYear);
-  },
-  init(fullName, birthYear) {
-    this.fullName = fullName;
-    this.birthYear = birthYear;
-  },
-};
-console.log(PersonProto, "PERSON");
+// const PersonProto = {
+//   calcAge() {
+//     console.log(2020 - this.birthYear);
+//   },
+//   init(fullName, birthYear) {
+//     this.fullName = fullName;
+//     this.birthYear = birthYear;
+//   },
+// };
+// console.log(PersonProto, "PERSON");
 
-const mike = Object.create(PersonProto); // 'Person' becomes new prototype of 'mike'
-mike.init("Mike Stoklasa", 1980, "Film History");
-console.log(mike, "PERSON");
+// const mike = Object.create(PersonProto); // 'Person' becomes new prototype of 'mike'
+// mike.init("Mike Stoklasa", 1980, "Film History");
+// console.log(mike, "PERSON");
 
-const StudentProto = Object.create(PersonProto); // 'Person' becomes new prototype of 'Student'
-StudentProto.init = function (fullName, birthYear, course) {
-  PersonProto.init.call(this, fullName, birthYear);
-  this.course = course;
-};
-StudentProto.introduce = function () {
-  console.log(`My name is ${this.fullName} and I study ${this.course}`);
-};
-console.log(StudentProto, "STUDENT");
+// const StudentProto = Object.create(PersonProto); // 'Person' becomes new prototype of 'Student'
+// StudentProto.init = function (fullName, birthYear, course) {
+//   PersonProto.init.call(this, fullName, birthYear);
+//   this.course = course;
+// };
+// StudentProto.introduce = function () {
+//   console.log(`My name is ${this.fullName} and I study ${this.course}`);
+// };
+// console.log(StudentProto, "STUDENT");
 
-const jay = Object.create(StudentProto); // 'Student' becomes new prototype of 'Jay'
-jay.init("Jay Bauman", 1981, "Film History");
-console.log(jay, "STUDENT");
+// const jay = Object.create(StudentProto); // 'Student' becomes new prototype of 'Jay'
+// jay.init("Jay Bauman", 1981, "Film History");
+// console.log(jay, "STUDENT");
 
-jay.introduce(); // method of prototype 'Student'
-jay.calcAge(); // method of prototype 'Person'
-console.log(jay.hasOwnProperty("fullName")); // method of prototype 'Object'
+// jay.introduce(); // method of prototype 'Student'
+// jay.calcAge(); // method of prototype 'Person'
+// console.log(jay.hasOwnProperty("fullName")); // method of prototype 'Object'
+
+// *********************
+// Another Class Example
+// *********************
+
+/*
+ BELOW: 
+
+   Know that of course we can create even more properties on any instance, and properties that are not based on any inputs. Like with 'Account.movements' and 'Account.locale'!
+
+   We can even execute any code, inside the constructor, that we want. So below we execute a console.log!
+
+   It's a lot better to create methods that interact with these properties rather than manually manipulate them ourselves. And that is especially true for important properties, like the 'movements' below.
+
+   The withdraw() method below actually ABSTRACTS the fact that a withdrawal is basically a negative movement.The minus, is something that the user of this object, shouldn't be caring about.
+*/
+
+class Account {
+  constructor(owner, curren$y, pin) {
+    this.owner = owner;
+    this.curren$y = curren$y;
+    this.pin = pin;
+
+    // Creating properties w/o inputs
+    this.movements = [];
+    this.locale = navigator.language;
+
+    // Executing code inside the constructor!
+    console.log(`Thanks for opening an account, ${owner}!`);
+  }
+
+  // Public Interface
+  deposit(val) {
+    this.movements.push(val);
+  }
+  withdrawal(val) {
+    this.deposit(-val);
+  }
+}
+
+const cristian = new Account("Cristian", "USD", 1234);
+console.log(cristian);
+cristian.deposit(250);
+cristian.withdrawal(50);
