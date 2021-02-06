@@ -514,7 +514,11 @@
  
    The Array.from() method creates a new, shallow-copied Array instance from an array-like or iterable object.
 
- BELOW: 'Person.hey()' is basically just a simple function, but its a function that's attached to the 'Person' constructor NOT the prototype. So NO instances will inherit this method!
+ BELOW: 
+
+   'Person(Obj/Cl).hey()' is basically just a simple function, but its a function that's attached to the 'Person' constructor NOT the prototype. So NO instances will inherit this method! 
+   
+   When creating 'PersonObj.hey()' (object method) we just omit the 'prototype' key word and when creating 'PersonCl.hey() we put they 'static' keyword in front of it!
 */
 
 // // (STATIC) ARRAY CONSTRUCTOR METHOD
@@ -869,7 +873,6 @@
 // ***********************************************
 
 /*
-
  Why do we need encapsulation and data privacy?
 
    1. First it is to prevent code from outside of a class to accidentally manipulate or data inside the class.
@@ -895,7 +898,6 @@
    Encapsulation basically means to keep some properties and methods private inside the class so that they are not accessible from outside of the class.
 
    Also the rest of the methods are basically exposed as a public interface, which we can also call API.
-   
 */
 
 // class Account {
@@ -923,7 +925,7 @@
 //     this.deposit(-val);
 //   }
 //   requestLoan(val) {
-//     if (this.approveLoan(val)) {
+//     if (this._approveLoan(val)) {
 //       this.deposit(val);
 //       console.log(`Loan approved!`);
 //     }
@@ -936,4 +938,112 @@
 // }
 
 // const cristian = new Account("Cristian", "USD", 1234);
+
+// cristian.deposit(250);
+// cristian.withdrawal(50);
+// cristian.requestLoan(1000);
+// cristian._approveLoan(1000); //  METHOD IS 'PROTECTED' BUT IS JUST A CONVENTION!
+
+// // These properties can SILL be manually manipulated even though they are 'protected'
+// cristian._movements.push(45);
+// cristian._movements.push(-45);
+
 // console.log(cristian.getMovements());
+
+// ***********************************************
+// Encapsulation: Private Class Fields and Methods
+// ***********************************************
+
+/*
+ MDN: 
+ 
+   "Both Public and private field declarations are an EXPERIMENTAL FEATURE (stage 3) proposed at TC39, the JavaScript standards committee." - 02/06/2021
+
+   LINK: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Public_class_fields
+
+ Why is this proposal actually called Class Fields? 
+
+   In traditional OOP languages like Java and C++, properties are usually called fields. So with this new proposal, JavaScript is attempting to  move away from the idea that classes are just "syntactic sugar" over constructor functions. Because with this new class features classes actually start to have abilities that we didn't previously have with constructor functions.
+
+ This lecture we focus on 4 different fields and methods...
+ 
+   1) Public field: So we can think of a public field as a property that will be on all instances. So that's why we can also call this a public instance field. 
+
+   2) Private field: the movements with the '#' are now truly private and no longer accessible outside here. They also they appear only on the instances, not on the prototype.
+
+   3) Public methods: Nothing new, what we have been doing all along when creating methods. These method are just part of the public interface of our class.
+
+   4) Private methods: NOT SUPPORTED by ANY browsers YET. But implemented the same way as a private field, with the '#' symbol.
+
+   NOTE: There are FOUR more different fields but they are the 'static' version of these, so 8 total. So remember that a 'static' method/property is located on the object/class constructor itself! 
+
+
+ BELOW: 
+  
+   Keep in mind when creating PUBLIC FIELDS like 'locale' below that there is almost NO DIFFERENCE (in terms of our final object) between creating it in the constructor or as a public field BECAUSE either way the properties are gonna be present on all the instances that we are creating through the class. So they ARE NOT on the prototype AND they still CAN be referenced with the 'this' keyword.
+
+   When creating a PRIVATE FIELD with '#pin' below we have to keep in mind that we CANNOT define a private field in the constructor. And since '#pin' is based on a input value from constructor, we have to declare the 'pin' outside of the constructor. And so this is essentially just like creating an empty variable and then finally initialize the value with the constructor input. 
+*/
+
+// class Account {
+//   // Public fields (instances)
+//   locale = navigator.language;
+
+//   // Private fields (instances)
+//   #movements = [];
+//   #pin; // <= declared here!!!
+
+//   constructor(owner, curren$y, pin) {
+//     this.owner = owner;
+//     this.curren$y = curren$y;
+//     // Setting a value on a private field
+//     this.#pin = pin;
+
+//     console.log(`Thanks for opening an account, ${owner}!`);
+//   }
+
+//   // Public Interface/methods
+//   getMovements() {
+//     return this.#movements;
+//   }
+//   deposit(val) {
+//     this.#movements.push(val);
+//   }
+//   withdrawal(val) {
+//     this.deposit(-val);
+//   }
+//   requestLoan(val) {
+//     if (this.#approveLoan(val)) {
+//       this.deposit(val);
+//       console.log(`Loan approved!`);
+//     }
+//   }
+//   static helper() {
+//     console.log(`I am a helper function!`);
+//   }
+
+//   // Private methods
+//   #approveLoan(val) {
+//     return true;
+//   }
+// }
+
+// const cristian = new Account("Cristian", "USD", 1234);
+// console.log(cristian);
+// console.dir(Account);
+// cristian.deposit(250);
+// cristian.withdrawal(50);
+
+// // This SHOULD WORK because we accessing them through a public method!
+// // cristian.requestLoan(1000); // ERROR => RELIES ON METHOD BELOW
+// // cristian.#approveLoan(1000); // ERROR => PRIVATE METHOD IS NOT SUPPORTED YET
+
+// // These properties are FINALLY and TRULY PRIVATE
+// // cristian.#movements.push(45); // ERROR
+// // cristian.#movements.push(-45); // ERROR
+// // console.log(cristian.#movements); // ERROR
+// // console.log(cristian.#pin); // ERROR
+
+// console.log(cristian.getMovements());
+// Account.helper();
+// // cristian.helper(); <= ERROR only exits on the constructor obj 'Account'
