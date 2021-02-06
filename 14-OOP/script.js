@@ -618,7 +618,7 @@
 
    CAREFUL:
 
-     When creating the link between 'Student' and 'Person', with Object.create(), we MUST place that connecting code BEFORE we add anymore methods to the prototype of 'Student' BECAUSE Object.create() will overwrite any methods placed AFTER itself.
+     When creating the link between 'Student' and 'Person', with Object.create(), we MUST place that connecting code before we add anymore methods to the prototype of 'Student' BECAUSE Object.create() will overwrite any methods placed BEFORE itself in the CODE.
 
      And since we set the prototype property of the 'Student' using Object.create() this makes it so that the constructor of 'Student.prototype' is still 'Person'. So we must make sure to set 
      ".prototype.constructor" BACK to 'Student'!!
@@ -631,52 +631,52 @@
    'Student' instance object, and it still works! YAY PROTOTYPE CHAIN!!
 */
 
-// CREATING 'Person' CONSTRUCTOR
-const Person = function (firstName, birthYear) {
-  this.firstName = firstName;
-  this.birthYear = birthYear;
-};
+// // PARENT 'Person' CONSTRUCTOR
+// const Person = function (firstName, birthYear) {
+//   this.firstName = firstName;
+//   this.birthYear = birthYear;
+// };
 
-// METHOD ON 'Person' PROTOTYPE
-Person.prototype.calcAge = function () {
-  console.log(2020 - this.birthYear);
-};
+// // METHOD ON 'Person' PROTOTYPE
+// Person.prototype.calcAge = function () {
+//   console.log(2020 - this.birthYear);
+// };
 
-// CREATING 'Student' CONSTRUCTOR
-const Student = function (firstName, birthYear, course) {
-  // Person(firstName, birthYear); ERROR=> 'this' = undefined
+// // CHILD 'Student' CONSTRUCTOR
+// const Student = function (firstName, birthYear, course) {
+//   // Person(firstName, birthYear); ERROR=> 'this' = undefined
 
-  Person.call(this, firstName, birthYear); // Calling constructor 'Person' to connect properties.
-  this.course = course;
-};
+//   Person.call(this, firstName, birthYear); // Calling constructor 'Person' to connect properties.
+//   this.course = course;
+// };
 
-// LINKING PROTOTYPES!
-Student.prototype = Object.create(Person.prototype);
+// // LINKING PROTOTYPES!
+// Student.prototype = Object.create(Person.prototype);
 
-// SETTING CONSTRUCTOR BACK TO 'Student'
-console.dir(Student.prototype.constructor); // Person(firstName, birthYear)
-Student.prototype.constructor = Student;
-console.dir(Student.prototype.constructor); // Student(firstName, birthYear, course)
+// // SETTING CONSTRUCTOR BACK TO 'Student'
+// console.dir(Student.prototype.constructor); // Person(firstName, birthYear)
+// Student.prototype.constructor = Student;
+// console.dir(Student.prototype.constructor); // Student(firstName, birthYear, course)
 
-// METHOD ON 'Student' PROTOTYPE
-Student.prototype.introduce = function () {
-  console.log(`Hello, my name is ${this.firstName} and I study ${this.course}`);
-};
+// // METHOD ON 'Student' PROTOTYPE
+// Student.prototype.introduce = function () {
+//   console.log(`Hello, my name is ${this.firstName} and I study ${this.course}`);
+// };
 
-// STUDENT INSTANCE OBJECT !!
-const cristian = new Student("Cristian", 1995, "Computer Science");
-cristian.introduce();
-cristian.calcAge();
-console.log(cristian);
+// // STUDENT INSTANCE OBJECT !!
+// const cristian = new Student("Cristian", 1995, "Computer Science");
+// cristian.introduce();
+// cristian.calcAge();
+// console.log(cristian);
 
-console.log(cristian.__proto__);
-console.log(cristian.__proto__.__proto__);
-console.log(cristian.__proto__.__proto__.__proto__);
+// console.log(cristian.__proto__);
+// console.log(cristian.__proto__.__proto__);
+// console.log(cristian.__proto__.__proto__.__proto__);
 
-console.log(cristian.__proto__ === Student.prototype); // TRUE
-console.log(cristian.__proto__.__proto__ === Person.prototype); // TRUE
-console.log(cristian.__proto__.__proto__.__proto__ === Object.prototype); // TRUE
+// console.log(cristian.__proto__ === Student.prototype); // TRUE
+// console.log(cristian.__proto__.__proto__ === Person.prototype); // TRUE
+// console.log(cristian.__proto__.__proto__.__proto__ === Object.prototype); // TRUE
 
-console.log(cristian instanceof Student); // TRUE
-console.log(cristian instanceof Person); // TRUE
-console.log(cristian instanceof Object); // TRUE
+// console.log(cristian instanceof Student); // TRUE
+// console.log(cristian instanceof Person); // TRUE
+// console.log(cristian instanceof Object); // TRUE
