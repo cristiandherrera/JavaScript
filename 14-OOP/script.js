@@ -1019,7 +1019,7 @@
 //     }
 //   }
 //   static helper() {
-//     console.log(`I am a helper function!`);
+//     console.log(`I am a static public-field method!`);
 //   }
 
 //   // Private methods
@@ -1047,3 +1047,58 @@
 // console.log(cristian.getMovements());
 // Account.helper();
 // // cristian.helper(); <= ERROR only exits on the constructor obj 'Account'
+
+// ****************
+// Chaining Methods
+// ****************
+
+/*
+  We can actually implement the same ability of chaining methods, all we have to do is to return the object itself (like with the 'this' keyword) at the end of a method that we want to be chain-able.
+*/
+
+// class Account {
+//   locale = navigator.language;
+//   _movements = [];
+//   _pin;
+//   constructor(owner, curren$y, pin) {
+//     this.owner = owner;
+//     this.curren$y = curren$y;
+//     this._pin = pin;
+
+//     console.log(`Thanks for opening an account, ${owner}!`);
+//   }
+//   // Returning 'this' allows us to CHAIN METHODS
+//   getMovements() {
+//     return this._movements;
+//   }
+//   deposit(val) {
+//     this._movements.push(val);
+//     return this; // <<<<<
+//   }
+//   withdrawal(val) {
+//     this.deposit(-val);
+//     return this; // <<<<<
+//   }
+//   requestLoan(val) {
+//     if (this._approveLoan(val)) {
+//       this.deposit(val);
+//       console.log(`Loan approved!`);
+//     }
+//     return this; // <<<<<
+//   }
+//   static helper() {
+//     console.log(`I am a static public-field method!`);
+//   }
+//   _approveLoan(val) {
+//     return true;
+//   }
+// }
+// const cristian = new Account("Cristian", "USD", 1234);
+
+// cristian
+//   .deposit(300)
+//   .deposit(600)
+//   .withdrawal(100)
+//   .requestLoan(25000)
+//   .withdrawal(17000);
+// console.log(cristian._movements);
