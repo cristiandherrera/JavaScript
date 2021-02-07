@@ -123,3 +123,77 @@
 // tesla.brake();
 // tesla.chargeBattery(99);
 // console.log(tesla);
+
+// *******************
+// Coding Challenge #4
+// *******************
+
+// class CarCl {
+//   constructor(make, speed) {
+//     this.make = make;
+//     this.speed = speed;
+//   }
+//   accelerate() {
+//     this.speed += 10;
+//     console.log(this);
+//   }
+//   brake() {
+//     this.speed -= 5;
+//     this.message();
+//     return this;
+//   }
+//   get speedUs() {
+//     console.log(this.speed, "MPH");
+//     return this.speed / 1.6;
+//   }
+//   set speedUs(speed) {
+//     console.log(speed, "MPH");
+//     return (this.speed = speed * 1.6);
+//   }
+// }
+
+// // 1.
+// class EVCl extends CarCl {
+//   // 2.
+//   #charge;
+
+//   constructor(make, speed, charge) {
+//     super(make, speed);
+//     this.#charge = charge;
+//   }
+//   chargeBattery(chargeTo) {
+//     this.#charge = chargeTo;
+//     this.message();
+//     return this; // 3.
+//   }
+//   accelerate() {
+//     this.speed += 20;
+//     this.#charge--;
+//     this.message();
+//     return this; // 3.
+//   }
+//   message() {
+//     console.log(
+//       `This EV ${this.make} is going ${
+//         this.speed
+//       } km/h with a battery charge of ${this.#charge}%`
+//     );
+//   }
+// }
+
+// const rivian = new EVCl("Rivian", 120, 23);
+// console.log(rivian);
+// // console.log(rivian.#charge); << PRIVATE
+
+// rivian
+//   .accelerate()
+//   .accelerate()
+//   .brake()
+//   .accelerate()
+//   .chargeBattery(100)
+//   .brake();
+
+// rivian.speedUs;
+// rivian.speedUs = 500;
+
+// rivian.brake();

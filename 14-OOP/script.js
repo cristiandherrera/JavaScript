@@ -1122,7 +1122,7 @@
 
    The 'extends' keyword: placed after the class name of the child and before the 'class' name of the parent will automatically set up the prototype chain for us. 
 
-   The constructor() method: is automatically called by the 'new' operator when ever we create a new instance (object) of the class. And is MANDATORY in a regular class. (w/o the 'extends' keyword) and can be OMITTED in a child class (w/ 'extends) if we want the same parameters in name and number.
+   The constructor() method: is automatically called by the 'new' operator when ever we create a new instance (object) of the class. And is MANDATORY in a regular class (w/o the 'extends' keyword) and can be OMITTED in a child class (w/ 'extends) if we want the same parameters in name and number.
 
    The super() method: is called INSIDE of the CONSTRUCTOR, and what it calls is the parent class. And this only necessary when we are writing a child class w/ the 'extends' keyword. Also, in order to access the 'this' keyword the super function MUST be called BEFORE ANYTHING ELSE.
 
@@ -1132,7 +1132,7 @@
 
    Public field: So we can think of a public field as a property that will be on ALL instances. So that's why we can also call this a public instance field. (declared outside the constructor) 
 
-   Private field: the movements with the '#' are now truly private and no longer accessible outside here. They also they appear only on the instances, not on the prototype.
+   Private field: the movements with the '#' are now truly private and no longer accessible from the outside (like accessing it through code like 'property.#private'). They also they appear only on the instances, not on the prototype.
 
      When creating one remember that we CANNOT define a private field in the constructor. SO if we need a private field to be based on an input we have to declare it outside the constructor and then initialize its value inside. 
 
