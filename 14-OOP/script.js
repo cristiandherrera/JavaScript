@@ -9,7 +9,7 @@
 
    - Object-oriented programming (OOP) is a programming paradigm based on the concept of objects.
 
-   - We use objects to model (describe) real-world or abstract features (HTML component or data structure).
+   - We use objects to model (describe) real-world or abstract features (HTML component or data structure)
 
    - Objects may contain data (properties) and code (methods). By using objects, we pack data and the corresponding behavior into one block.
 
@@ -967,7 +967,7 @@
 
  This lecture we focus on 4 different fields and methods...
  
-   1) Public field: So we can think of a public field as a property that will be on all instances. So that's why we can also call this a public instance field. 
+   1) Public field: So we can think of a public field as a property that will be on ALL instances. So that's why we can also call this a public instance field. 
 
    2) Private field: the movements with the '#' are now truly private and no longer accessible outside here. They also they appear only on the instances, not on the prototype.
 
@@ -1067,7 +1067,7 @@
 
 //     console.log(`Thanks for opening an account, ${owner}!`);
 //   }
-//   // Returning 'this' allows us to CHAIN METHODS
+//   // RETURNING 'this' allows us to CHAIN METHODS
 //   getMovements() {
 //     return this._movements;
 //   }
@@ -1102,3 +1102,51 @@
 //   .requestLoan(25000)
 //   .withdrawal(17000);
 // console.log(cristian._movements);
+
+// *******************
+// ES6 Classes Summary
+// *******************
+
+/*
+
+ KEEP IN MIND:
+
+   - Classes are really just syntactic sugar over constructor functions.
+   - Classes are not hoisted.
+   - They are first class citizens.
+   - The class body is always executed in strict mode.
+
+ DEFINITIONS AND DESCRIPTIONS:
+
+   The 'new' Operator: Lets developers create an instance of a user-defined object type or of one of the built-in object types that has a constructor function.
+
+   The 'extends' keyword: placed after the class name of the child and before the 'class' name of the parent will automatically set up the prototype chain for us. 
+
+   The constructor() method: is automatically called by the 'new' operator when ever we create a new instance (object) of the class. And is MANDATORY in a regular class. (w/o the 'extends' keyword) and can be OMITTED in a child class (w/ 'extends) if we want the same parameters in name and number.
+
+   The super() method: is called INSIDE of the CONSTRUCTOR, and what it calls is the parent class. And this only necessary when we are writing a child class w/ the 'extends' keyword. Also, in order to access the 'this' keyword the super function MUST be called BEFORE ANYTHING ELSE.
+
+   Instance property: very similar to public fields BUT these properties are based on input data from the constructor. (declared inside the constructor)
+
+ FIELDS: 
+
+   Public field: So we can think of a public field as a property that will be on ALL instances. So that's why we can also call this a public instance field. (declared outside the constructor) 
+
+   Private field: the movements with the '#' are now truly private and no longer accessible outside here. They also they appear only on the instances, not on the prototype.
+
+     When creating one remember that we CANNOT define a private field in the constructor. SO if we need a private field to be based on an input we have to declare it outside the constructor and then initialize its value inside. 
+
+   Public methods: Nothing new, what we have been doing all along when creating methods. These method are just part of the public interface of our class.
+
+   Private methods: NOT SUPPORTED by ANY browsers YET. But implemented the same way as a private field, with the '#' symbol.
+
+   Static: There are FOUR more different fields but they are the 'static' version of these, so 8 total. So remember that a 'static' method/property is located on the object/class constructor itself! And they are usually use the static methods as 'helper' methods for the class.
+
+ Getter and Setter: 
+ 
+   The get() method: is basically so that we can get a value out of an object by simply writing a property INSTEAD of writing a method.
+
+   The set() method: so we can set the value using properties and an equal sign INSTEAD of calling a method.
+
+     CONVENTION: Keep in mind that if you have a SETTER for a property that is ALREADY defined in the constructor, then you need to literally create a NEW PROPERTY with the underscore in front of it. And then in the GETTER with the same name, you also need to then RETURN that NEW PROPERTY.
+*/
