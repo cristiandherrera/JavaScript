@@ -90,13 +90,13 @@
 /*
  Constructor Functions
 
-   The constructor property returns a reference to the Object constructor function that created the instance object.
+   The 'constructor' property returns a reference to the Object constructor function that created the instance object.
 
    USE: We can use constructor functions, to programmatically build an object using a function.
 
-   DIFFERENCE: The only difference between a regular function and a function that we CALL a constructor function with the 'new' keyword. And creates a 'this' keyword will be set to newly created object.
+   DIFFERENCE: The only difference between a regular function and a function that we CALL a constructor function with is the 'new' keyword. And it also creates a 'this' keyword which will be set to the newly created instance object.
 
-     NOTE: When creating objects using factory(regular) functions its __proto__ points to the Object.prototype whereas when creating objects from constructor functions it points to its constructor function prototype object. MUST use 'this' keyword to to REALLY make it a constructor function in its output and MUST use 'new' to set 'this' scoped to the newly created object.
+     NOTE: When creating objects using factory(regular) functions its '__proto__' points to the 'Object.prototype' whereas when creating objects from constructor functions it points to its constructor function prototype object. Also, MUST use 'this' keyword to to REALLY make it a constructor function in its output (when creating properties) and MUST use 'new' to set 'this' scoped to the newly created object.
 
    CONVENTION: In OOP there is a convention that constructor functions always start with a capital letter.
 
@@ -138,8 +138,8 @@
 //  result of calling the function...
 
 //    1. new empty object is created {}
-//    2. function is calls, 'this' = {}
-//    3. {} linked to prototype (this.__proto__ = Person.prototype)
+//    2. function is called, 'this' => {}
+//    3. {} is linked to prototype (this.__proto__ = Person.prototype)
 //    4. function automatically return {}
 // */
 
@@ -148,7 +148,8 @@
 // const jack = new Person("Jack", 2017);
 // console.log(matilda, jack);
 
-// console.log(cristian instanceof Person);
+// console.log(cristian instanceof Person); // TRUE
+// console.log(Person instanceof Object) // TRUE
 
 // **********
 // Prototypes
@@ -161,17 +162,17 @@
 
    Each and every function created in JavaScript automatically has a property called prototype. 
 
-   Every object that's created by a certain constructor function will get access to all the methods and properties that we define on the constructors prototype property.
-
-   So to provide inheritance, objects can have a prototype object, which acts as a template object that it inherits methods and properties from.
-
-   And if a property or a method cannot be found in a certain object JavaScript will look into its prototype.
+   Every object (instance) that's created by a certain constructor function will get access to all the methods and properties that we define on the constructors prototype property.
+   
+   REMEMBER: So to provide inheritance, objects can have a prototype object, which acts as a template object that it inherits methods and properties from. And if a property or a method cannot be found in a certain object JavaScript will look into its prototype.
 
  '__proto__' vs. 'prototype'
 
-   'prototype' is the constructors PROPERTY that is used to BUILD '__proto__' when you create an object with the 'new' keyword
+   'prototype' is a PROPERTY of the constructor function that is used to BUILD '__proto__' when you create an object with the 'new' keyword
 
    '__proto__' is an OBJECT (in every class instance) that points to the 'prototype' it was created from. 
+
+     BELOW: The 'cristian' instance's '__proto__' property points to the constructor 'Person.prototype'
 
    DIFFERENCE: The only true difference between 'prototype' and '__proto__' is that the former is a property of a class constructor, while the latter is a property of a class instance.
 
@@ -192,65 +193,65 @@
  LINK: https://medium.com/javascript-in-plain-english/proto-vs-prototype-in-js-140b9b9c8cd5
 */
 
-// // USING FROM PREVIOUS SECTION
-// const Person = function (firstName, birthYear) {
-//   // Instance properties: will be available on all instances that are created through this function.
-//   this.firstName = firstName;
-//   this.birthYear = birthYear;
+// USING FROM PREVIOUS SECTION
+const Person = function (firstName, birthYear) {
+  // Instance properties: will be available on all instances that are created through this function.
+  this.firstName = firstName;
+  this.birthYear = birthYear;
 
-//   // NEVER create a method in a constructor function - POOR PERFORMANCE
-//   this.calcAgeBad = function () {
-//     console.log(2020 - this.birthYear);
-//   };
-// };
-// // Creating a object INSTANCE of 'Person' named 'cristian'
-// const cristian = new Person("Cristian", 1995);
-// const matilda = new Person("Matilda", 1996);
-// const jack = new Person("Jack", 2017);
+  // NEVER create a method in a constructor function - POOR PERFORMANCE
+  this.calcAgeBad = function () {
+    console.log(2020 - this.birthYear);
+  };
+};
+// Creating a object INSTANCE of 'Person' named 'cristian'
+const cristian = new Person("Cristian", 1995);
+const matilda = new Person("Matilda", 1996);
+const jack = new Person("Jack", 2017);
 
-// console.log(cristian);
-// console.log(matilda);
-// console.log(jack);
+console.log(cristian);
+console.log(matilda);
+console.log(jack);
 
-// // PROTOTYPE
-// // setting a method on the prototype
-// Person.prototype.calcAgeGood = function () {
-//   console.log(2020 - this.birthYear);
-// };
+// PROTOTYPE
+// setting a method on the prototype
+Person.prototype.calcAgeGood = function () {
+  console.log(2020 - this.birthYear);
+};
 
-// cristian.calcAgeBad(); // method on the object itself < BAD
-// cristian.calcAgeGood(); // method on the prototype < GOOD
+cristian.calcAgeBad(); // method on the object itself < BAD
+cristian.calcAgeGood(); // method on the prototype < GOOD
 
-// // prototype and '__proto__'
-// console.log(cristian.__proto__); // object in the class instance of the prototype created from('cristian')
-// console.log(cristian.__proto__ === matilda.__proto__); // TRUE (share the same prototype)
-// console.log(cristian.__proto__ === Person.prototype); // TRUE
+// prototype and '__proto__'
+console.log(cristian.__proto__); // object in the class instance of the prototype created from('cristian')
+console.log(cristian.__proto__ === matilda.__proto__); // TRUE (share the same prototype)
+console.log(cristian.__proto__ === Person.prototype); // TRUE
 
-// // The '.prototype' property is NOT the prototype of the constructor function
-// console.log(Person.prototype.isPrototypeOf(cristian)); // TRUE
-// console.log(Person.prototype.isPrototypeOf(matilda)); // TRUE
-// console.log(Person.prototype.isPrototypeOf(Person)); // FALSE
+// The '.prototype' property is NOT the prototype of the constructor function
+console.log(Person.prototype.isPrototypeOf(cristian)); // TRUE
+console.log(Person.prototype.isPrototypeOf(matilda)); // TRUE
+console.log(Person.prototype.isPrototypeOf(Person)); // FALSE
 
-// //setting a property on the prototype
-// Person.prototype.species = "Homo Sapiens";
-// console.log(cristian.species, matilda.species);
+//setting a property on the prototype
+Person.prototype.species = "Homo Sapiens";
+console.log(cristian.species, matilda.species);
 
-// // checking object if a property is actually IN the object
-// console.log(cristian.hasOwnProperty("species")); // FALSE < IN the prototype
-// console.log(cristian.hasOwnProperty("firstName")); // TRUE
+// checking object if a property is actually IN the object
+console.log(cristian.hasOwnProperty("species")); // FALSE < IN the prototype
+console.log(cristian.hasOwnProperty("firstName")); // TRUE
 
 // **********************************************
 // Prototypal Inheritance and The Prototype Chain
 // **********************************************
 
 /*
- How an object is created using the new operator and the constructor function!
+ How is an object (instance) created using the new operator and the constructor function?
 
-   1. A new empty object (like 'cristian') is created instantly.
+   1. A new empty object (instance) (like 'cristian') is created instantly.
 
    2. Then the 'this' keyword, in the function call, is SET to the newly created object. So, inside the function's execution context 'this' is now the new empty object.
 
-   3. Now the new object is LINKED to the constructor functions prototype property. So, Person.prototype is now the objects prototype which is denoted with the '__proto__' property of 'cristian'. SO AGAIN, '__proto__' always points to an objects prototype, true for all objects in JS.
+   3. Now the new object is LINKED to the constructor functions prototype property. So, Person.prototype is now the new objects prototype which is denoted with the '__proto__' property of 'cristian'. SO AGAIN, '__proto__' always points to to the instances prototype, true for all objects in JS.
 
    4. Finally, the new object is automatically RETURNED from the function UNLESS we explicitly return something else. BUT in a constructor function we usually will never do that.
 
@@ -258,11 +259,11 @@
 
  Why is this technique so powerful and useful?
 
-   If a property or a method cannot be found in a certain object in JavaScript it will look into its prototype! Thats how the calcAgeGood() function can run correctly above. And as we discussed that behavior is call PROTOTYPAL INHERITANCE or DELEGATION.
+   If a property or a method cannot be found in a certain object in JavaScript it will look into its prototype! Thats how the calcAgeGood() function can run correctly BELOW. And as we discussed that behavior is called PROTOTYPAL INHERITANCE or DELEGATION.
 
-   So the 'cristian' object INHERITED the calcAgeGood() method from its prototype OR in other words it DELEGATED the calcAgeGood() functionality to its prototype.
+   So the 'cristian' instance INHERITED the calcAgeGood() method from its prototype ('Person') OR in other words the prototype DELEGATED the calcAgeGood() functionality to the instance.
 
-   Now we can create as many 'Person' objects as we like and all of them will then inherit this method. So we can call this method an all 'Person' objects without the method being directly attached to the ALL the objects THEMSELVES. (essential for CODE PERFORMANCE)
+   Now we can create as many 'Person' instances as we like and all of them will then inherit this method. So we can call this method an all 'Person' objects without the method being directly attached to the ALL the objects THEMSELVES. (essential for CODE PERFORMANCE)
 
  The prototype chain!
 
@@ -270,9 +271,9 @@
 
      Every prototype object has a prototype of its own, and so on until an object is reached with NULL as its prototype. By definition, null has no prototype, and acts as the final link in this prototype chain.
 
-     SIMILARITIES: In the scope chain whenever JS can find a certain variable in a certain scope, it looks up into the next scope and a scope chain and tries to find the variable there. And with the prototype chain whenever JavaScript can find a certain property or method in a certain object it's gonna look up into the next prototype in the prototype chain.
+     SIMILARITIES: In the scope chain whenever JS CANNOT find a certain variable in a certain scope, it looks up into the next scope and a scope chain and tries to find the variable there. And SAME with the prototype chain, whenever JavaScript can find a certain property or method in a certain object it's gonna look up into the next prototype in the prototype chain.
 
-     EX: The fact that 'cristian' is connected to a prototype and the ability of looking up methods and properties in a prototype is what we call the prototype chain.
+     EX: The fact that the instance 'cristian' is connected to a prototype ('Person') and has the ability of looking up methods and properties in a prototype is what we call the prototype chain.
 
    LINK: https://medium.com/@chamikakasun/javascript-prototype-and-prototype-chain-explained-fdc2ec17dd04
 
@@ -323,15 +324,15 @@
 /* 
  REMEMBER: That any function is a object, therefore, it also has a prototype!
 
- REMEMBER: The prototype property of the constructor is going to BE the prototype of all the objects created by that constructor.
+ REMEMBER: The 'prototype' property of the constructor is going to BE the prototype of all the objects (instances) created by that constructor.
 
  REMEMBER: That all DOM elements behind the scenes are objects.
 
- NOTE: When creating object or array literals, it is the same as creating them with the 'new' constructor functions 
+ NOTE: When creating objects or array literals, it is the same as creating them with the 'new' constructor functions 
 
  BELOW: Added a new method ('unique') to the prototype property of the array constructor. And so therefore now all arrays will inherit this method. (BAD IDEA IN PRACTICE)
 
-    So all we would have to do is to say array.prototype And then here we can add any new method to this prototype and all the arrays will then inherit
+    So all we would have to do is to type the syntax 'Array.prototype.[newMethod]' And then here we can add any new method to this prototype and all the arrays will then inherit
 */
 
 // // BUILT-IN OBJECTS
