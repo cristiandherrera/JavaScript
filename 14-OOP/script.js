@@ -193,52 +193,52 @@
  LINK: https://medium.com/javascript-in-plain-english/proto-vs-prototype-in-js-140b9b9c8cd5
 */
 
-// USING FROM PREVIOUS SECTION
-const Person = function (firstName, birthYear) {
-  // Instance properties: will be available on all instances that are created through this function.
-  this.firstName = firstName;
-  this.birthYear = birthYear;
+// // USING FROM PREVIOUS SECTION
+// const Person = function (firstName, birthYear) {
+//   // Instance properties: will be available on all instances that are created through this function.
+//   this.firstName = firstName;
+//   this.birthYear = birthYear;
 
-  // NEVER create a method in a constructor function - POOR PERFORMANCE
-  this.calcAgeBad = function () {
-    console.log(2020 - this.birthYear);
-  };
-};
-// Creating a object INSTANCE of 'Person' named 'cristian'
-const cristian = new Person("Cristian", 1995);
-const matilda = new Person("Matilda", 1996);
-const jack = new Person("Jack", 2017);
+//   // NEVER create a method in a constructor function - POOR PERFORMANCE
+//   this.calcAgeBad = function () {
+//     console.log(2020 - this.birthYear);
+//   };
+// };
+// // Creating a object INSTANCE of 'Person' named 'cristian'
+// const cristian = new Person("Cristian", 1995);
+// const matilda = new Person("Matilda", 1996);
+// const jack = new Person("Jack", 2017);
 
-console.log(cristian);
-console.log(matilda);
-console.log(jack);
+// console.log(cristian);
+// console.log(matilda);
+// console.log(jack);
 
-// PROTOTYPE
-// setting a method on the prototype
-Person.prototype.calcAgeGood = function () {
-  console.log(2020 - this.birthYear);
-};
+// // PROTOTYPE
+// // setting a method on the prototype
+// Person.prototype.calcAgeGood = function () {
+//   console.log(2020 - this.birthYear);
+// };
 
-cristian.calcAgeBad(); // method on the object itself < BAD
-cristian.calcAgeGood(); // method on the prototype < GOOD
+// cristian.calcAgeBad(); // method on the object itself < BAD
+// cristian.calcAgeGood(); // method on the prototype < GOOD
 
-// prototype and '__proto__'
-console.log(cristian.__proto__); // object in the class instance of the prototype created from('cristian')
-console.log(cristian.__proto__ === matilda.__proto__); // TRUE (share the same prototype)
-console.log(cristian.__proto__ === Person.prototype); // TRUE
+// // prototype and '__proto__'
+// console.log(cristian.__proto__); // object in the class instance of the prototype created from('cristian')
+// console.log(cristian.__proto__ === matilda.__proto__); // TRUE (share the same prototype)
+// console.log(cristian.__proto__ === Person.prototype); // TRUE
 
-// The '.prototype' property is NOT the prototype of the constructor function
-console.log(Person.prototype.isPrototypeOf(cristian)); // TRUE
-console.log(Person.prototype.isPrototypeOf(matilda)); // TRUE
-console.log(Person.prototype.isPrototypeOf(Person)); // FALSE
+// // The '.prototype' property is NOT the prototype of the constructor function
+// console.log(Person.prototype.isPrototypeOf(cristian)); // TRUE
+// console.log(Person.prototype.isPrototypeOf(matilda)); // TRUE
+// console.log(Person.prototype.isPrototypeOf(Person)); // FALSE
 
-//setting a property on the prototype
-Person.prototype.species = "Homo Sapiens";
-console.log(cristian.species, matilda.species);
+// //setting a property on the prototype
+// Person.prototype.species = "Homo Sapiens";
+// console.log(cristian.species, matilda.species);
 
-// checking object if a property is actually IN the object
-console.log(cristian.hasOwnProperty("species")); // FALSE < IN the prototype
-console.log(cristian.hasOwnProperty("firstName")); // TRUE
+// // checking object if a property is actually IN the object
+// console.log(cristian.hasOwnProperty("species")); // FALSE < IN the prototype
+// console.log(cristian.hasOwnProperty("firstName")); // TRUE
 
 // **********************************************
 // Prototypal Inheritance and The Prototype Chain
