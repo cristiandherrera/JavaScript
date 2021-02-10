@@ -17,12 +17,48 @@ if (navigator.geolocation) {
       const { latitude } = position.coords;
       const { longitude } = position.coords;
       console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
+
+      const coords = [latitude, longitude];
+
+      var map = L.map("map").setView(coords, 13);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+      L.marker(coords).addTo(map).bindPopup(`You are here`).openPopup();
     },
     function (error) {
       console.log(error);
     }
   );
 }
+
+// ***********************************
+// Display a Map Using Leaflet Library
+// ***********************************
+
+/*
+
+ This lecture we ...
+
+   - Linked the CDN files for the 3rd party library Leaflet.
+
+ What does Leaflet do?
+
+   "Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps. Weighing just about 39 KB of JS, it has all the mapping features most developers ever need." 
+
+ A content delivery network (CDN): refers to a geographically distributed group of servers which work together to provide fast delivery of internet content including HTML pages, javascript files, stylesheets, images, and videos. 
+
+ REMEMBER: 
+ 
+   We should never put any JavaScript in the header WITHOUT any of the Differ or Async Attributes.
+
+   Scripts with the defer attribute will prevent the DOMContentLoaded event from firing until the script has loaded and finished evaluating.
+
+ LINK: https://leafletjs.com/
+*/
 
 // *************************
 // Using the Geolocation API
