@@ -11,6 +11,34 @@ const inputDuration = document.querySelector(".form__input--duration");
 const inputCadence = document.querySelector(".form__input--cadence");
 const inputElevation = document.querySelector(".form__input--elevation");
 
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    function (position) {
+      const { latitude } = position.coords;
+      const { longitude } = position.coords;
+      console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
+    },
+    function (error) {
+      console.log(error);
+    }
+  );
+}
+
+// *************************
+// Using the Geolocation API
+// *************************
+
+/*
+ The Geolocation API: is a browser API that allows the user to provide their location to web applications.
+ 
+   The 'navigator.geolocation' property: is a read only property that returns a Geolocation object that gives web content access to the location of the device. And there are two methods to access location...
+
+   Geolocation.getCurrentPosition(): a method on the 'geolocation' object that retrieves the devices location upon success. It takes up to three callbacks, a success callback function, a error callback, and a optional object that provided option for retrieval of position data. 
+     SYNTAX: navigator.geolocation.getCurrentPosition(success()[, error[, [options]])
+
+ REMEMBER: The DESTRUCTURING assignment allows us to UNPACK VALUES from arrays, or the properties from objects, INTO distinct VARIABLES!! The destructuring assignment uses similar syntax ({}, []), but on the left-hand side of the assignment to define what values to unpack from the sourced variable.
+*/
+
 // *************************
 // How to Plan a Web Project
 // *************************
