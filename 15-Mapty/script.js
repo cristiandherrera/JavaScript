@@ -20,20 +20,51 @@ if (navigator.geolocation) {
 
       const coords = [latitude, longitude];
 
-      var map = L.map("map").setView(coords, 13);
+      const map = L.map("map").setView(coords, 13);
 
+      /* Picking and linking map style */
       L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);
 
-      L.marker(coords).addTo(map).bindPopup(`You are here`).openPopup();
+      /* Displaying map and listening for locale on click */
+      map.on("click", function (mapEvent) {
+        const { lat, lng } = mapEvent.latlng;
+        L.marker([lat, lng])
+          .addTo(map)
+          .bindPopup(
+            L.popup({
+              maxWidth: 250,
+              minWidth: 100,
+              autoClose: false,
+              closeOnClick: false,
+              className: "running-popup",
+            })
+          )
+          .setPopupContent("Workout")
+          .openPopup();
+
+        console.log(lat, lng);
+      });
     },
     function (error) {
       console.log(error);
     }
   );
 }
+
+// ***********************
+// Displaying a Map Marker
+// ***********************
+
+/*
+ This lecture we ...
+  
+   - Set up a Leaflet event handler (using '.on()') to update the marker location on click.
+   - Altered the map marker popup using the Leaflet method 'popup()'
+
+ NOTE: In the documentation is that all these methods always returned 'this'. So basically the current object which then makes all of these methods chainable. Just like we did in previous section.
 
 // ***********************************
 // Display a Map Using Leaflet Library
@@ -44,12 +75,14 @@ if (navigator.geolocation) {
  This lecture we ...
 
    - Linked the CDN files for the 3rd party library Leaflet.
+   - got current location coordinates
+   - Displayed the map 
 
  What does Leaflet do?
 
    "Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps. Weighing just about 39 KB of JS, it has all the mapping features most developers ever need." 
 
- A content delivery network (CDN): refers to a geographically distributed group of servers which work together to provide fast delivery of internet content including HTML pages, javascript files, stylesheets, images, and videos. 
+ The 'map()' method is the central class of the API — Instantiates a map object given the DOM ID of a <div> element and optionally an object literal with Map options.
 
  REMEMBER: 
  
@@ -65,6 +98,12 @@ if (navigator.geolocation) {
 // *************************
 
 /*
+ This lecture we ...
+
+   - linked the 3rd party library Leaflet to our application with a CDN in our html.
+
+ A content delivery network (CDN): refers to a geographically distributed group of servers which work together to provide fast delivery of internet content including HTML pages, javascript files, stylesheets, images, and videos. 
+
  The Geolocation API: is a browser API that allows the user to provide their location to web applications.
  
    The 'navigator.geolocation' property: is a read only property that returns a Geolocation object that gives web content access to the location of the device. And there are two methods to access location...
