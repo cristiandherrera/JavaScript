@@ -11,16 +11,20 @@ const inputDuration = document.querySelector(".form__input--duration");
 const inputCadence = document.querySelector(".form__input--cadence");
 const inputElevation = document.querySelector(".form__input--elevation");
 
+let map, mapEvent;
+
+/* Grabbing location */
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(
     function (position) {
+      console.log(position);
       const { latitude } = position.coords;
       const { longitude } = position.coords;
-      console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
-
       const coords = [latitude, longitude];
+      // console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
 
-      const map = L.map("map").setView(coords, 13);
+      /* Initializing the map and assigning it to 'map' */
+      map = L.map("map").setView(coords, 13);
 
       /* Picking and linking map style */
       L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
@@ -28,31 +32,71 @@ if (navigator.geolocation) {
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);
 
-      /* Displaying map and listening for locale on click */
-      map.on("click", function (mapEvent) {
-        const { lat, lng } = mapEvent.latlng;
-        L.marker([lat, lng])
-          .addTo(map)
-          .bindPopup(
-            L.popup({
-              maxWidth: 250,
-              minWidth: 100,
-              autoClose: false,
-              closeOnClick: false,
-              className: "running-popup",
-            })
-          )
-          .setPopupContent("Workout")
-          .openPopup();
-
-        console.log(lat, lng);
+      /* Displaying form on event click */
+      map.on("click", function (mapE) {
+        mapEvent = mapE; //=> 'click' value saved to global variable
+        form.classList.remove("hidden");
+        inputDistance.focus();
       });
     },
     function (error) {
       console.log(error);
     }
   );
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // Clear input fields
+    inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value =
+      "";
+
+    // Display marker
+    console.log(mapEvent);
+    const { lat, lng } = mapEvent.latlng;
+    L.marker([lat, lng])
+      .addTo(map)
+      .bindPopup(
+        L.popup({
+          maxWidth: 250,
+          minWidth: 100,
+          autoClose: false,
+          closeOnClick: false,
+          className: "running-popup",
+        })
+      )
+      .setPopupContent("Workout")
+      .openPopup();
+  });
 }
+
+/* Toggling display between workout types */
+inputType.addEventListener("change", function () {
+  inputElevation.closest(".form__row").classList.toggle("form__row--hidden");
+  inputCadence.closest(".form__row").classList.toggle("form__row--hidden");
+});
+
+// ****************************
+// Rendering Workout Input Form
+// ****************************
+
+/*
+
+ In this lecture we ... 
+
+   - Displayed the workout form on the event click and saved the 'click' location value to global variable.
+   - Changed the marker to display when the new form is submitted with the event 'submit'
+   - Added a 'change' event listener to react to update form workout 'type' input field
+   
+ REMEMBER THE DOM:
+
+   The 'change' event listener is fired for <input>, <select>, and <textarea> elements when an alteration to the element's value is committed by the user.
+
+   The closest() method: traverses the Element and its parents (heading toward the document root) until it finds a node that matches the provided selector string.
+
+   The Element.classList: is a read-only property that returns a live DOMTokenList collection of the class attributes of the element. This can then be used to manipulate the class list.
+
+   The Event interface's preventDefault() method tells the user agent that if the event does not get explicitly handled, its default action should not be taken as it normally would be.
+*/
 
 // ***********************
 // Displaying a Map Marker
@@ -62,9 +106,11 @@ if (navigator.geolocation) {
  This lecture we ...
   
    - Set up a Leaflet event handler (using '.on()') to update the marker location on click.
-   - Altered the map marker popup using the Leaflet method 'popup()'
+   - Altered the map marker popup for our workout description using the Leaflet method 'popup()'
 
  NOTE: In the documentation is that all these methods always returned 'this'. So basically the current object which then makes all of these methods chainable. Just like we did in previous section.
+
+*/
 
 // ***********************************
 // Display a Map Using Leaflet Library
