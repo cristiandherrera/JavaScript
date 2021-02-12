@@ -76,11 +76,24 @@ inputType.addEventListener("change", function () {
 });
 
 // ****************************
+// Project Architecture
+// ****************************
+
+/*
+ Our project architecture...
+
+   So to start, one of the most important aspects of any Architecture, is to decide where and how to store the data.
+
+   In this small project, we will simply use object oriented programming with classes, just like we learned in the last section.
+
+   So we will divide the data and our logic into two different class sets in this application. The first will be a class ('App') that will contain all of the logic that is related to building the application itself. And then the second class ('workout') will the receive the data created from the logic class and build objects that contain all of the workout data. 
+*/
+
+// ****************************
 // Rendering Workout Input Form
 // ****************************
 
 /*
-
  In this lecture we ... 
 
    - Displayed the workout form on the event click and saved the 'click' location value to global variable.
