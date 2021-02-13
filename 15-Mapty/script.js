@@ -11,50 +11,65 @@ const inputDuration = document.querySelector(".form__input--duration");
 const inputCadence = document.querySelector(".form__input--cadence");
 const inputElevation = document.querySelector(".form__input--elevation");
 
-let map, mapEvent;
+class App {
+  #map;
+  #mapEvent;
 
-/* Grabbing location */
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(
-    function (position) {
-      console.log(position);
-      const { latitude } = position.coords;
-      const { longitude } = position.coords;
-      const coords = [latitude, longitude];
-      // console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
+  constructor() {
+    this._getPosition();
+    form.addEventListener("submit", this._newWorkOut.bind(this));
+  }
 
-      /* Initializing the map and assigning it to 'map' */
-      map = L.map("map").setView(coords, 13);
-
-      /* Picking and linking map style */
-      L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
-
-      /* Displaying form on event click */
-      map.on("click", function (mapE) {
-        mapEvent = mapE; //=> 'click' value saved to global variable
-        form.classList.remove("hidden");
-        inputDistance.focus();
-      });
-    },
-    function (error) {
-      console.log(error);
+  _getPosition() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        this._loadMap.bind(this),
+        function (error) {
+          console.log(error);
+        }
+      );
     }
-  );
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+  }
 
+  _loadMap(position) {
+    // Saving users coordinate into variables
+    const { latitude } = position.coords;
+    const { longitude } = position.coords;
+    const coords = [latitude, longitude];
+    console.log(position);
+    // Initializing the map and assigning it to 'map'
+    console.log(this);
+    this.#map = L.map("map").setView(coords, 13);
+    // Picking and linking map style
+    L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(this.#map);
+    // Displaying form on event click
+    this.#map.on("click", this._showForm.bind(this));
+  }
+
+  _showForm(mapE) {
+    this.#mapEvent = mapE; //=> 'click' value saved to global variable
+    form.classList.remove("hidden");
+    inputDistance.focus();
+  }
+
+  _toggleElevationField() {
+    inputElevation.closest(".form__row").classList.toggle("form__row--hidden");
+    inputCadence.closest(".form__row").classList.toggle("form__row--hidden");
+  }
+
+  _newWorkOut(e) {
+    e.preventDefault();
     // Clear input fields
     inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value =
       "";
-
     // Display marker
-    console.log(mapEvent);
-    const { lat, lng } = mapEvent.latlng;
+    console.log(this.#mapEvent);
+    const { lat, lng } = this.#mapEvent.latlng;
     L.marker([lat, lng])
-      .addTo(map)
+      .addTo(this.#map)
       .bindPopup(
         L.popup({
           maxWidth: 250,
@@ -66,18 +81,39 @@ if (navigator.geolocation) {
       )
       .setPopupContent("Workout")
       .openPopup();
-  });
+  }
 }
+const app = new App();
 
-/* Toggling display between workout types */
-inputType.addEventListener("change", function () {
-  inputElevation.closest(".form__row").classList.toggle("form__row--hidden");
-  inputCadence.closest(".form__row").classList.toggle("form__row--hidden");
-});
+// ************************************
+// Refactoring for Project Architecture
+// ************************************
 
-// ****************************
+/*
+ In this lecture ...
+  
+   In this lecture we restructured all our code into the class 'App'
+
+ REMEMBER: 
+
+   So app.getPosition and so then this code here would get executed, right at a point where the application loads and that's because as we already know all the code, that's here in the top level scope.
+
+   The constructor method gets executed IMMEDIATELY after a new instance is created from it.
+
+   The 'this' keyword:
+
+     When a callback function is called it is called as a regular function call since we are not the ones calling it (the higher-order function is). AND when a regular function is called it sets the 'this' keyword to 'undefined'.
+
+     And a event handler function will always have the 'this' keyword attached to the DOM element onto which it was called.
+
+   The bind() method: creates a new function that, when called, has its this keyword set to the provided value, with a given sequence of arguments preceding any provided when the new function is called.
+
+ REAL-WORLD: So even when you're working in the real world and you have event listeners inside of a class, you will be binding the 'this' keywords all the time because otherwise many parts of your code are not gonna work.
+*/
+
+// ********************
 // Project Architecture
-// ****************************
+// ********************
 
 /*
  Our project architecture...
