@@ -11,6 +11,50 @@ const inputDuration = document.querySelector(".form__input--duration");
 const inputCadence = document.querySelector(".form__input--cadence");
 const inputElevation = document.querySelector(".form__input--elevation");
 
+class Workout {
+  date = new Date();
+  id = (Date.now() + "").slice(-10);
+
+  constructor(coords, distance, duration) {
+    // this.date =  ...
+    // this.id = ...
+    this.coords = coords; // [lat, lng]
+    this.distance = distance; // in km
+    this.duration = duration; // in min
+  }
+}
+
+class Cycling extends Workout {
+  constructor(coords, distance, duration, cadence) {
+    super(coords, distance, duration);
+    this.cadence = cadence;
+  }
+
+  calcPace() {
+    // min/km
+    this.pace = this.duration / this.distance;
+    return this.pace;
+  }
+}
+
+class Running extends Workout {
+  constructor(coords, distance, duration, elevationGain) {
+    super(coords, distance, duration);
+    this.elevationGain = elevationGain;
+    this.calcSpeed();
+  }
+
+  calcSpeed() {
+    this.speed = this.distance / (this.duration / 60);
+    return this.speed;
+  }
+}
+
+const run1 = new Running([35, -119], 10, 50, 5);
+const cycling1 = new Cycling([32, -115], 60, 30, 10);
+console.log(run1, cycling1);
+
+// APPLICATION ARCHITECTURE
 class App {
   #map;
   #mapEvent;
@@ -18,6 +62,7 @@ class App {
   constructor() {
     this._getPosition();
     form.addEventListener("submit", this._newWorkOut.bind(this));
+    inputType.addEventListener("change", this._toggleElevationField);
   }
 
   _getPosition() {
@@ -85,6 +130,20 @@ class App {
 }
 const app = new App();
 
+// ***************************************
+// Managing Workout Data: Creating Classes
+// ***************************************
+
+/*
+ In this lecture ...
+
+   - Implemented class 'Workout' and created sub-classes to manage the data about our cycling and running workouts that are come from our user interface.
+
+ REMEMBER: 
+
+   That it is perfectly fine to call ANY code in a constructor.
+*/
+
 // ************************************
 // Refactoring for Project Architecture
 // ************************************
@@ -92,7 +151,7 @@ const app = new App();
 /*
  In this lecture ...
   
-   In this lecture we restructured all our code into the class 'App'
+   In this lecture we restructured all our code into the class 'App'.
 
  REMEMBER: 
 
