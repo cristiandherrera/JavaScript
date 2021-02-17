@@ -3,14 +3,6 @@
 // prettier-ignore
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-const form = document.querySelector(".form");
-const containerWorkouts = document.querySelector(".workouts");
-const inputType = document.querySelector(".form__input--type");
-const inputDistance = document.querySelector(".form__input--distance");
-const inputDuration = document.querySelector(".form__input--duration");
-const inputCadence = document.querySelector(".form__input--cadence");
-const inputElevation = document.querySelector(".form__input--elevation");
-
 class Workout {
   date = new Date();
   id = (Date.now() + "").slice(-10);
@@ -24,10 +16,12 @@ class Workout {
   }
 }
 
-class Cycling extends Workout {
-  constructor(coords, distance, duration, cadence) {
+class Running extends Workout {
+  type = "running";
+  constructor(coords, distance, duration, elevationGain) {
     super(coords, distance, duration);
-    this.cadence = cadence;
+    this.elevationGain = elevationGain;
+    this.calcPace();
   }
 
   calcPace() {
@@ -37,10 +31,11 @@ class Cycling extends Workout {
   }
 }
 
-class Running extends Workout {
-  constructor(coords, distance, duration, elevationGain) {
+class Cycling extends Workout {
+  type = "cycling";
+  constructor(coords, distance, duration, cadence) {
     super(coords, distance, duration);
-    this.elevationGain = elevationGain;
+    this.cadence = cadence;
     this.calcSpeed();
   }
 
@@ -55,9 +50,18 @@ const cycling1 = new Cycling([32, -115], 60, 30, 10);
 console.log(run1, cycling1);
 
 // APPLICATION ARCHITECTURE
+const form = document.querySelector(".form");
+const containerWorkouts = document.querySelector(".workouts");
+const inputType = document.querySelector(".form__input--type");
+const inputDistance = document.querySelector(".form__input--distance");
+const inputDuration = document.querySelector(".form__input--duration");
+const inputCadence = document.querySelector(".form__input--cadence");
+const inputElevation = document.querySelector(".form__input--elevation");
+
 class App {
   #map;
   #mapEvent;
+  #workouts = [];
 
   constructor() {
     this._getPosition();
@@ -106,14 +110,61 @@ class App {
   }
 
   _newWorkOut(e) {
+    const validInputs = (...inputs) =>
+      inputs.every((inp) => Number.isFinite(inp));
+    const allPositive = (...inputs) => inputs.every((inp) => inp > 0);
+
     e.preventDefault();
-    // Clear input fields
+
+    // Get data from the form
+    const type = inputType.value;
+    const distance = +inputDistance.value;
+    const duration = +inputDuration.value;
+    const { lat, lng } = this.#mapEvent.latlng;
+    let workout;
+
+    // If workout running, create running object
+    if (type === "running") {
+      const cadence = +inputCadence.value;
+      // Check if data is valid
+      if (
+        !validInputs(distance, duration, cadence) ||
+        !allPositive(distance, duration, cadence)
+      )
+        return alert("Inputs have to be positive numbers!");
+
+      workout = new Running([lat, lng], duration, distance, cadence);
+    }
+
+    // If workout cycling, create cycling object
+    if (type === "cycling") {
+      const elevation = +inputElevation.value;
+
+      if (
+        !validInputs(distance, duration, elevation) ||
+        !allPositive(distance, duration)
+      )
+        return alert("Inputs have to be positive numbers!");
+
+      workout = new Cycling([lat, lng], duration, distance, elevation);
+    }
+
+    // Add new object to workout array
+    this.#workouts.push(workout);
+    console.log(workout);
+
+    // Render workout on map as marker
+    this.renderWorkoutMarker(workout);
+
+    // Render workout on list
+
+    // Hide from and clear input fields
     inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value =
       "";
-    // Display marker
-    console.log(this.#mapEvent);
-    const { lat, lng } = this.#mapEvent.latlng;
-    L.marker([lat, lng])
+  }
+
+  renderWorkoutMarker(workout) {
+    L.marker(workout.coords)
       .addTo(this.#map)
       .bindPopup(
         L.popup({
@@ -121,14 +172,34 @@ class App {
           minWidth: 100,
           autoClose: false,
           closeOnClick: false,
-          className: "running-popup",
+          className: `${workout.type}-popup`,
         })
       )
-      .setPopupContent("Workout")
+      .setPopupContent("workout")
       .openPopup();
   }
 }
 const app = new App();
+
+// **********************
+// Creating a New Workout
+// **********************
+
+/*
+ In this lecture ...
+
+   - Implemented a feature to finally create a new workout FROM our user-interface.
+
+ REMEMBER: 
+
+   If you use a '+' sign before a String, it will be converted into a number.
+
+   The Number.isFinite(): is a method that determines whether the passed value is a finite number — that is, it checks that the type of a given value is Number, and the number is neither positive Infinity, negative Infinity, nor NaN.
+
+   A Guard Clause: means is that we will basically check for the opposite of what we are originally interested in and if that opposite is true, then we simply return the function immediately. So kind of a trend that you will see in modern JavaScript.
+
+ JONAS: "The if else statement is not used in modern javascript much anymore, simply using two if statements looks a lot cleaner"
+*/
 
 // ***************************************
 // Managing Workout Data: Creating Classes
@@ -141,7 +212,7 @@ const app = new App();
 
  REMEMBER: 
 
-   That it is perfectly fine to call ANY code in a constructor.
+   That it is perfectly fine to call ANY code inside of a constructor.
 */
 
 // ************************************
