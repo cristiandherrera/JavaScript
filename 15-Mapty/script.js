@@ -60,9 +60,9 @@ class Cycling extends Workout {
   }
 }
 
-const run1 = new Running([35, -119], 10, 50, 5);
-const cycling1 = new Cycling([32, -115], 60, 30, 10);
-console.log(run1, cycling1);
+// const run1 = new Running([35, -119], 10, 50, 5);
+// const cycling1 = new Cycling([32, -115], 60, 30, 10);
+// console.log(run1, cycling1);
 
 // APPLICATION ARCHITECTURE
 const form = document.querySelector(".form");
@@ -80,7 +80,13 @@ class App {
   #workouts = [];
 
   constructor() {
+    // Get user's position
     this._getPosition();
+
+    // Get data from local storage
+    this._getLocalStorage();
+
+    // Attach event handlers
     form.addEventListener("submit", this._newWorkOut.bind(this));
     inputType.addEventListener("change", this._toggleElevationField);
     containerWorkouts.addEventListener("click", this._moveToPopup.bind(this));
@@ -102,17 +108,23 @@ class App {
     const { latitude } = position.coords;
     const { longitude } = position.coords;
     const coords = [latitude, longitude];
-    console.log(position);
+
     // Initializing the map and assigning it to 'map'
-    console.log(this);
     this.#map = L.map("map").setView(coords, this.#mapZoomLevel);
+
     // Picking and linking map style
     L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this.#map);
+
     // Displaying form on event click
     this.#map.on("click", this._showForm.bind(this));
+
+    // Loads local storage workout markers
+    this.#workouts.forEach((work) => {
+      this._renderWorkoutMarker(work);
+    });
   }
 
   _showForm(mapE) {
@@ -182,6 +194,9 @@ class App {
 
     // Hide from and clear input fields
     this._hideForm();
+
+    // Set local storage to all workouts
+    this._setLocalStorage();
   }
 
   _renderWorkoutMarker(workout) {
@@ -257,14 +272,12 @@ class App {
 
   _moveToPopup(e) {
     const workoutEl = e.target.closest(".workout");
-    console.log(workoutEl);
 
     if (!workoutEl) return;
 
     const workout = this.#workouts.find(
       (work) => work.id === workoutEl.dataset.id
     );
-    console.log(workout);
 
     this.#map.setView(workout.coords, this.#mapZoomLevel, {
       animate: true,
@@ -273,10 +286,80 @@ class App {
       },
     });
 
-    workout.click();
+    // Using the public interface
+    // workout.click();
+  }
+
+  _setLocalStorage() {
+    localStorage.setItem("workouts", JSON.stringify(this.#workouts));
+  }
+
+  _getLocalStorage() {
+    const data = JSON.parse(localStorage.getItem("workouts"));
+
+    if (!data) return;
+
+    this.#workouts = data;
+
+    this.#workouts.forEach((work) => {
+      this._renderWorkout(work);
+      this._renderWorkoutMarker(work);
+    });
+  }
+
+  reset() {
+    localStorage.removeItem("workouts");
+    location.reload();
   }
 }
 const app = new App();
+
+// *************************
+// Working with localStorage
+// *************************
+
+/*
+ In this lecture we ...
+
+   Used the local storage API to persist data across multiple page reloads.
+
+ JSON
+
+   JavaScript Object Notation (JSON) is a standard text-based format for representing structured data based on JavaScript object syntax. It is commonly used for transmitting data in web applications (e.g., sending some data from the server to the client, so it can be displayed on a web page, or vice versa).
+
+   JavaScript vs. JSON: 
+
+     JSON is a syntax for serializing objects, arrays, numbers, strings, booleans, and null. It is based upon JavaScript syntax but is distinct from it: some JavaScript is not JSON.
+
+   The JSON.stringify() method: converts a JavaScript object or value to a JSON string.
+
+   The JSON.parse() method: parses a JSON string, constructing the JavaScript value or object described by the string.
+
+ Web Storage API
+ 
+   The read-only localStorage property allows you to access a Storage object for the Document's origin; the stored data is saved across browser sessions.
+
+   The setItem() method: Is of the Storage interface, when passed a key name and value, will add that key to the given Storage object, or update that key's value if it already exists.
+     SYNTAX: storage.setItem(keyName, keyValue);
+
+   The getItem() method: Is of the Storage interface, when passed a key name, will return that key's value, or null if the key does not exist, in the given Storage object.
+     SYNTAX: const aValue = storage.getItem(keyName);
+
+   The removeItem() method of the Storage interface, when passed a key name, will remove that key from the given Storage object if it exists.
+     SYNTAX: storage.removeItem(keyName);
+
+   NOTE: Know that local storage is a very simple API. And so it is only advised to use for small amounts of data.
+
+ Location API 
+
+   The Location interface represents the location (URL) of the object it is linked to. Changes done on it are reflected on the object it relates to. Both the Document and Window interface have such a linked Location, accessible via Document.location and Window.location respectively.
+
+   The Location.reload() method: reloads the current URL, like the Refresh button.
+
+ REMEMBER: 
+
+   The forEach() method: executes a provided function once for each array element. DOES NOT CREATE A NEW ARRAY.
+*/
 
 // ***********************
 // Move to Marker on Click
