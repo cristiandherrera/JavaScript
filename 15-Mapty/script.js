@@ -314,6 +314,25 @@ class App {
 }
 const app = new App();
 
+// ********************
+// Final Considerations
+// ********************
+
+/*
+ 10 Additional Feature Ideas: Challenges
+
+   1. Ability to EDIT a workout.
+   2. Ability to DELETE a workout.
+   3. Ability to DELETE ALL workouts.
+   4. Ability to SORT workouts by a certain field (e.g. distance).
+   5. RE-BUILD 'Running' and 'Cycling' objects coming from Local Storage.
+   6. More realistic error and confirmation MESSAGES.
+   7. Ability to position the map to SHOW ALL WORKOUTS.
+   8. Ability to DRAW LINES AND SHAPES instead of just leaving points.
+   9. GEOCODE LOCATION from coordinates (only after asynchronous).
+   10. DISPLAY WEATHER data for workout time and place (only after asynchronous).
+*/
+
 // *************************
 // Working with localStorage
 // *************************
