@@ -25,7 +25,7 @@ const countriesContainer = document.querySelector(".countries");
      - Async code is non-blocking.
      - Execution does not wait for an async task to finish its work.
      - Callback functions alone DO NOT make code asynchronous.
-     - Examples of async code: setTimeout(), setting 'src' attribute, some APIs, AJAX, etc.
+     - Ex. of async code: setTimeout(), setting 'src' attribute, some APIs, AJAX, etc.
      
  AJAX
 
@@ -43,9 +43,14 @@ const countriesContainer = document.querySelector(".countries");
 
      When we're asking a server to send us some data, this server usually contains a web API. And this API is the one that has the data that we're asking for.
 
- API 
+ APIs
   
-   API (Application Programming Interface):  Is a piece of software that can be used by another piece of software, in order to allow applications to talk to each other.
+   API (Application Programming Interface):  Is a piece of software that can be used by another piece of software, in order to allow applications to talk to each other. And can be used in a few types of ways..
+
+     - Access data so that multiple apps or services can work together.
+     - Hide complexity for developers.
+     - Extend functionality of existing systems.
+     - Can act as gate keepers to protect our personal data.
 
    Now in JavaScript and web development, there are countless types of APIs, like the DOM API or the Geolocation API that we have been using. Also, we can always implement a small and simple API in a class where we make some methods available as a public interface.
 
@@ -55,6 +60,5 @@ const countriesContainer = document.querySelector(".countries");
 
    There are APIs for pretty much EVERYTHING... e.g, weather data, flight data, currency conversion, etc.
    
- 
  NOTE: The browser is also referred to as the 'Client'.
 */
