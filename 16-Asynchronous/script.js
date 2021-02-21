@@ -5,6 +5,63 @@ const countriesContainer = document.querySelector(".countries");
 
 ///////////////////////////////////////
 
+// ************************************
+// Our First AJAX Call: XMLHttpRequest
+// ************************************
+
+/*
+ What is it?
+
+   XMLHttpRequest (XHR) objects are used to interact with servers. You can retrieve data from a URL without having to do a full page refresh. This enables a Web page to update just part of a page without disrupting what the user is doing. (XMLHttpRequest is USED HEAVILY in AJAX programming.)
+
+   NOTE: Despite its name, XMLHttpRequest can be used to retrieve any type of data, not just XML.
+
+ How do you use it?
+
+   To send an HTTP request, create an XMLHttpRequest object, open a URL, and send the request. After the transaction completes, the object will contain useful information such as the response body and the HTTP status of the result.
+
+   A request made via XMLHttpRequest can fetch the data in one of two ways, asynchronously or synchronously. The type of request is dictated by the optional async argument (the third argument) that is set on the XMLHttpRequest.open() method. If this argument is true or not specified, the XMLHttpRequest is processed asynchronously, otherwise the process is handled synchronously.
+
+     The XMLHttpRequest method open(): initializes a newly-created HTTP request, or re-initializes an existing one.
+
+     The XMLHttpRequest method send(): sends the request to the server. If the request is asynchronous (which is the default), this method returns as soon as the request is sent and the result is delivered using events. If the request is synchronous, this method doesn't return until the response has arrived.
+
+ NOTE: For APIs, an endpoint can include a URL of a server or service. Each endpoint is the location from which APIs can access the resources they need to carry out their function.
+
+ REMEMBER: that the type of HTTP request to get data is simply called GET.
+*/
+
+const getCountryData = function (country) {
+  const request = new XMLHttpRequest();
+  request.open("GET", `https://restcountries.eu/rest/v2/name/${country}`);
+  request.send();
+
+  request.addEventListener("load", function () {
+    console.log(this.responseText);
+    const [data] = JSON.parse(this.responseText);
+    console.log(data);
+
+    const html = `
+    <article class="country">
+      <img class="country__img" src="${data.flag}" />
+      <div class="country__data">
+        <h3 class="country__name">${data.name}</h3>
+        <h4 class="country__region">${data.region}</h4>
+        <p class="country__row"><span>👫</span>${(
+          +data.population / 1000000
+        ).toFixed(1)} million people</p>
+        <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
+        <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
+      </div>
+    </article>
+  `;
+    countriesContainer.insertAdjacentHTML("beforeend", html);
+    countriesContainer.style.opacity = 1;
+  });
+};
+getCountryData("usa");
+getCountryData("portugal");
+
 // ***************************************
 // Asynchronous JavaScript, AJAX, and APIs
 // ***************************************
@@ -29,11 +86,13 @@ const countriesContainer = document.querySelector(".countries");
      
  AJAX
 
-   AJAX (Asynchronous JavaScript And XML): Allows us to communicate with remote web servers in an asynchronous way. With AJAX calls, we can request data from web servers dynamically.
+   AJAX (Asynchronous JavaScript And XML): AJAX is the TRADITIONAL(old-school) way to make an asynchronous HTTP request. It uses the "XMLHttpRequest" object to communicate with servers, exchange data, and update the page without having to refresh the page.
+
+     It can send and receive information in various formats, including JSON, XML, HTML, and text files.
 
    XML: is data format, which used to be widely used to transmit data on the web. However, these days basically no API uses XML data anymore. 
    
-      Most APIs these days use the JSON data format. So JSON is the most popular data format today because it's basically just a JavaScript object, but converted to a string. And so therefore, it's very easy to send across the web and also to use in JavaScript once the data arrives.
+      Most APIs these days use the JSON data format because it's basically just a JavaScript object, but converted to a string. And so therefore, it's very easy to send across the web and also to use in JavaScript once the data arrives.
 
    Now in PRACTICE ... 
      
@@ -45,20 +104,20 @@ const countriesContainer = document.querySelector(".countries");
 
  APIs
   
-   API (Application Programming Interface):  Is a piece of software that can be used by another piece of software, in order to allow applications to talk to each other. And can be used in a few types of ways..
+   API (Application Programming Interface):  Is a piece of software that can be used by another piece of software, in order to allow applications to talk to each other. And can be used in a few types of ways like to...  
 
      - Access data so that multiple apps or services can work together.
      - Hide complexity for developers.
      - Extend functionality of existing systems.
      - Can act as gate keepers to protect our personal data.
 
-   Now in JavaScript and web development, there are countless types of APIs, like the DOM API or the Geolocation API that we have been using. Also, we can always implement a small and simple API in a class where we make some methods available as a public interface.
+   Client-side JavaScript has many APIs available to it — these are not part of the JavaScript language itself, rather they are built on top of the core JavaScript language. They generally fall into two categories...
 
-   An IMPORTANT type of API when we use AJAX is the "Online" API (or just API) and its essentially an application running on a web server, which receives requests for data, then retrieves this data from some database and then sends it back to the client.
+     Browser APIs are constructs built into the browser that sits on top of the JavaScript language and allows you to implement functionality more easily.
 
-   We can build OUR OWN web APIs (requires back-end development, e.g, with node.js) or use 3rd-party APIs.
-
-   There are APIs for pretty much EVERYTHING... e.g, weather data, flight data, currency conversion, etc.
+     Third-party APIs are constructs built into third-party platforms (e.g. Twitter, Facebook) that allow you to use some of those platform's functionality in your own web pages (for example, display your latest Tweets on your web page).
    
- NOTE: The browser is also referred to as the 'Client'.
+     Also, we can always implement a small and simple API in a class where we make some methods available as a public interface.
+
+   REMEMBER: There are APIs for pretty much EVERYTHING... e.g, weather data, flight data, currency conversion, etc.
 */
