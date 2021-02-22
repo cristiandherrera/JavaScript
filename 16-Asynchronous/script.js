@@ -5,6 +5,42 @@ const countriesContainer = document.querySelector(".countries");
 
 ///////////////////////////////////////
 
+// *****************************************
+// How the Web Works: Requests and Responses
+// *****************************************
+
+/*
+ Request-response model / Client server architecture: Whenever we try to access a Web server, the browser, which is the client, sends a HTTP request to the server and the server will then send back a HTTP response and that response contains the data or the Web page that we requested. And this process works the exact same way no matter if we're accessing an entire Web page or just some data from a Web API.
+
+ What happens when we access web server...
+
+   1. DNS Lookup
+   2. TCP/IP socket connection
+   3. HTTP Request
+   4. HTTP Response
+
+ The Domain Name System (DNS) is a central part of the internet, providing a way to match domain names to its websites IP address.
+
+ So once we have the real IP address, a TCP socket connection is established between the browser and the server. And this connection is typically kept alive for the entire time that it takes to transfer all files of the Website or all data. Now what are TCP and IP? 
+
+   TCP is the Transmission Control Protocol. And IP is the Internet Protocol. And together they are communication protocols that DEFINE exactly how data travels across the Web. (A communication protocol is a system of rules that allows two or more parties to communicate)
+
+   The FIRST job of TCP is to break the requests and responses down into thousands of small pieces, called packets before they are sent. Then, on arrival, TCP will reassemble all the packets into the original request or response.
+
+   The a SECOND job of the IP protocol is to send and route these pieces back through the Internet using IP addresses on each packet.
+
+   NOTE: This is necessary so that each packet can take a different route through the Internet because this way the message arrives at the destination as QUICK as possible.
+
+ HTTP is another communication protocol that allows clients and Web servers to communicate. And that works by sending requests and response messages from client to server and back.
+
+   HTTP methods, there are many available, but the most important ones are: GET, for simply requesting data, POST, for sending data and PUT and PATCH, to basically modify data.
+
+   The main DIFFERENCE between HTTP and HTTPS is that HTTPS is encrypted using TLS or SSL.
+
+     Transport Layer Security (TLS) is the successor protocol to SSL. TLS is an improved version of SSL. It works in much the same way as the SSL, using encryption to protect the transfer of data and information.(terms are often used interchangeably)
+
+*/
+
 // ************************************
 // Our First AJAX Call: XMLHttpRequest
 // ************************************
@@ -26,9 +62,7 @@ const countriesContainer = document.querySelector(".countries");
 
      The XMLHttpRequest method send(): sends the request to the server. If the request is asynchronous (which is the default), this method returns as soon as the request is sent and the result is delivered using events. If the request is synchronous, this method doesn't return until the response has arrived.
 
- NOTE: For APIs, an endpoint can include a URL of a server or service. Each endpoint is the location from which APIs can access the resources they need to carry out their function.
-
- REMEMBER: that the type of HTTP request to get data is simply called GET.
+ NOTE: For APIs, an "endpoint" can include a URL of a server or service. Each endpoint is the location from which APIs can access the resources they need to carry out their function.
 */
 
 const getCountryData = function (country) {
@@ -61,6 +95,7 @@ const getCountryData = function (country) {
 };
 getCountryData("usa");
 getCountryData("portugal");
+getCountryData("germany");
 
 // ***************************************
 // Asynchronous JavaScript, AJAX, and APIs
