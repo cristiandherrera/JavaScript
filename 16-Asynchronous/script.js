@@ -5,6 +5,53 @@ const countriesContainer = document.querySelector(".countries");
 
 ///////////////////////////////////////
 
+// **************************
+// Promises and the Fetch API
+// **************************
+
+/*
+ What are Promises? (ES6 feature)
+
+   Promise: is an object that is used as a placeholder for the future result of an asynchronous operation(container for a future value). An example of a future value could be a response coming from an AJAX call.
+
+   Essentially, a promise is a returned object to which you attach callbacks, instead of passing callbacks into a function.
+
+ What are the advantages of using Promises?
+
+   We NO LONGER need to rely on events and callbacks passed into asynchronous functions to handle asynchronous results (events and callback functions can cause unpredictable results).
+
+   INSTEAD of nesting callbacks, we can CHAIN PROMISES for a sequence of asynchronous operations. (escaping callback hell).
+
+ The Promise Lifecycle
+
+   1. So in the very beginning, we say that a promise is PENDING. And so this is before any value resulting from the asynchronous task is available.
+   
+   2. Then when the task finally finishes, we say that the promise is SETTLED. And there are two different types of settled promises...
+
+     Fulfilled Promise: is a promise that has successfully resulted in a value just as we expected.
+     Rejected Promise: means that there has been an error during the asynchronous task.
+
+   3. To "consume a promise" means to use the different states of a promise to get a result.
+
+ NOTE: 
+    
+   A promise is only settled ONCE. And so from there, the state will remain unchanged forever.
+    
+   When we use promises in our code, we will be able to handle these different states in order to do something as a result of either a successful promise or a rejected one.
+
+ BELOW: 
+
+   In the case of the fetch API, it's the fetch function that builds the promise and returns it for us to consume.
+*/
+
+requestOld.open("GET", `https://restcountries.eu/rest/v2/name/usa`);
+const requestOld = new XMLHttpRequest();
+requestOld.send();
+console.log(requestOld); //=> XMLHttpRequest object
+
+const requestNew = fetch(`https://restcountries.eu/rest/v2/name/usa`);
+console.log(requestNew); //=> Promise
+
 // ************************
 // Welcome to Callback Hell
 // ************************
@@ -26,74 +73,83 @@ const countriesContainer = document.querySelector(".countries");
 
    Callback functions: are just the name of a convention for using JavaScript functions. In JS, the way to create a callback function is to pass it as a parameter to another function, and then to call it back right after something has happened or some task is completed. 
 
+   Anonymous function: are just functions that are not defined with a specific namespace.
+
  BELOW: 
    
+   Created a sequence of AJAX calls, so that the second one runs only after the first one has finished.
+   
    'request2' is an anonymous callback function NESTED inside the 'request' anonymous callback function
+
+   Callback hell, when substantially nested, will create a triangle-ish nature pointing outwards. Like with the nested 'setTimeouts' below.
 */
 
-const renderCountry = function (data, className = "") {
-  const html = `
-  <article class="country ${className}">
-    <img class="country__img" src="${data.flag}" />
-    <div class="country__data">
-      <h3 class="country__name">${data.name}</h3>
-      <h4 class="country__region">${data.region}</h4>
-      <p class="country__row"><span>👫</span>${(
-        +data.population / 1000000
-      ).toFixed(1)} million people</p>
-      <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
-      <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
-    </div>
-  </article>
-`;
-  countriesContainer.insertAdjacentHTML("beforeend", html);
-  countriesContainer.style.opacity = 1;
-};
+// // Callback hell w/ timeouts
+// setTimeout(() => {
+//   console.log("1 second passed");
+//   setTimeout(() => {
+//     console.log("2 second passed");
+//     setTimeout(() => {
+//       console.log("3 second passed");
+//       setTimeout(() => {
+//         console.log("4 second passed");
+//       }, 1000);
+//     }, 1000);
+//   }, 1000);
+// }, 1000);
 
-const getCountryAndNeighbor = function (country) {
-  // AJAX call country (1)
-  const request = new XMLHttpRequest();
-  request.open("GET", `https://restcountries.eu/rest/v2/name/${country}`);
-  request.send();
+// // Callback hell w/ addEventListener
+// const getCountryAndNeighbor = function (country) {
+//   // AJAX call country (1)
+//   const request = new XMLHttpRequest();
+//   request.open("GET", `https://restcountries.eu/rest/v2/name/${country}`);
+//   request.send();
 
-  // NESTED CALLBACK FUNCTION
-  request.addEventListener("load", function () {
-    // Render country (1)
-    const [data] = JSON.parse(this.responseText);
-    renderCountry(data);
+//   // NESTED CALLBACK FUNCTION
+//   request.addEventListener("load", function () {
+//     // Render country (1)
+//     const [data] = JSON.parse(this.responseText);
+//     renderCountry(data);
 
-    // Get neighbor country (2)
-    const [neighbor] = data.borders;
-    if (!neighbor) return;
+//     // Get neighbor country (2)
+//     const [neighbor] = data.borders;
+//     if (!neighbor) return;
 
-    // AJAX call country (2)
-    const request2 = new XMLHttpRequest();
-    request2.open("GET", `https://restcountries.eu/rest/v2/alpha/${neighbor}`);
-    request2.send();
+//     // AJAX call country (2)
+//     const request2 = new XMLHttpRequest();
+//     request2.open("GET", `https://restcountries.eu/rest/v2/alpha/${neighbor}`);
+//     request2.send();
 
-    // NESTED CALLBACK FUNCTION
-    request2.addEventListener("load", function () {
-      // Render country (2)
-      const data2 = JSON.parse(this.responseText);
-      renderCountry(data2, "neighbour");
-    });
-  });
-};
-getCountryAndNeighbor("usa");
+//     // NESTED CALLBACK FUNCTION
+//     request2.addEventListener("load", function () {
+//       // Render country (2)
+//       const data2 = JSON.parse(this.responseText);
+//       renderCountry(data2, "neighbour");
+//     });
+//   });
+// };
+// getCountryAndNeighbor("usa");
 
-// Callback hell w/ timeouts
-setTimeout(() => {
-  console.log("1 second passed");
-  setTimeout(() => {
-    console.log("2 second passed");
-    setTimeout(() => {
-      console.log("3 second passed");
-      setTimeout(() => {
-        console.log("4 second passed");
-      }, 1000);
-    }, 1000);
-  }, 1000);
-}, 1000);
+// // Adding countries in html
+// function renderCountry(data, className = "") {
+//   const html = `
+//   <article class="country ${className}">
+//     <img class="country__img" src="${data.flag}" />
+//     <div class="country__data">
+//       <h3 class="country__name">${data.name}</h3>
+//       <h4 class="country__region">${data.region}</h4>
+//       <p class="country__row"><span>👫</span>${(
+//         +data.population / 1000000
+//       ).toFixed(1)} million people</p>
+//       <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
+//       <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
+//     </div>
+//   </article>
+// `;
+//   countriesContainer.insertAdjacentHTML("beforeend", html);
+//   countriesContainer.style.opacity = 1;
+// }
+
 // *****************************************
 // How the Web Works: Requests and Responses
 // *****************************************
@@ -108,9 +164,9 @@ setTimeout(() => {
    3. HTTP Request
    4. HTTP Response
 
- The Domain Name System (DNS) is a central part of the internet, providing a way to match domain names to its websites IP address.
+ 1. The Domain Name System (DNS) is a central part of the internet, providing a way to match domain names to its websites IP address.
 
- So once we have the real IP address, a TCP socket connection is established between the browser and the server. And this connection is typically kept alive for the entire time that it takes to transfer all files of the Website or all data. Now what are TCP and IP? 
+ 2. So once we have the real IP address, a TCP socket connection is established between the browser and the server. And this connection is typically kept alive for the entire time that it takes to transfer all files of the Website or all data. Now what are TCP and IP? 
 
    TCP is the Transmission Control Protocol. And IP is the Internet Protocol. And together they are communication protocols that DEFINE exactly how data travels across the Web. (A communication protocol is a system of rules that allows two or more parties to communicate)
 
@@ -120,7 +176,7 @@ setTimeout(() => {
 
    NOTE: This is necessary so that each packet can take a different route through the Internet because this way the message arrives at the destination as QUICK as possible.
 
- HTTP is another communication protocol that allows clients and Web servers to communicate. And that works by sending requests and response messages from client to server and back.
+ 3/4. HTTP is another communication protocol that allows clients and Web servers to communicate. And that works by sending requests and response messages from client to server and back.
 
    HTTP methods, there are many available, but the most important ones are: GET, for simply requesting data, POST, for sending data and PUT and PATCH, to basically modify data.
 
@@ -154,6 +210,7 @@ setTimeout(() => {
  NOTE: For APIs, an "endpoint" can include a URL of a server or service. Each endpoint is the location from which APIs can access the resources they need to carry out their function.
 */
 
+// // Old school way of calling AJAX
 // const getCountryData = function (country) {
 //   const request = new XMLHttpRequest();
 //   request.open("GET", `https://restcountries.eu/rest/v2/name/${country}`);
