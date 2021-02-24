@@ -5,6 +5,58 @@ const countriesContainer = document.querySelector(".countries");
 
 ///////////////////////////////////////
 
+// ******************
+// Consuming Promises
+// ******************
+
+/*
+ The Promise.prototype.then(): method returns a Promise. It takes up to two arguments: callback function that we want to be executed as soon as the promise is actually fulfilled or rejected.
+
+   onFullfilled: The first parameter of then(), called if the Promise is fulfilled. This callback has one argument, the 'fulfillment value'. If it is not a function, it is internally replaced with an "Identity" function.
+
+   onRejected: The second parameter of then(), called if the Promise is rejected. This function has one argument, the 'rejection reason'. If it is not a function, it is internally replaced with a "Thrower" function (it throws an error it received as argument).
+
+ The body.json(): method of the Body mixin takes a Response stream and reads it to completion. It RETURNS a Promise that resolves to a JavaScript object. This object could be anything that can be represented by JSON — an object, an array, a string, a number...
+
+ BELOW: 
+  
+   First the fetch() function returns a Promise. And then we handle the promise using the 'then()' method. Which holds the data of the 'Response' object. Then to read the the data on the 'Response' object, we use the json() method on it. And calling the json returns another Promise that we finally use to extract the data.   
+*/
+
+// // Using promises
+// const getCountryData = function (country) {
+//   fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+//     .then(function (res) {
+//       console.log(res);
+//       return res.json();
+//     })
+//     .then(function (data) {
+//       console.log("", data);
+//       renderCountry(data[0]);
+//     });
+// };
+// getCountryData("portugal");
+
+// // Adding countries in html
+// function renderCountry(data, className = "") {
+//   const html = `
+//   <article class="country ${className}">
+//     <img class="country__img" src="${data.flag}" />
+//     <div class="country__data">
+//       <h3 class="country__name">${data.name}</h3>
+//       <h4 class="country__region">${data.region}</h4>
+//       <p class="country__row"><span>👫</span>${(
+//         +data.population / 1000000
+//       ).toFixed(1)} million people</p>
+//       <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
+//       <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
+//     </div>
+//   </article>
+// `;
+//   countriesContainer.insertAdjacentHTML("beforeend", html);
+//   countriesContainer.style.opacity = 1;
+// }
+
 // **************************
 // Promises and the Fetch API
 // **************************
@@ -31,26 +83,28 @@ const countriesContainer = document.querySelector(".countries");
      Fulfilled Promise: is a promise that has successfully resulted in a value just as we expected.
      Rejected Promise: means that there has been an error during the asynchronous task.
 
-   3. To "consume a promise" means to use the different states of a promise to get a result.
+   3. To "consume a promise" means to use the different states of a promise to get a result.  In the case of the fetch API, it's the fetch function that builds the promise and returns it for us to consume.
 
- NOTE: 
+   NOTE: 
     
-   A promise is only settled ONCE. And so from there, the state will remain unchanged forever.
+     A promise is only settled ONCE. And so from there, the state will remain unchanged forever.
     
-   When we use promises in our code, we will be able to handle these different states in order to do something as a result of either a successful promise or a rejected one.
+     When we use promises in our code, we will be able to handle these different states in order to do something as a result of either a successful promise or a rejected one.
 
- BELOW: 
+ What is the Fetch API? 
 
-   In the case of the fetch API, it's the fetch function that builds the promise and returns it for us to consume.
+   The Fetch API provides a JavaScript interface for accessing and manipulating parts of the HTTP pipeline, such as requests and responses. It also provides a global fetch() method that provides an easy, logical way to fetch resources asynchronously across the network.
+
+   The fetch() method of the WindowOrWorkerGlobalScope, takes one mandatory argument, the path to the resource you want to fetch. It returns a Promise that resolves to the Response to that request, whether it is successful or not. You can also optionally pass in an init (custom settings that you want to apply to the request) options object as the second argument.  
 */
 
-requestOld.open("GET", `https://restcountries.eu/rest/v2/name/usa`);
-const requestOld = new XMLHttpRequest();
-requestOld.send();
-console.log(requestOld); //=> XMLHttpRequest object
+// requestOld.open("GET", `https://restcountries.eu/rest/v2/name/usa`);
+// const requestOld = new XMLHttpRequest();
+// requestOld.send();
+// console.log(requestOld); //=> XMLHttpRequest object
 
-const requestNew = fetch(`https://restcountries.eu/rest/v2/name/usa`);
-console.log(requestNew); //=> Promise
+// const requestNew = fetch(`https://restcountries.eu/rest/v2/name/usa`);
+// console.log(requestNew); //=> Promise
 
 // ************************
 // Welcome to Callback Hell
