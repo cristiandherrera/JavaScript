@@ -5,18 +5,87 @@ const countriesContainer = document.querySelector(".countries");
 
 ///////////////////////////////////////
 
+// *****************
+// Chaining Promises
+// *****************
+
+/*
+ How do we chain Promises?
+
+   Each then() returns a newly generated promise object and whatever we value we choose to return will become the 'onFulfilled' value of the next then() method, which can optionally be used for chaining.
+
+   So to chain Promises make sure to RETURN a SEPARATE fetch Promise INSIDE the end of a then() call. Then handle it outside by simply continuing the chain.
+   
+   IMPROPER USE OF PROMISE CHAINING: But DO NOT chain a then() method directly onto a new NESTED fetch Promise you will just be back to callback hell, because now we have one callback function defined inside of another one (nested then() callbacks).
+
+ BELOW: 
+  
+   So here, instead of the callback hell we have what we call a flat chain of promises.
+
+   We use the CONVENTION of naming our then() parameters 'response', when dealing with the fulfilled data of a fetch Promise. 
+
+   chain this then() method directly onto a new nested promise.
+*/
+
+// // Chaining Promises
+// const getCountryData = function (country) {
+//   // Country 1
+//   fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+//     .then((response) => response.json())
+//     .then((data) => {
+//       renderCountry(data[0]);
+//       const neighbor = data[0].borders[0];
+
+//       if (!neighbor) return;
+
+//       // Country 2
+//       return fetch(`https://restcountries.eu/rest/v2/alpha/${neighbor}`);
+//     })
+//     .then((response) => response.json())
+//     .then((data) => renderCountry(data, "neighbour"));
+// };
+// getCountryData("usa");
+
+// // Adding countries in html
+// function renderCountry(data, className = "") {
+//   const html = `
+//   <article class="country ${className}">
+//     <img class="country__img" src="${data.flag}" />
+//     <div class="country__data">
+//       <h3 class="country__name">${data.name}</h3>
+//       <h4 class="country__region">${data.region}</h4>
+//       <p class="country__row"><span>👫</span>${(
+//         +data.population / 1000000
+//       ).toFixed(1)} million people</p>
+//       <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
+//       <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
+//     </div>
+//   </article>
+// `;
+//   countriesContainer.insertAdjacentHTML("beforeend", html);
+//   countriesContainer.style.opacity = 1;
+// }
+
 // ******************
 // Consuming Promises
 // ******************
 
 /*
- The Promise.prototype.then(): method returns a Promise. It takes up to two arguments: callback function that we want to be executed as soon as the promise is actually fulfilled or rejected.
+ How do we consume a Promise? 
 
-   onFullfilled: The first parameter of then(), called if the Promise is fulfilled. This callback has one argument, the 'fulfillment value'. If it is not a function, it is internally replaced with an "Identity" function.
+   We consume a promise by calling then() and catch()(used in later lectures) methods on the promise. The then() method used on for when the promise is resolved and the catch() method whe the promise is rejected. 
+   
+     NOTE: then() can ALSO be used to interact with 'rejected' with its second paramter BUT DOES NOT handle or 'catch' the value 
+
+ The Promise.prototype.then(): method ALWAYS returns a Promise. It takes up to two arguments: callback function that we want to be executed as soon as the promise is fulfilled or rejected.
+
+   onFullfilled: The first parameter of then(), called if the Promise is fulfilled. This callback has one argument, the "fulfillment value". If it is not a function, it is internally replaced with an "Identity" function.
 
    onRejected: The second parameter of then(), called if the Promise is rejected. This function has one argument, the 'rejection reason'. If it is not a function, it is internally replaced with a "Thrower" function (it throws an error it received as argument).
 
- The body.json(): method of the Body mixin takes a Response stream and reads it to completion. It RETURNS a Promise that resolves to a JavaScript object. This object could be anything that can be represented by JSON — an object, an array, a string, a number...
+ The 'Body' mixin of the Fetch API represents the body of the response/request, allowing you to declare what its content type is and how it should be handled.
+
+   The body.json(): method of the Body mixin takes a Response stream and reads it to completion. It RETURNS a Promise that resolves to a JavaScript object. This object could be anything that can be represented by JSON — an object, an array, a string, a number...
 
  BELOW: 
   
@@ -25,7 +94,7 @@ const countriesContainer = document.querySelector(".countries");
 
 // // Using promises
 // const getCountryData = function (country) {
-//   fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+//   const request = fetch(`https://restcountries.eu/rest/v2/name/${country}`)
 //     .then(function (res) {
 //       console.log(res);
 //       return res.json();
@@ -34,6 +103,7 @@ const countriesContainer = document.querySelector(".countries");
 //       console.log("", data);
 //       renderCountry(data[0]);
 //     });
+//   console.log(request); //=> Promise
 // };
 // getCountryData("portugal");
 
@@ -62,49 +132,65 @@ const countriesContainer = document.querySelector(".countries");
 // **************************
 
 /*
+  What is the Fetch API? 
+
+   The Fetch API provides a JavaScript interface for asynchronously accessing and manipulating parts of the HTTP pipeline, such as requests and responses. 
+
+     The Response(Object) interface of the Fetch API represents the response to a request.
+
+   The fetch() method of the WindowOrWorkerGlobalScope, is used to request to the server and load the information in the webpages. It essentially is the new MODERN way of making AJAX calls and replaces the old XML HTTP request function. 
+
+     The main difference is that the Fetch API uses Promises, which enables a simpler and cleaner API, avoiding callback hell and having to remember the complex API of XMLHttpRequest.
+    
+     Takes one mandatory argument, the path to the resource from the network you want to fetch. It returns a Promise that resolves to the Response to that request, whether it is successful or not. You can also optionally pass in an init (custom settings that you want to apply to the request) options object as the second argument. 
+     
  What are Promises? (ES6 feature)
 
-   Promise: is an object that is used as a placeholder for the future result of an asynchronous operation(container for a future value). An example of a future value could be a response coming from an AJAX call.
+   Promise: is an object that is used as a placeholder for the future result of an asynchronous operation(container for a future value). An example of a future value could be a response coming from an AJAX call. (like the Response object??)
 
    Essentially, a promise is a returned object to which you attach callbacks, instead of passing callbacks into a function.
 
+   Promises were essentially made to REPLACE using callbacks.
+
  What are the advantages of using Promises?
 
-   We NO LONGER need to rely on events and callbacks passed into asynchronous functions to handle asynchronous results (events and callback functions can cause unpredictable results).
+   We NO LONGER need to rely on events and callbacks passed into asynchronous functions to handle asynchronous results (events and callback functions can cause unpredictable results). 
 
-   INSTEAD of nesting callbacks, we can CHAIN PROMISES for a sequence of asynchronous operations. (escaping callback hell).
+   INSTEAD of NESTING callbacks, we can CHAIN PROMISES for a sequence of asynchronous operations. (escaping callback hell).
 
  The Promise Lifecycle
 
-   1. So in the very beginning, we say that a promise is PENDING. And so this is before any value resulting from the asynchronous task is available.
+   1. Before any value resulting from the asynchronous task is available, the promise is PENDING. 
    
-   2. Then when the task finally finishes, we say that the promise is SETTLED. And there are two different types of settled promises...
+   2. The promise is SETTLED when we finish and there are two different types of settled promises...
 
      Fulfilled Promise: is a promise that has successfully resulted in a value just as we expected.
      Rejected Promise: means that there has been an error during the asynchronous task.
 
    3. To "consume a promise" means to use the different states of a promise to get a result.  In the case of the fetch API, it's the fetch function that builds the promise and returns it for us to consume.
 
-   NOTE: 
-    
-     A promise is only settled ONCE. And so from there, the state will remain unchanged forever.
-    
-     When we use promises in our code, we will be able to handle these different states in order to do something as a result of either a successful promise or a rejected one.
+   NOTE: A promise is only settled ONCE. And so from there, the state will remain unchanged forever.
 
- What is the Fetch API? 
-
-   The Fetch API provides a JavaScript interface for accessing and manipulating parts of the HTTP pipeline, such as requests and responses. It also provides a global fetch() method that provides an easy, logical way to fetch resources asynchronously across the network.
-
-   The fetch() method of the WindowOrWorkerGlobalScope, takes one mandatory argument, the path to the resource you want to fetch. It returns a Promise that resolves to the Response to that request, whether it is successful or not. You can also optionally pass in an init (custom settings that you want to apply to the request) options object as the second argument.  
+ BELOW: Comparing XMLHttpRequest() to the fetch() method.
 */
 
-// requestOld.open("GET", `https://restcountries.eu/rest/v2/name/usa`);
+// // Old way to make network requests
 // const requestOld = new XMLHttpRequest();
+// requestOld.open("GET", `https://restcountries.eu/rest/v2/name/usa`);
 // requestOld.send();
 // console.log(requestOld); //=> XMLHttpRequest object
 
-// const requestNew = fetch(`https://restcountries.eu/rest/v2/name/usa`);
-// console.log(requestNew); //=> Promise
+// // New way to request w/ fetch API
+// const requestNew = fetch(`https://restcountries.eu/rest/v2/name/usa`)
+//   .then((res) => {
+//     console.log(res); //=> Response object
+//     return res.json();
+//   })
+//   .then((data) => {
+//     console.log(data); //=> parsed Response property 'body'
+//   });
+
+// console.log(requestNew); //=> Promise object
 
 // ************************
 // Welcome to Callback Hell
@@ -125,7 +211,7 @@ const countriesContainer = document.querySelector(".countries");
 
  REMEMBER: 
 
-   Callback functions: are just the name of a convention for using JavaScript functions. In JS, the way to create a callback function is to pass it as a parameter to another function, and then to call it back right after something has happened or some task is completed. 
+   Callback functions: are just the name of a convention for using JavaScript functions. In JS, the way to create a callback is to pass it as a parameter to another function, and then to call it back right after something has happened or some task is completed. 
 
    Anonymous function: are just functions that are not defined with a specific namespace.
 
@@ -247,7 +333,7 @@ const countriesContainer = document.querySelector(".countries");
 /*
  What is it?
 
-   XMLHttpRequest (XHR) objects are used to interact with servers. You can retrieve data from a URL without having to do a full page refresh. This enables a Web page to update just part of a page without disrupting what the user is doing. (XMLHttpRequest is USED HEAVILY in AJAX programming.)
+   XMLHttpRequest (XHR) objects are used to interact with servers. You can retrieve data from a URL without having to do a full page refresh. This enables a Web page to update just part of a page without disrupting what the user is doing. (XMLHttpRequest is USED HEAVILY in AJAX programming)
 
    NOTE: Despite its name, XMLHttpRequest can be used to retrieve any type of data, not just XML.
 
@@ -261,7 +347,19 @@ const countriesContainer = document.querySelector(".countries");
 
      The XMLHttpRequest method send(): sends the request to the server. If the request is asynchronous (which is the default), this method returns as soon as the request is sent and the result is delivered using events. If the request is synchronous, this method doesn't return until the response has arrived.
 
- NOTE: For APIs, an "endpoint" can include a URL of a server or service. Each endpoint is the location from which APIs can access the resources they need to carry out their function.
+ REMEMBER: 
+ 
+   The JSON.parse() method parses a JSON string, constructing the JavaScript value or object described by the string.      
+
+   XDomainRequest.responseText sets response body of the request, as a string.
+
+   Number.prototype.toFixed() method formats a number using fixed-point notation.
+
+ BELOW: 
+ 
+   Built a UI component, which contains data about a certain country of our choice. And the data actually comes from a third party online API ("REST Countries"). 
+
+   We send off the request with request.send(). And so that request then fetches the data in the background. And then once that is done, it will emit the load event. And so using this event listener, we are waiting for that event. And so as soon as the data arrives, this callback function here will be called.
 */
 
 // // Old school way of calling AJAX
@@ -271,6 +369,7 @@ const countriesContainer = document.querySelector(".countries");
 //   request.send();
 
 //   request.addEventListener("load", function () {
+//     console.log(this);
 //     console.log(this.responseText);
 //     const [data] = JSON.parse(this.responseText);
 //     console.log(data);
@@ -321,13 +420,18 @@ const countriesContainer = document.querySelector(".countries");
      
  AJAX
 
-   AJAX (Asynchronous JavaScript And XML): AJAX is the TRADITIONAL(old-school) way to make an asynchronous HTTP request. It uses the "XMLHttpRequest" object to communicate with servers, exchange data, and update the page without having to refresh the page.
+   AJAX (Asynchronous JavaScript And XML): while not a technology in itself, is an approach to using a number of existing technologies together, including HTML or XHTML, CSS, JavaScript, DOM, XML, XSLT. 
+   With these technologies together, AJAX calls can request data from web servers dynamically.
+   
+     But in a nutshell it is the use of the "XMLHttpRequest" object to communicate with servers, exchange data, and update the page WITHOUT having to refresh the page. (see lecture above)
+
+     AJAX is the TRADITIONAL(old-school) way to make an asynchronous HTTP request.
 
      It can send and receive information in various formats, including JSON, XML, HTML, and text files.
 
-   XML: is data format, which used to be widely used to transmit data on the web. However, these days basically no API uses XML data anymore. 
-   
-      Most APIs these days use the JSON data format because it's basically just a JavaScript object, but converted to a string. And so therefore, it's very easy to send across the web and also to use in JavaScript once the data arrives.
+   XML : is a markup language similar to HTML, but without predefined tags to use. Instead, you define your own tags.
+     
+     Although 'X' in AJAX stands for XML, JSON is used more than XML nowadays because of its many advantages, such as being lighter and a part of JavaScript. It's very easy to send across the web and also to use in JavaScript once the data arrives.
 
    Now in PRACTICE ... 
      
@@ -339,7 +443,9 @@ const countriesContainer = document.querySelector(".countries");
 
  APIs
   
-   API (Application Programming Interface):  Is a piece of software that can be used by another piece of software, in order to allow applications to talk to each other. And can be used in a few types of ways like to...  
+   API (Application Programming Interface):  Is a piece of software that can be used by another piece of software, in order to allow applications to talk to each other. The API can be seen as a simple contract (the interface) between the application offering it and other items, such as third party software or hardware.
+   
+   And can be used in a few types of ways like to...  
 
      - Access data so that multiple apps or services can work together.
      - Hide complexity for developers.
