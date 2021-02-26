@@ -27,6 +27,114 @@ const renderError = function (msg) {
 
 ///////////////////////////////////////
 
+// ************************
+// Throwing Errors Manually
+// ************************
+
+/*
+ So in this lecture, we're gonna fix the request 404 error that we saw happening in the last lecture.
+
+ TAKE AWAY: Whenever we want to create some error that we want to handle, in the catch handler, all we need to do is to 'throw', and create a new Error.
+
+ MDN 
+
+   The 'throw' statement: throws a user-defined exception. Execution of the current function will STOP, and CONTROL will be passed to the FIRST catch block in the call stack. If no catch block exists among caller functions, the program will terminate.
+
+   Error: objects are thrown when runtime errors occur. The Error object can also be used as a base object for user-defined exceptions.
+
+     The Error() constructor: creates an Error object.
+
+   The 'Response.ok': read-only property of the Response interface contains a Boolean stating whether the response was successful (status in the range 200-299) or not. 
+
+ BELOW: 
+
+   The fetch function unfortunately will NOT reject for a 404 error so we have to MANUALLY force an error to handle that response. (the JS community believes that the fetch func SHOULD fail on a 404)
+
+   We take advantage of the fact that the fetch response has the 'Response.ok' property set to 'false', when we receive response errors (like 404), by using a guard clause to reject the Promise.
+
+   We manually create our own error with the 'Error' constructor function, and then we pass in a generic error message. We then immediately terminate the current function ith the use of the 'throw' keyword.
+
+   Now the effect of creating, and throwing an error in any of these then() methods is that the Promise will immediately reject. The rejected Promise will then PROPAGATE all the way down to the 'catch' handler. So that rejection is this error message that we created, "Country not found (404)." 
+
+   So AGAIN, any error will cause any promise to reject, but here, we are simply creating our own error to basically reject the promise on purpose, so that we can then handle that error down here in the chain in the catch method.
+*/
+
+// // Helper function
+// const getJSON = function (url, errorMsg = "Something went wrong...") {
+//   return fetch(url).then((response) => {
+//     // Check for status error, if error exits FORCE ERROR
+//     if (!response.ok) throw new Error(`${errorMsg} (${response.status})`);
+//     return response.json();
+//   });
+// };
+
+// // CLEANED UP VERSION
+// const getCountryData = function (country) {
+//   getJSON(
+//     `https://restcountries.eu/rest/v2/name/${country}`,
+//     `Country not found`
+//   )
+//     .then((data) => {
+//       renderCountry(data[0]);
+//       const neighbor = data[0].borders[0];
+//       // const neighbor = "dhjkda"; //=> ERROR 400
+
+//       if (!neighbor) throw new Error("No neighbor found!");
+
+//       return getJSON(`https://restcountries.eu/rest/v2/alpha/${neighbor}`);
+//     })
+
+//     .then((data) => renderCountry(data, "neighbour"))
+//     .catch((error) => {
+//       console.log(`${error}; There was an error my dude!`);
+//       renderError(`Something went wrong!! ${error.message}.`);
+//     })
+//     .finally(() => {
+//       countriesContainer.style.opacity = 1;
+//     });
+// };
+
+// Creating button
+btn.addEventListener("click", function () {
+  getCountryData("usa");
+});
+// getCountryData("dkjahjk"); //=> ERROR 404
+
+// // NOT CLEAN
+// const getCountryData = function (country) {
+//   fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+//     .then((response) => {
+//       console.log(response);
+
+//       // Checking for status error in response
+//       if (!response.ok)
+//         throw new Error(`Country not found (${response.status})`); //=> if error exits, FORCE an error
+//       return response.json();
+//     })
+//     .then((data) => {
+//       renderCountry(data[0]);
+//       const neighbor = data[0].borders[0];
+//       // const neighbor = 'dhjkda';
+
+//       if (!neighbor) return;
+
+//       return fetch(`https://restcountries.eu/rest/v2/alpha/${neighbor}`);
+//     })
+//     .then((response) => response.json())
+//     .then((data) => renderCountry(data, "neighbour"))
+//     .catch((error) => {
+//       console.log(`${error}; There was an error my dude!`);
+//       renderError(`Something went wrong!! ${error.message}.`);
+//     })
+//     .finally(() => {
+//       countriesContainer.style.opacity = 1;
+//     });
+// };
+// btn.addEventListener("click", function () {
+//   getCountryData("usa");
+// });
+// getCountryData("dkjahjk");
+
 // **************************
 // Handling Rejected Promises
 // **************************
@@ -65,34 +173,34 @@ const renderError = function (msg) {
    Created function 'renderError' to render text on document to display error message. It was moved to the top of the code along with the event listener.
 */
 
-const getCountryData = function (country) {
-  fetch(`https://restcountries.eu/rest/v2/name/${country}`)
-    .then((response) => response.json() /*,
-      (error) => alert(error) */) //=> Second callback for error handling
-    .then((data) => {
-      renderCountry(data[0]);
-      const neighbor = data[0].borders[0];
+// const getCountryData = function (country) {
+//   fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+//     .then((response) => response.json() /*,
+//       (error) => alert(error) */) //=> Second callback for error handling
+//     .then((data) => {
+//       renderCountry(data[0]);
+//       const neighbor = data[0].borders[0];
 
-      if (!neighbor) return;
+//       if (!neighbor) return;
 
-      return fetch(`https://restcountries.eu/rest/v2/alpha/${neighbor}`);
-    })
-    .then((response) => response.json())
-    .then((data) => renderCountry(data, "neighbour"))
-    .catch((error) => {
-      //=> catches errors ALL errors in chain
-      console.error(`${error}; There was an error my dude!`);
-      renderError(`Something went wrong!! ${error.message}. Try again!`);
-    })
-    .finally(() => {
-      countriesContainer.style.opacity = 1;
-    });
-};
+//       return fetch(`https://restcountries.eu/rest/v2/alpha/${neighbor}`);
+//     })
+//     .then((response) => response.json())
+//     .then((data) => renderCountry(data, "neighbour"))
+//     .catch((error) => {
+//       //=> catches errors ALL errors in chain
+//       console.error(`${error}; There was an error my dude!`);
+//       renderError(`Something went wrong!! ${error.message}. Try again!`);
+//     })
+//     .finally(() => {
+//       countriesContainer.style.opacity = 1;
+//     });
+// };
 
-// Creating button
-btn.addEventListener("click", function () {
-  getCountryData("usa");
-});
+// // Creating button
+// btn.addEventListener("click", function () {
+//   getCountryData("usa");
+// });
 
 // *****************
 // Chaining Promises
