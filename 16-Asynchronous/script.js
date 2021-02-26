@@ -1,9 +1,98 @@
-"use strict";
+// "use strict";
 
 const btn = document.querySelector(".btn-country");
 const countriesContainer = document.querySelector(".countries");
 
+const renderCountry = function (data, className = "") {
+  const html = `
+  <article class="country ${className}">
+    <img class="country__img" src="${data.flag}" />
+    <div class="country__data">
+      <h3 class="country__name">${data.name}</h3>
+      <h4 class="country__region">${data.region}</h4>
+      <p class="country__row"><span>👫</span>${(
+        +data.population / 1000000
+      ).toFixed(1)} million people</p>
+      <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
+      <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
+    </div>
+  </article>
+`;
+  countriesContainer.insertAdjacentHTML("beforeend", html);
+};
+
+const renderError = function (msg) {
+  countriesContainer.insertAdjacentText("beforeend", msg);
+};
+
 ///////////////////////////////////////
+
+// **************************
+// Handling Rejected Promises
+// **************************
+
+/* 
+ There are two ways of handling rejection in Promises...
+
+   1. Is to call a SECOND callback function into the then() method. (catches errors only in ONE place)
+
+   2. OR we can INSTEAD use the catch() method to handle ALL the errors, no matter where they appear in the chain, by adding this catch function right at the end of that chain. (catches errors GLOBALLY)
+
+     Promise.prototype.catch() method returns a Promise and deals with rejected cases ONLY. It essentially behaves the same as "Promise.prototype.then(_, onRejected)." IN FACT: calling the catch() method INTERNALLY calls then()'s second callback function onRejected.
+
+   NOTE: The only way in which the fetch promise rejects is when the user loses his internet connection.
+
+ We can use the finally() method for something that always needs to happen no matter the result of the promise.
+
+   Promise.prototype.finally() provides a way for code to be run WHETHER the promise was fulfilled successfully or rejected once the Promise has been dealt with. This helps to avoid duplicating code in both the promise's then() and catch() handlers.
+
+ REMEMBER: 
+ 
+   The first callback function a then() method is called on a onFulfilled (successful) promise, while the second is used on a onRejected (failed) promise.
+
+   The insertAdjacentText() method of the Element interface inserts a given TEXT node at a given position relative to the element it is invoked upon. (NOT HTML)
+
+ BELOW: 
+ 
+   The addEventListener function is here to make it easier for us to simulate losing the internet connection. We use the google chrome dev tools to shut off our connection, and then use the button (w/ the event listener) to load the country data on our click.
+
+   All right, so again the catch method below, at the end of the chain, will basically catch any errors that occur in any place in this whole promise chain and no matter where that is. So errors will basically propagate down the chain until they are caught, and only if they're not caught anywhere then we get that Uncaught error.
+
+   The 'error' callback that is generated below is a real JavaScript object. So we can create errors in JavaScript with a constructor, for example, just like a map or a set. And any 'error' in JavaScript that was created like this contains the 'message' property. So we can use that to print the message of that error and not the whole object itself.
+
+   We use the finally() method to fade in the countriesContainer because we do that no matter if our Promise succeeds or fails.
+
+   Created function 'renderError' to render text on document to display error message. It was moved to the top of the code along with the event listener.
+*/
+
+const getCountryData = function (country) {
+  fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+    .then((response) => response.json() /*,
+      (error) => alert(error) */) //=> Second callback for error handling
+    .then((data) => {
+      renderCountry(data[0]);
+      const neighbor = data[0].borders[0];
+
+      if (!neighbor) return;
+
+      return fetch(`https://restcountries.eu/rest/v2/alpha/${neighbor}`);
+    })
+    .then((response) => response.json())
+    .then((data) => renderCountry(data, "neighbour"))
+    .catch((error) => {
+      //=> catches errors ALL errors in chain
+      console.error(`${error}; There was an error my dude!`);
+      renderError(`Something went wrong!! ${error.message}. Try again!`);
+    })
+    .finally(() => {
+      countriesContainer.style.opacity = 1;
+    });
+};
+
+// Creating button
+btn.addEventListener("click", function () {
+  getCountryData("usa");
+});
 
 // *****************
 // Chaining Promises
