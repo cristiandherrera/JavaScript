@@ -11,7 +11,8 @@
 
    1. Create a function 'whereAmI' which takes as inputs a latitude value (lat) and a longitude value (lng) (these are GPS coordinates, examples are below).
 
-   2. Do 'reverse geocoding' of the provided coordinates. Reverse geocoding means to convert coordinates to a meaningful location, like a city and country name. Use this API to do reverse geocoding: https://geocode.xyz/api.
+   2. Do 'reverse geocoding' of the provided coordinates. (Reverse geocoding means to convert coordinates to a meaningful location, like a city and country name.) Use this API to do reverse geocoding: https://geocode.xyz/api.
+
    The AJAX call will be done to a URL with this format: https://geocode.xyz/52.508,13.381?geoit=json. Use the fetch API and promises to get the data. Do NOT use the getJSON function we created, that is cheating 😉
 
    3. Once you have the data, take a look at it in the console to see all the attributes that you received about the provided location. Then, using this data, log a message like this to the console: 'You are in Berlin, Germany'
@@ -31,17 +32,47 @@
  TEST COORDINATES 2: -33.933, 18.474
 */
 
-// const whereAmI = function (lat, lng) {
+// // MY OWN helper function (handles status errors)
+// const myJSON = function (url, errorMsg = "What the heck went wrong?") {
+//   return fetch(url).then((response) => {
+//     if (!response.ok) throw new Error(`STATUS (${response.status})`);
+//     return response.json();
+//   });
 // };
 
-const url = fetch(`https://geocode.xyz/52.508,13.381?geoit=json`)
-  .then((response) => {
-    console.log(response);
-    return response.json();
-  })
-  .then((data) => {
-    console.log(data);
-  });
+// const whereAmI = function (lat, lng) {
+//   myJSON(
+//     `https://geocode.xyz/${lat},${lng}?geoit=json`,
+//     "Not valid coordinates"
+//   )
+//     .then((data) => {
+//       console.log("GEOCODE", data);
+//       console.log(`You are in ${data.city}, ${data.country}`);
 
-const position = navigator.geolocation.getCurrentPosition();
-console.log(position);
+//       return myJSON(
+//         `https://restcountries.eu/rest/v2/name/${data.country}`,
+//         "No country found"
+//       );
+//     })
+//     .then((data) => {
+//       console.log("REST", data);
+//       const neighbor = data[0].borders[0];
+//       renderCountry(data[0]);
+
+//       if (!neighbor) throw new Error(`No neighbor found!`);
+
+//       return myJSON(`https://restcountries.eu/rest/v2/alpha/${neighbor}`);
+//     })
+//     .then((data) => {
+//       console.log("CODE", data);
+//       renderCountry(data, "neighbour");
+//     })
+//     .catch((error) => console.error(`${error.message}, HANDLING OUR ERROR`))
+//     .finally(() => (countriesContainer.style.opacity = 1));
+// };
+
+// btn.addEventListener("click", function () {
+//   whereAmI(52.508, 13.381); // Berlin
+//   // whereAmI(19.037, 72.873); // Mumbai
+//   // whereAmI(-33.933, 18.474); // Cape Town
+// });
