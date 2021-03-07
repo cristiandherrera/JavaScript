@@ -27,6 +27,58 @@ const renderError = function (msg) {
 
 ///////////////////////////////////////
 
+// **********************************************
+// Asynchronous Behind the Scenes: The Event Loop
+// **********************************************
+
+/*
+ REVIEWING the JavaScript runtime.
+
+   JavaScript runtime is basically a container which includes all the different pieces that are necessary to execute JavaScript code.
+
+     The ENGINE: is at the heart of every JavaScript runtime. This is where code is actually executed (the call stack) and where objects are stored in memory (the heap). (works FILO)
+
+     The WEB APIs ENVIRONMENT: are some APIs provided to the engine, but which are actually not part of the JavaScript language itself. So, that's things like the DOM timers the fetch API, the geolocation API, and so on and so forth.
+
+     The CALLBACK QUEUE: is a data structure that holds all the ready to be executed callback functions that are attached to some event that has occurred.
+
+     The EVENT LOOP: takes callbacks from the callback queue and puts them into the call stack to be executed when the call stack is EMPTY. (works FIFO)
+
+   REMEMBER: 
+   
+     That JavaScript has only a SINGLE THREAD of execution. And so it can only do ONE thing at a time. There is absolutely no multitasking happening in JavaScript itself.
+
+     So the event loop is the essential piece that makes asynchronous behavior possible in JavaScript. It's the reason why we can have a non blocking CONCURRENCY MODEL in JavaScript.
+
+ How can asynchronous code be executed in a non blocking way?
+
+   Because asynchronous code is run outside the JavaScript runtime and instead run in the web API environment. Where most async tasks will run; setTimeout(), alert(), navigator.geolocation, loading images, the DOM, XMLHttpRequest are all examples of Web APIs that run outside of the JS engine.   
+      
+     setTimeout() for example, is a method of the 'window' object. 'window' is not at all part of JavaScript (it's a browser object) and anything you ask the window to do for you is handled outside of the JavaScript runtime and by the browser's other capabilities.
+     
+     The request for the Web API call originates from within the JavaScript environment, but the execution of the API call actually runs outside of it.
+   
+     So while the JavaScript runtime (a synchronous environment) is doing its one thing, the browser can be doing something else.
+
+   NOTE: The callback queue also contains callbacks coming from DOM 'events' like clicks or key presses, etc. As we learned, DOM 'events' are NOT really asynchronous behavior, but they still use the callback queue to run their attached callbacks.
+
+ Why is the event loop so important?
+
+   The event loop has the extremely important task of doing coordination between the call stack and to callbacks in the callback queue. So, the event loop is basically who decides exactly when each callback is executed.  
+   
+     Event loop tick: each time the event loop takes a callback from the callback queue.
+
+ Why do Promises work differently than other async code?
+
+   Because callbacks of Promises have a special queue for themselves called the MICRO-TASKS QUEUE. They are special because they always have PRIORITY over the callback queue.
+   
+     So, at the end of an event loop tick, the event loop will check if there are any callbacks in the micro-tasks queue. And if there are, it will run ALL of them BEFORE it will run ANY more callbacks.
+     
+     WARNING: Now because the micro-tasks ALWAYS have priority over the callback queue, essentially means that the micro-tasks queue can STARVE the callback queue. (usually doesn't happen but be aware.)
+
+     NOTE: there are actually other micro-tasks but not covered in this lecture...
+*/
+
 // ************************
 // Throwing Errors Manually
 // ************************
@@ -140,7 +192,7 @@ const renderError = function (msg) {
 // **************************
 
 /* 
- There are two ways of handling rejection in Promises...
+ Two ways of handling rejection in Promises...
 
    1. Is to call a SECOND callback function into the then() method. (catches errors only in ONE place)
 
@@ -150,7 +202,7 @@ const renderError = function (msg) {
 
    NOTE: The only way in which the fetch promise rejects is when the user loses his internet connection.
 
- We can use the finally() method for something that always needs to happen no matter the result of the promise.
+ What is the finally() method?
 
    Promise.prototype.finally() provides a way for code to be run WHETHER the promise was fulfilled successfully or rejected once the Promise has been dealt with. This helps to avoid duplicating code in both the promise's then() and catch() handlers.
 
@@ -209,7 +261,7 @@ const renderError = function (msg) {
 /*
  How do we chain Promises?
 
-   Each then() returns a newly generated promise object and whatever we value we choose to return will become the 'onFulfilled' value of the next then() method, which can optionally be used for chaining.
+   Each then() returns a newly generated promise object and whatever value we choose to return will become the 'onFulfilled' value of the next then() method, which can optionally be used for chaining.
 
    So to chain Promises make sure to RETURN a SEPARATE fetch Promise INSIDE the end of a then() call. Then handle it outside by simply continuing the chain.
    
@@ -272,7 +324,7 @@ const renderError = function (msg) {
 
    We consume a promise by calling then() and catch()(used in later lectures) methods on the promise. The then() method used on for when the promise is resolved and the catch() method whe the promise is rejected. 
    
-     NOTE: then() can ALSO be used to interact with 'rejected' with its second paramter BUT DOES NOT handle or 'catch' the value 
+     NOTE: then() can ALSO be used to interact with 'rejected' with its second paramter BUT DOES NOT handle ALL errors in the chain, ONLY ones inside that specific then() call. 
 
  The Promise.prototype.then(): method ALWAYS returns a Promise. It takes up to two arguments: callback function that we want to be executed as soon as the promise is fulfilled or rejected.
 
@@ -331,11 +383,11 @@ const renderError = function (msg) {
 /*
   What is the Fetch API? 
 
-   The Fetch API provides a JavaScript interface for asynchronously accessing and manipulating parts of the HTTP pipeline, such as requests and responses. 
+   The Fetch API provides a JavaScript interface for asynchronously accessing and manipulating parts of the HTTP pipeline, such as requests and responses to/from web servers. 
 
-     The Response(Object) interface of the Fetch API represents the response to a request.
+     REPLACES the old XMLHttpRequest method by providing a NEW way of making AJAX calls (fetch() method). 
 
-   The fetch() method of the WindowOrWorkerGlobalScope, is used to request to the server and load the information in the webpages. It essentially is the new MODERN way of making AJAX calls and replaces the old XML HTTP request function. 
+   The fetch() method of the WindowOrWorkerGlobalScope, is used to request to the server and load the information in the webpages. 
 
      The main difference is that the Fetch API uses Promises, which enables a simpler and cleaner API, avoiding callback hell and having to remember the complex API of XMLHttpRequest.
     
@@ -345,7 +397,7 @@ const renderError = function (msg) {
 
    Promise: is an object that is used as a placeholder for the future result of an asynchronous operation(container for a future value). An example of a future value could be a response coming from an AJAX call. (like the Response object??)
 
-   Essentially, a promise is a returned object to which you attach callbacks, instead of passing callbacks into a function.
+   Essentially, a promise is a returned object to which you attach(CHAIN) callbacks, instead of passing callbacks into a function.
 
    Promises were essentially made to REPLACE using callbacks.
 
@@ -617,8 +669,7 @@ const renderError = function (msg) {
      
  AJAX
 
-   AJAX (Asynchronous JavaScript And XML): while not a technology in itself, is an approach to using a number of existing technologies together, including HTML or XHTML, CSS, JavaScript, DOM, XML, XSLT. 
-   With these technologies together, AJAX calls can request data from web servers dynamically.
+   AJAX (Asynchronous JavaScript And XML): is a TECHNIQUE for accessing web servers from a web page, using a number of existing technologies together, including HTML or XHTML, CSS, JavaScript, DOM, XML, XSLT.
    
      But in a nutshell it is the use of the "XMLHttpRequest" object to communicate with servers, exchange data, and update the page WITHOUT having to refresh the page. (see lecture above)
 
@@ -646,7 +697,7 @@ const renderError = function (msg) {
 
      - Access data so that multiple apps or services can work together.
      - Hide complexity for developers.
-     - Extend functionality of existing systems.
+     - Extend functionality of existing systems. (browsers, servers, 3rd party sites, etc.)
      - Can act as gate keepers to protect our personal data.
 
    Client-side JavaScript has many APIs available to it — these are not part of the JavaScript language itself, rather they are built on top of the core JavaScript language. They generally fall into two categories...
