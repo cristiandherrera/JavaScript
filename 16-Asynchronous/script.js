@@ -27,6 +27,45 @@ const renderError = function (msg) {
 
 ///////////////////////////////////////
 
+// **************************
+// The Event Loop in Practice
+// **************************
+
+/*
+ REMEMBER: 
+ 
+   Any code OUTSIDE of any callback (top level code) will be executed first.
+
+   Micro-tasks have priority over the callback queue. 
+
+   You cannot do HIGH PRECISION tasks with setTimeout() because it depends on the state of the callback queues task load as well as the micro-task.
+
+   Micro-tasks can BLOCK code in the callback queue if the tasks are too strenuous. (because of its priority)
+
+ NOTE:  So promise that 'resolve()', basically allows us to build a promise, so to create a promise that is immediately resolved. So one that immediately has a success value.
+
+ BELOW:
+ 
+   Logging to see what line of order each code will execute in...
+
+     1. & 2. log first and second because they are top level code.
+     3. & 4 Promises are prioritized over callback queue; "Promise 1" had easier task so finished 3rd.
+     5. Last in priority for reasons above.
+*/
+
+console.log("Test start"); // 1
+
+setTimeout(() => console.log("0 second timer"), 0); // 5
+
+Promise.resolve("Resolved promise 2").then((res) => {
+  for (let i = 0; i < 1000000000; i++) {}
+  console.log(res);
+}); // 4
+
+Promise.resolve("Resolved promise 1").then((res) => console.log(res)); // 3
+
+console.log("Test end"); // 2
+
 // **********************************************
 // Asynchronous Behind the Scenes: The Event Loop
 // **********************************************
@@ -44,6 +83,8 @@ const renderError = function (msg) {
 
      The EVENT LOOP: takes callbacks from the callback queue and puts them into the call stack to be executed when the call stack is EMPTY. (works FIFO)
 
+     CONCURRENCY MODEL: How JavaScript handles multiple tasks happening at the same time.
+
    REMEMBER: 
    
      That JavaScript has only a SINGLE THREAD of execution. And so it can only do ONE thing at a time. There is absolutely no multitasking happening in JavaScript itself.
@@ -60,7 +101,12 @@ const renderError = function (msg) {
    
      So while the JavaScript runtime (a synchronous environment) is doing its one thing, the browser can be doing something else.
 
-   NOTE: The callback queue also contains callbacks coming from DOM 'events' like clicks or key presses, etc. As we learned, DOM 'events' are NOT really asynchronous behavior, but they still use the callback queue to run their attached callbacks.
+   NOTE: 
+  
+     The callback queue also contains callbacks coming from DOM 'events' like clicks or key presses, etc. As we learned, DOM 'events' are NOT really asynchronous behavior, but they still use the callback queue to run their attached callbacks.
+
+     The top level code, the code that is not inside any callback function, gets executed first!
+
 
  Why is the event loop so important?
 
