@@ -27,6 +27,98 @@ const renderError = function (msg) {
 
 ///////////////////////////////////////
 
+// *************************
+// Building a Simple Promise
+// *************************
+
+/*
+ How do we build a Promise?
+
+   A Promise object is created using the new keyword and its constructor. This constructor takes a function, called the "executor function", as its parameter. This function should take two functions as parameters. The first of these functions (resolve) is called when the asynchronous task completes successfully and returns the results of the task as a value. The second (reject) is called when the task fails, and returns the reason for failure, which is typically an error object.
+
+     The Promise constructor is primarily used to wrap functions that do not already support promises. SYNTAX: "new Promise(executor)"
+
+       executor: A function to be executed by the constructor, during the process of constructing the new Promise object. At the time when the constructor generates the new Promise object, it also generates a corresponding pair of functions...
+       SYNTAX: "function(resolutionFunc, rejectionFunc){}"
+
+ What is promisifying?
+
+   IN PRACTICE: most of the time all we actually do is to consume promises. And we usually only build promises to basically wrap old callback based functions into promises. And this is a process that we call promisifying.
+
+   So it basically means to convert callback based asynchronous behavior to promise based.
+
+ Can we resolve/reject a Promise immediately?
+
+   The Promise.resolve() method returns a Promise object that is resolved with a given value. If the value is a promise, that promise is returned; if the value is a thenable (i.e. has a "then" method), the returned promise will "follow" that thenable, adopting its eventual state.
+   SYNTAX: Promise.resolve(reason);
+
+   The Promise.reject() method returns a Promise object that is rejected with a given reason.
+   SYNTAX: Promise.reject(reason);
+
+ BELOW: 
+
+   Created a Promise with the Promise constructor ('lottery'), that will then call its parameter the executer function as soon as it runs. This function then passes in the resolve and the reject functions so that we can then use them to mark the promise as either resolved so as fulfilled or as to rejected.
+
+   Our promisifying of the setTimeout() method allowed us to have once again a nice chain of asynchronous behavior that happens nicely in a sequence and all without the callback hell. 
+*/
+
+// CREATING Promise
+const lottery = new Promise((resolve, reject) => {
+  console.log("Your lottery ticket is being processed...");
+  setTimeout(() => {
+    if (Math.random() >= 0.05) {
+      resolve("You have WON the lottery!");
+    } else {
+      reject(new Error("You have LOST your money!"));
+    }
+  }, 1000);
+});
+
+// CONSUMING Promise
+lottery.then((res) => console.log(res)).catch((error) => console.error(error));
+
+// PROMISFYING setTimeout
+const wait = function (seconds) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+wait(1)
+  .then(() => {
+    console.log("1 second passed");
+    return wait(1);
+  })
+  .then(() => {
+    console.log("2 second passed");
+    return wait(1);
+  })
+  .then(() => {
+    console.log("3 second passed");
+    return wait(1);
+  })
+  .then(() => {
+    console.log("4 second passed");
+    return wait(1);
+  });
+
+// Callback hell w/ timeouts
+setTimeout(() => {
+  console.log("1 second passed");
+  setTimeout(() => {
+    console.log("2 second passed");
+    setTimeout(() => {
+      console.log("3 second passed");
+      setTimeout(() => {
+        console.log("4 second passed");
+      }, 1000);
+    }, 1000);
+  }, 1000);
+}, 1000);
+
+// Immediately handle Promises'
+Promise.resolve("abc").then((x) => console.log(x));
+Promise.reject(new Error("ABC")).catch((x) => console.error(x));
+
 // **************************
 // The Event Loop in Practice
 // **************************
@@ -53,18 +145,18 @@ const renderError = function (msg) {
      5. Last in priority for reasons above.
 */
 
-console.log("Test start"); // 1
+// console.log("Test start"); // 1
 
-setTimeout(() => console.log("0 second timer"), 0); // 5
+// setTimeout(() => console.log("0 second timer"), 0); // 5
 
-Promise.resolve("Resolved promise 2").then((res) => {
-  for (let i = 0; i < 1000000000; i++) {}
-  console.log(res);
-}); // 4
+// Promise.resolve("Resolved promise 2").then((res) => {
+//   for (let i = 0; i < 1000000000; i++) {}
+//   console.log(res);
+// }); // 4
 
-Promise.resolve("Resolved promise 1").then((res) => console.log(res)); // 3
+// Promise.resolve("Resolved promise 1").then((res) => console.log(res)); // 3
 
-console.log("Test end"); // 2
+// console.log("Test end"); // 2
 
 // **********************************************
 // Asynchronous Behind the Scenes: The Event Loop
@@ -106,7 +198,6 @@ console.log("Test end"); // 2
      The callback queue also contains callbacks coming from DOM 'events' like clicks or key presses, etc. As we learned, DOM 'events' are NOT really asynchronous behavior, but they still use the callback queue to run their attached callbacks.
 
      The top level code, the code that is not inside any callback function, gets executed first!
-
 
  Why is the event loop so important?
 
