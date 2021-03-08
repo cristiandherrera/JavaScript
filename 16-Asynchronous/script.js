@@ -27,6 +27,85 @@ const renderError = function (msg) {
 
 ///////////////////////////////////////
 
+// ********************************
+// Promisifying the Geolocation API
+// ********************************
+
+/* 
+ REMEMBER: 
+ 
+   Geolocation.getCurrentPosition(): a method on the 'geolocation' object that retrieves the devices location upon success. It takes up to three callbacks, a success callback function, a error callback, and a optional object that provided option for retrieval of position data. 
+     SYNTAX: navigator.geolocation.getCurrentPosition(success()[, error[, [options]]).
+
+ BELOW: 
+
+   Promisified the geolocation API by creating a function 'getPosition' that returns a new promise, that uses the resolve() method, of the Promise constructors executer function, as an argument in the 'success' callback of the getCurrentPositon() method.
+   
+   We then use promisified value (our current coordinates) to chain with our restCountries API Promise to the allow us to create our css created cards to display our location. 
+ 
+*/
+
+// Promisifying geolocationAPI
+const getPosition = function () {
+  return new Promise(
+    (resolve, reject) =>
+      // navigator.geolocation.getCurrentPosition(
+      //   (position) => resolve(position),
+      //   (error) => reject(error)
+      // )
+      navigator.geolocation.getCurrentPosition(resolve, reject) // simpler version
+  );
+};
+getPosition()
+  .then((pos) => console.log(pos))
+  .catch((err) => console.log(err));
+
+// Promisifying restAPI
+const whereAmI = function () {
+  getPosition()
+    .then((pos) => {
+      const { latitude: lat, longitude: lng } = pos.coords;
+
+      return myJSON(
+        `https://geocode.xyz/${lat},${lng}?geoit=json`,
+        "Not valid coordinates"
+      );
+    })
+    .then((data) => {
+      console.log("GEOCODE", data);
+      console.log(`You are in ${data.city}, ${data.country}`);
+
+      return myJSON(
+        `https://restcountries.eu/rest/v2/name/${data.country}`,
+        "No country found"
+      );
+    })
+    .then((data) => {
+      console.log("REST", data);
+      const neighbor = data[0].borders[0];
+      renderCountry(data[0]);
+
+      if (!neighbor) throw new Error(`No neighbor found!`);
+
+      return myJSON(`https://restcountries.eu/rest/v2/alpha/${neighbor}`);
+    })
+    .then((data) => {
+      console.log("CODE", data);
+      renderCountry(data, "neighbour");
+    })
+    .catch((error) => console.error(`${error.message}, HANDLING OUR ERROR`))
+    .finally(() => (countriesContainer.style.opacity = 1));
+};
+
+// MY OWN helper function (handles status errors)
+function myJSON(url, errorMsg = "What the heck went wrong?") {
+  return fetch(url).then((response) => {
+    if (!response.ok) throw new Error(`STATUS (${response.status})`);
+    return response.json();
+  });
+}
+btn.addEventListener("click", whereAmI);
+
 // *************************
 // Building a Simple Promise
 // *************************
@@ -62,62 +141,62 @@ const renderError = function (msg) {
    Our promisifying of the setTimeout() method allowed us to have once again a nice chain of asynchronous behavior that happens nicely in a sequence and all without the callback hell. 
 */
 
-// CREATING Promise
-const lottery = new Promise((resolve, reject) => {
-  console.log("Your lottery ticket is being processed...");
-  setTimeout(() => {
-    if (Math.random() >= 0.05) {
-      resolve("You have WON the lottery!");
-    } else {
-      reject(new Error("You have LOST your money!"));
-    }
-  }, 1000);
-});
+// // CREATING Promise
+// const lottery = new Promise((resolve, reject) => {
+//   console.log("Your lottery ticket is being processed...");
+//   setTimeout(() => {
+//     if (Math.random() >= 0.05) {
+//       resolve("You have WON the lottery!");
+//     } else {
+//       reject(new Error("You have LOST your money!"));
+//     }
+//   }, 1000);
+// });
 
-// CONSUMING Promise
-lottery.then((res) => console.log(res)).catch((error) => console.error(error));
+// // CONSUMING Promise
+// lottery.then((res) => console.log(res)).catch((error) => console.error(error));
 
-// PROMISFYING setTimeout
-const wait = function (seconds) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, seconds * 1000);
-  });
-};
-wait(1)
-  .then(() => {
-    console.log("1 second passed");
-    return wait(1);
-  })
-  .then(() => {
-    console.log("2 second passed");
-    return wait(1);
-  })
-  .then(() => {
-    console.log("3 second passed");
-    return wait(1);
-  })
-  .then(() => {
-    console.log("4 second passed");
-    return wait(1);
-  });
+// // PROMISFYING setTimeout
+// const wait = function (seconds) {
+//   return new Promise((resolve) => {
+//     setTimeout(resolve, seconds * 1000);
+//   });
+// };
+// wait(1)
+//   .then(() => {
+//     console.log("1 second passed");
+//     return wait(1);
+//   })
+//   .then(() => {
+//     console.log("2 second passed");
+//     return wait(1);
+//   })
+//   .then(() => {
+//     console.log("3 second passed");
+//     return wait(1);
+//   })
+//   .then(() => {
+//     console.log("4 second passed");
+//     return wait(1);
+//   });
 
-// Callback hell w/ timeouts
-setTimeout(() => {
-  console.log("1 second passed");
-  setTimeout(() => {
-    console.log("2 second passed");
-    setTimeout(() => {
-      console.log("3 second passed");
-      setTimeout(() => {
-        console.log("4 second passed");
-      }, 1000);
-    }, 1000);
-  }, 1000);
-}, 1000);
+// // Callback hell w/ timeouts
+// setTimeout(() => {
+//   console.log("1 second passed");
+//   setTimeout(() => {
+//     console.log("2 second passed");
+//     setTimeout(() => {
+//       console.log("3 second passed");
+//       setTimeout(() => {
+//         console.log("4 second passed");
+//       }, 1000);
+//     }, 1000);
+//   }, 1000);
+// }, 1000);
 
-// Immediately handle Promises'
-Promise.resolve("abc").then((x) => console.log(x));
-Promise.reject(new Error("ABC")).catch((x) => console.error(x));
+// // Immediately handle Promises'
+// Promise.resolve("abc").then((x) => console.log(x));
+// Promise.reject(new Error("ABC")).catch((x) => console.error(x));
 
 // **************************
 // The Event Loop in Practice
