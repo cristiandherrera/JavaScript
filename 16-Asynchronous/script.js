@@ -19,13 +19,60 @@ const renderCountry = function (data, className = "") {
   </article>
 `;
   countriesContainer.insertAdjacentHTML("beforeend", html);
+  countriesContainer.style.opacity = 1;
 };
 
 const renderError = function (msg) {
   countriesContainer.insertAdjacentText("beforeend", msg);
+  countriesContainer.style.opacity = 1;
 };
 
 ///////////////////////////////////////
+
+// ********************************************
+// Consuming Promises with Async/Await (ES2017)
+// ********************************************
+
+/*
+ What is async/ await?
+
+   It is the use of async functions and the 'await' keyword to basically act as syntactic sugar on top of 'Promises' that make it look more like old-school synchronous code, making it easier to write and read.
+   
+   First of all we have the 'async' keyword, which you put in front of a function declaration to turn it into an async function. An async function is a function that knows how to expect the possibility of the await keyword being used to invoke asynchronous code.
+
+   The 'await' operator can be put in front of any async (promise-based) function to pause your code on that line until the promise fulfills, then return the resulting value. It can ONLY be used INSIDE an async function within regular JavaScript code
+
+ BELOW: We are replacing the Promise chain methods (then()) with the async/await features to re-create our 'whereAmI' function. (NO error handling YET -- next lecture)
+*/
+
+// Promisifying geolocationAPI
+const getPosition = function () {
+  return new Promise((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject)
+  );
+};
+
+const whereAmI = async function () {
+  // Geolocation
+  const pos = await getPosition();
+  const { latitude: lat, longitude: lng } = pos.coords;
+
+  // Reverse geocoding
+  const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+  const dataGeo = await resGeo.json();
+
+  // Country data (rest API)
+  const resCountry = await fetch(
+    `https://restcountries.eu/rest/v2/name/${dataGeo.country}`
+  );
+  const dataCountry = await resCountry.json();
+
+  // Neighbors
+  const neighbor = await fetch();
+
+  renderCountry(dataCountry[0]);
+};
+whereAmI();
 
 // ********************************
 // Promisifying the Geolocation API
@@ -120,9 +167,13 @@ const renderError = function (msg) {
        executor: A function to be executed by the constructor, during the process of constructing the new Promise object. At the time when the constructor generates the new Promise object, it also generates a corresponding pair of functions...
        SYNTAX: "function(resolutionFunc, rejectionFunc){}"
 
- What is promisifying?
+ What is promisification?
 
-   IN PRACTICE: most of the time all we actually do is to consume promises. And we usually only build promises to basically wrap old callback based functions into promises. And this is a process that we call promisifying.
+   “Promisification” is a long word for a simple transformation. It’s the conversion of a function that accepts a callback into a function that returns a promise.
+
+   PRACTICE: Such transformations are often required in real-life, as many functions and libraries are callback-based.
+
+
 
    So it basically means to convert callback based asynchronous behavior to promise based.
 
