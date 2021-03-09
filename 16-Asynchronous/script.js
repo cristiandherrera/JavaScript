@@ -45,66 +45,66 @@ const renderError = function (msg) {
  
 */
 
-// Promisifying geolocationAPI
-const getPosition = function () {
-  return new Promise(
-    (resolve, reject) =>
-      // navigator.geolocation.getCurrentPosition(
-      //   (position) => resolve(position),
-      //   (error) => reject(error)
-      // )
-      navigator.geolocation.getCurrentPosition(resolve, reject) // simpler version
-  );
-};
-getPosition()
-  .then((pos) => console.log(pos))
-  .catch((err) => console.log(err));
+// // Promisifying geolocationAPI
+// const getPosition = function () {
+//   return new Promise(
+//     (resolve, reject) =>
+//       // navigator.geolocation.getCurrentPosition(
+//       //   (position) => resolve(position),
+//       //   (error) => reject(error)
+//       // )
+//       navigator.geolocation.getCurrentPosition(resolve, reject) // simpler version
+//   );
+// };
+// getPosition()
+//   .then((pos) => console.log(pos))
+//   .catch((err) => console.log(err));
 
-// Promisifying restAPI
-const whereAmI = function () {
-  getPosition()
-    .then((pos) => {
-      const { latitude: lat, longitude: lng } = pos.coords;
+// // Promisifying restAPI
+// const whereAmI = function () {
+//   getPosition()
+//     .then((pos) => {
+//       const { latitude: lat, longitude: lng } = pos.coords;
 
-      return myJSON(
-        `https://geocode.xyz/${lat},${lng}?geoit=json`,
-        "Not valid coordinates"
-      );
-    })
-    .then((data) => {
-      console.log("GEOCODE", data);
-      console.log(`You are in ${data.city}, ${data.country}`);
+//       return myJSON(
+//         `https://geocode.xyz/${lat},${lng}?geoit=json`,
+//         "Not valid coordinates"
+//       );
+//     })
+//     .then((data) => {
+//       console.log("GEOCODE", data);
+//       console.log(`You are in ${data.city}, ${data.country}`);
 
-      return myJSON(
-        `https://restcountries.eu/rest/v2/name/${data.country}`,
-        "No country found"
-      );
-    })
-    .then((data) => {
-      console.log("REST", data);
-      const neighbor = data[0].borders[0];
-      renderCountry(data[0]);
+//       return myJSON(
+//         `https://restcountries.eu/rest/v2/name/${data.country}`,
+//         "No country found"
+//       );
+//     })
+//     .then((data) => {
+//       console.log("REST", data);
+//       const neighbor = data[0].borders[0];
+//       renderCountry(data[0]);
 
-      if (!neighbor) throw new Error(`No neighbor found!`);
+//       if (!neighbor) throw new Error(`No neighbor found!`);
 
-      return myJSON(`https://restcountries.eu/rest/v2/alpha/${neighbor}`);
-    })
-    .then((data) => {
-      console.log("CODE", data);
-      renderCountry(data, "neighbour");
-    })
-    .catch((error) => console.error(`${error.message}, HANDLING OUR ERROR`))
-    .finally(() => (countriesContainer.style.opacity = 1));
-};
+//       return myJSON(`https://restcountries.eu/rest/v2/alpha/${neighbor}`);
+//     })
+//     .then((data) => {
+//       console.log("CODE", data);
+//       renderCountry(data, "neighbour");
+//     })
+//     .catch((error) => console.error(`${error.message}, HANDLING OUR ERROR`))
+//     .finally(() => (countriesContainer.style.opacity = 1));
+// };
 
-// MY OWN helper function (handles status errors)
-function myJSON(url, errorMsg = "What the heck went wrong?") {
-  return fetch(url).then((response) => {
-    if (!response.ok) throw new Error(`STATUS (${response.status})`);
-    return response.json();
-  });
-}
-btn.addEventListener("click", whereAmI);
+// // MY OWN helper function (handles status errors)
+// function myJSON(url, errorMsg = "What the heck went wrong?") {
+//   return fetch(url).then((response) => {
+//     if (!response.ok) throw new Error(`STATUS (${response.status})`);
+//     return response.json();
+//   });
+// }
+// btn.addEventListener("click", whereAmI);
 
 // *************************
 // Building a Simple Promise
