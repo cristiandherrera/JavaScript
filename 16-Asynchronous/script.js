@@ -29,6 +29,81 @@ const renderError = function (msg) {
 
 ///////////////////////////////////////
 
+// *************************************
+// Returning Values from Async functions
+// *************************************
+
+/*
+ REMEMBER: 
+  
+   That both then() AND catch() method ALWAYS returns a Promise and that the async/await syntax is just a sugared syntax, when actually its truly the then() method running behind the scenes. So in turn async/await will as well ALWAYS return a Promise.
+
+   The 'throw' statement: throws a user-defined exception. Execution of the current function will STOP, and CONTROL will be passed to the FIRST catch block in the call stack. If no catch block exists among caller functions, the program will terminate.
+
+   An IIFE (Immediately Invoked Function Expression) is a JavaScript function that runs as soon as it is defined.
+
+ BELOW: 
+
+   We are trying to understand how values are returned form async functions... 
+
+   We manually set the fullfiled value of our Promise returned by our 'whereAmI' function to a string because remember that we can set that fulfilled value to ANY value we want.
+
+   We have to RE-'throw' errors that get caught in our 'whereAmI' function because we want to propagate (carry) that error (like 'err' below) downwards into our IIFE function so it can catch and handle it ITSELF.
+*/
+
+const getPosition = function () {
+  return new Promise((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject)
+  );
+};
+const whereAmI = async function () {
+  try {
+    // Geolocation
+    const pos = await getPosition();
+    const { latitude: lat, longitude: lng } = pos.coords;
+
+    // Reverse geocoding
+    const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+    if (!resGeo.ok) throw new Error(`(${resGeo.status})`);
+    const dataGeo = await resGeo.json();
+
+    // Country data
+    const resCountry = await fetch(
+      `https://restcountries.eu/rest/v2/name/${dataGeo.countryy}`
+    );
+    if (!resCountry.ok) throw new Error(`(${resCountry.status})`);
+    const dataCountry = await resCountry.json();
+    renderCountry(dataCountry[0]);
+
+    // Manually setting string to the fulfilled value of the Promise
+    return `You are in ${dataGeo.city}, ${dataGeo.country}`;
+  } catch (err) {
+    console.error(`${err} --CAUGHT WITH CATCH--`);
+    renderError(`${err.message}`);
+
+    // Manually rejecting Promise returned from async function
+    throw err;
+  }
+};
+
+// console.log(`1: Will get location`);
+// const city = whereAmI()
+//   .then((city) => console.log(`2: ${city}`))
+//   .catch((err) => console.log(`2: ${err.message}`))
+//   .finally(() => console.log(`3: Finished getting location`));
+// console.log(city);
+
+console.log(`1: Will get location`);
+(async function () {
+  try {
+    const where = await whereAmI();
+    console.log(`2: ${where}`);
+  } catch (err) {
+    console.log(`2: ${err.message}`);
+  }
+  console.log(`3: Finished getting location`);
+})();
+
 // *******************************
 // Error Handling With try...catch
 // *******************************
@@ -45,47 +120,47 @@ const renderError = function (msg) {
    Added error handling to our async/await version of the 'whereAmI' function by using the 'try' and 'catch' statements!!
 */
 
-// Promisifying geolocationAPI
-const getPosition = function () {
-  return new Promise((resolve, reject) =>
-    navigator.geolocation.getCurrentPosition(resolve, reject)
-  );
-};
+// // Promisifying geolocationAPI
+// const getPosition = function () {
+//   return new Promise((resolve, reject) =>
+//     navigator.geolocation.getCurrentPosition(resolve, reject)
+//   );
+// };
 
-const whereAmI = async function () {
-  // Checking for errors in encompassed 'try' block...
-  try {
-    const pos = await getPosition();
-    const { latitude: lat, longitude: lng } = pos.coords;
+// const whereAmI = async function () {
+//   // Checking for errors in encompassed 'try' block...
+//   try {
+//     const pos = await getPosition();
+//     const { latitude: lat, longitude: lng } = pos.coords;
 
-    const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
-    if (!resGeo.ok) throw new Error(`(${resGeo.status})`);
-    const dataGeo = await resGeo.json();
+//     const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+//     if (!resGeo.ok) throw new Error(`(${resGeo.status})`);
+//     const dataGeo = await resGeo.json();
 
-    const resCountry = await fetch(
-      `https://restcountries.eu/rest/v2/name/${dataGeo.country}`
-    );
-    if (!resCountry.ok) throw new Error(`(${resCountry.status})`);
+//     const resCountry = await fetch(
+//       `https://restcountries.eu/rest/v2/name/${dataGeo.country}`
+//     );
+//     if (!resCountry.ok) throw new Error(`(${resCountry.status})`);
 
-    const dataCountry = await resCountry.json();
+//     const dataCountry = await resCountry.json();
 
-    const neighbor = dataCountry[0].borders[0];
-    const resNeighbor = await fetch(
-      `https://restcountries.eu/rest/v2/alpha/${neighbor}`
-    );
-    if (!resNeighbor.ok) throw new Error(`(${resNeighbor.status})`);
+//     const neighbor = dataCountry[0].borders[0];
+//     const resNeighbor = await fetch(
+//       `https://restcountries.eu/rest/v2/alpha/${neighbor}`
+//     );
+//     if (!resNeighbor.ok) throw new Error(`(${resNeighbor.status})`);
 
-    const dataNeighbor = await resNeighbor.json();
+//     const dataNeighbor = await resNeighbor.json();
 
-    renderCountry(dataCountry[0]);
-    renderCountry(dataNeighbor, "neighbour");
-    // If error occurs, it gets handled with 'catch' method...
-  } catch (err) {
-    console.error(`${err} --CAUGHT WITH CATCH--`);
-    renderError(`${err.message}`);
-  }
-};
-whereAmI();
+//     renderCountry(dataCountry[0]);
+//     renderCountry(dataNeighbor, "neighbour");
+//     // If error occurs, it gets handled with 'catch' method...
+//   } catch (err) {
+//     console.error(`${err} --CAUGHT WITH CATCH--`);
+//     renderError(`${err.message}`);
+//   }
+// };
+// whereAmI();
 
 // ********************************************
 // Consuming Promises with Async/Await (ES2017)
@@ -99,6 +174,12 @@ whereAmI();
    First of all we have the 'async' keyword, which you put in front of a function declaration to turn it into an async function. An async function is a function that knows how to expect the possibility of the await keyword being used to invoke asynchronous code.
 
    The 'await' operator can be put in front of any async (promise-based) function to pause your code on that line until the promise fulfills, then return the resulting value. It can ONLY be used INSIDE an async function within regular JavaScript code
+
+ Asynchronous function vs Asynchronous callback functions
+
+   First, An asynchronous callback function and an asynchronous function are DIFFERENT terms.
+
+   The asynchronous callback function is executed in a non-blocking manner by the higher-order function. But the asynchronous function pauses its execution while waiting for promises (await <promise>) to resolve.
 
  BELOW: We are replacing the Promise chain methods (then()) with the async/await features to re-create our 'whereAmI' function. (NO error handling YET -- next lecture)
 */
@@ -623,26 +704,6 @@ whereAmI();
 // };
 // getCountryData("usa");
 
-// // Adding countries in html
-// function renderCountry(data, className = "") {
-//   const html = `
-//   <article class="country ${className}">
-//     <img class="country__img" src="${data.flag}" />
-//     <div class="country__data">
-//       <h3 class="country__name">${data.name}</h3>
-//       <h4 class="country__region">${data.region}</h4>
-//       <p class="country__row"><span>👫</span>${(
-//         +data.population / 1000000
-//       ).toFixed(1)} million people</p>
-//       <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
-//       <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
-//     </div>
-//   </article>
-// `;
-//   countriesContainer.insertAdjacentHTML("beforeend", html);
-//   countriesContainer.style.opacity = 1;
-// }
-
 // ******************
 // Consuming Promises
 // ******************
@@ -683,26 +744,6 @@ whereAmI();
 //   console.log(request); //=> Promise
 // };
 // getCountryData("portugal");
-
-// // Adding countries in html
-// function renderCountry(data, className = "") {
-//   const html = `
-//   <article class="country ${className}">
-//     <img class="country__img" src="${data.flag}" />
-//     <div class="country__data">
-//       <h3 class="country__name">${data.name}</h3>
-//       <h4 class="country__region">${data.region}</h4>
-//       <p class="country__row"><span>👫</span>${(
-//         +data.population / 1000000
-//       ).toFixed(1)} million people</p>
-//       <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
-//       <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
-//     </div>
-//   </article>
-// `;
-//   countriesContainer.insertAdjacentHTML("beforeend", html);
-//   countriesContainer.style.opacity = 1;
-// }
 
 // **************************
 // Promises and the Fetch API
@@ -847,26 +888,6 @@ whereAmI();
 // };
 // getCountryAndNeighbor("usa");
 
-// // Adding countries in html
-// function renderCountry(data, className = "") {
-//   const html = `
-//   <article class="country ${className}">
-//     <img class="country__img" src="${data.flag}" />
-//     <div class="country__data">
-//       <h3 class="country__name">${data.name}</h3>
-//       <h4 class="country__region">${data.region}</h4>
-//       <p class="country__row"><span>👫</span>${(
-//         +data.population / 1000000
-//       ).toFixed(1)} million people</p>
-//       <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
-//       <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
-//     </div>
-//   </article>
-// `;
-//   countriesContainer.insertAdjacentHTML("beforeend", html);
-//   countriesContainer.style.opacity = 1;
-// }
-
 // *****************************************
 // How the Web Works: Requests and Responses
 // *****************************************
@@ -994,6 +1015,12 @@ whereAmI();
      - Execution does not wait for an async task to finish its work.
      - Callback functions alone DO NOT make code asynchronous.
      - Ex. of async code: setTimeout(), setting 'src' attribute, some APIs, AJAX, etc.
+
+   Callback functions
+
+     The synchronous callbacks are executed at the same time as the higher-order function that uses the callback. Synchronous callbacks are blocking.
+
+     On the other side, the asynchronous callbacks are executed at a later time than the higher-order function. Asynchronous callbacks are non-blocking.
      
  AJAX
 
