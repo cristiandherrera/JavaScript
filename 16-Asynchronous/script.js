@@ -29,49 +29,141 @@ const renderError = function (msg) {
 
 ///////////////////////////////////////
 
+// ****************************************************
+// Other Promise Combinators: race, allSettled, and any
+// ****************************************************
+
+/*
+ What is Promise.race()? 
+
+   The Promise.race() method returns a promise that fulfills or rejects as soon as one of the promises in an iterable fulfills OR rejects, with the value or reason from that promise.
+
+   Promise.race is actually very useful to prevent against never ending promises or also very long running promises.
+
+   NOTE: Promise.race() and Promise.all() are by far the two most important promise combinators.
+
+ What is Promise.allSettled()? [ES2020]
+
+   The Promise.allSettled() method returns a promise that resolves after all of the given promises have either fulfilled or rejected, with an array of objects that each describes the outcome of each promise.
+
+   It is typically used when you have multiple asynchronous tasks that are NOT DEPENDENT on one another to complete successfully, or you'd always like to know the result of each promise.
+
+   So it's similar to Promise.all() in regard that it also returns an array of all the results, but the DIFFERENCE is that Promise.all will short circuit as soon as ONE Promise rejects, but Promise.allSettled(), simply NEVER short circuits.
+
+ What is Promise.any()? [ES2021]
+
+   Promise.any() takes in an array of multiple promises and this one will then return the first fulfilled promise and it will simply ignore rejected promises.
+
+   So basically Promise.any is very similar to Promise.race with the difference that rejected promises are ignored. And so therefore the results of Promise.any is always gonna be a fulfilled promise, unless of course all of them reject, okay.
+
+ REMEMBER: The '_' symbol when used as an argument in a function is a CONVENTION to let us know that symbol will hold no value (not used);
+
+ BELOW:
+
+   We created a special 'timeout' promise, which automatically rejects after a certain time has passed.
+
+   To compare the methods 'allSettled' and 'all' we created a very simple array of Promises,so for each they take two forced resolves and forced reject to show that allSettled() will return ANY/ALL SETTLED set of Promises while the all() method will reject on the first rejection (short circuit) 
+*/
+
+// // Promise.race()
+// (async function () {
+//   const data = await Promise.race([
+//     myJSON(`https://restcountries.eu/rest/v2/name/germany`),
+//     myJSON(`https://restcountries.eu/rest/v2/name/egypt`),
+//     myJSON(`https://restcountries.eu/rest/v2/name/iran`),
+//   ]);
+//   console.log(data[0]);
+// })();
+
+// const timeout = function (sec) {
+//   return new Promise((_, reject) => {
+//     setTimeout(() => {
+//       reject(new Error(`Took to long to respond!`));
+//     }, sec * 250);
+//   });
+// };
+// Promise.race([
+//   myJSON(`https://restcountries.eu/rest/v2/name/ireland`),
+//   timeout(1),
+// ])
+//   .then((data) => console.log(data[0]))
+//   .catch((err) => console.error(err));
+
+// // Promise.allSettled() vs. Promise.all()
+// Promise.allSettled([
+//   Promise.resolve("success"),
+//   Promise.reject("failure"), //=> DOES NOT short circuit the Promise EVERYTHING prints
+//   Promise.resolve("another success"),
+// ])
+//   .then((data) => console.log(data))
+//   .catch((err) => console.error(err));
+// Promise.all([
+//   Promise.resolve("success"),
+//   Promise.reject("failure"), //=> PROMISE SHORT CIRCUITS here
+//   Promise.resolve("another success"),
+// ])
+//   .then((data) => console.log(data))
+//   .catch((err) => console.error(err));
+
+// // Promise.any()
+// Promise.any([
+//   Promise.reject("failure"), //=> skips...
+//   Promise.resolve("success"), //=> only one that prints
+//   Promise.resolve("another success"),
+// ])
+//   .then((data) => console.log(data))
+//   .catch((err) => console.error(err));
+
+// // MY OWN helper function (handles status errors)
+// function myJSON(url, errorMsg = "What the heck went wrong?") {
+//   return fetch(url).then((response) => {
+//     if (!response.ok) throw new Error(`STATUS (${response.status})`);
+//     return response.json();
+//   });
+// }
+
 // ****************************
 // Running Promises in Parallel
 // ****************************
 
 /*
-
  When and how do we run Promises in parallel?
 
    Whenever you have a situation in which you need to do multiple asynchronous operations at the same time, and operations that don't depend on one another, then you should always, always run them in parallel, just like we did here using promise.all().
 
-   The Promise.all() method: takes an iterable of promises as an input, and returns a single Promise that resolves to an array of the results of the input promises. This returned promise will resolve when all of the input's promises have resolved, or if the input iterable contains no promises. It rejects immediately upon any of the input promises rejecting or non-promises throwing an error, and will reject with this first rejection message/error. (promise.all short circuits when one promise rejects.)
+   The Promise.all() method: 
 
+     takes an iterable of promises as an input, and returns a single Promise that resolves to an array of the results of the input promises. This returned promise will resolve when all of the input's promises have resolved, or if the input iterable contains no promises. It rejects immediately upon any of the input promises rejecting or non-promises throwing an error, and will reject with this first rejection message/error. (promise.all short circuits when one promise rejects.)
 
  REMEMBER: 
 
    The map() method creates a new array populated with the results of calling a provided function on every element in the calling array.
-
 */
 
-const get3Countries = async function (c1, c2, c3) {
-  // // Execute one after another (slow)
-  // const [data1] = await myJSON(`https://restcountries.eu/rest/v2/name/${c1}`);
-  // const [data2] = await myJSON(`https://restcountries.eu/rest/v2/name/${c2}`);
-  // const [data3] = await myJSON(`https://restcountries.eu/rest/v2/name/${c3}`);
-  // console.log(data1.capital, data2.capital, data3.capital);
+// const get3Countries = async function (c1, c2, c3) {
+//   // // Execute one after another (slow)
+//   // const [data1] = await myJSON(`https://restcountries.eu/rest/v2/name/${c1}`);
+//   // const [data2] = await myJSON(`https://restcountries.eu/rest/v2/name/${c2}`);
+//   // const [data3] = await myJSON(`https://restcountries.eu/rest/v2/name/${c3}`);
+//   // console.log(data1.capital, data2.capital, data3.capital);
 
-  // Execute in parallel (fast)
-  const data = await Promise.all([
-    myJSON(`https://restcountries.eu/rest/v2/name/${c1}`),
-    myJSON(`https://restcountries.eu/rest/v2/name/${c2}`),
-    myJSON(`https://restcountries.eu/rest/v2/name/${c3}`),
-  ]);
-  console.log(data.map((d) => d[0].capital));
-};
-get3Countries("usa", "canada", "mexico");
+//   // Execute in parallel (fast)
+//   const data = await Promise.all([
+//     myJSON(`https://restcountries.eu/rest/v2/name/${c1}`),
+//     myJSON(`https://restcountries.eu/rest/v2/name/${c2}`),
+//     myJSON(`https://restcountries.eu/rest/v2/name/${c3}`),
+//   ]);
+//   console.log(data.map((d) => d[0].capital));
+// };
+// get3Countries("usa", "canada", "mexico");
 
-// MY OWN helper function (handles status errors)
-function myJSON(url, errorMsg = "What the heck went wrong?") {
-  return fetch(url).then((response) => {
-    if (!response.ok) throw new Error(`STATUS (${response.status})`);
-    return response.json();
-  });
-}
+// // MY OWN helper function (handles status errors)
+// function myJSON(url, errorMsg = "What the heck went wrong?") {
+//   return fetch(url).then((response) => {
+//     if (!response.ok) throw new Error(`STATUS (${response.status})`);
+//     return response.json();
+//   });
+// }
 
 // *************************************
 // Returning Values from Async functions
