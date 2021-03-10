@@ -29,6 +29,50 @@ const renderError = function (msg) {
 
 ///////////////////////////////////////
 
+// ****************************
+// Running Promises in Parallel
+// ****************************
+
+/*
+
+ When and how do we run Promises in parallel?
+
+   Whenever you have a situation in which you need to do multiple asynchronous operations at the same time, and operations that don't depend on one another, then you should always, always run them in parallel, just like we did here using promise.all().
+
+   The Promise.all() method: takes an iterable of promises as an input, and returns a single Promise that resolves to an array of the results of the input promises. This returned promise will resolve when all of the input's promises have resolved, or if the input iterable contains no promises. It rejects immediately upon any of the input promises rejecting or non-promises throwing an error, and will reject with this first rejection message/error. (promise.all short circuits when one promise rejects.)
+
+
+ REMEMBER: 
+
+   The map() method creates a new array populated with the results of calling a provided function on every element in the calling array.
+
+*/
+
+const get3Countries = async function (c1, c2, c3) {
+  // // Execute one after another (slow)
+  // const [data1] = await myJSON(`https://restcountries.eu/rest/v2/name/${c1}`);
+  // const [data2] = await myJSON(`https://restcountries.eu/rest/v2/name/${c2}`);
+  // const [data3] = await myJSON(`https://restcountries.eu/rest/v2/name/${c3}`);
+  // console.log(data1.capital, data2.capital, data3.capital);
+
+  // Execute in parallel (fast)
+  const data = await Promise.all([
+    myJSON(`https://restcountries.eu/rest/v2/name/${c1}`),
+    myJSON(`https://restcountries.eu/rest/v2/name/${c2}`),
+    myJSON(`https://restcountries.eu/rest/v2/name/${c3}`),
+  ]);
+  console.log(data.map((d) => d[0].capital));
+};
+get3Countries("usa", "canada", "mexico");
+
+// MY OWN helper function (handles status errors)
+function myJSON(url, errorMsg = "What the heck went wrong?") {
+  return fetch(url).then((response) => {
+    if (!response.ok) throw new Error(`STATUS (${response.status})`);
+    return response.json();
+  });
+}
+
 // *************************************
 // Returning Values from Async functions
 // *************************************
@@ -51,58 +95,58 @@ const renderError = function (msg) {
    We have to RE-'throw' errors that get caught in our 'whereAmI' function because we want to propagate (carry) that error (like 'err' below) downwards into our IIFE function so it can catch and handle it ITSELF.
 */
 
-const getPosition = function () {
-  return new Promise((resolve, reject) =>
-    navigator.geolocation.getCurrentPosition(resolve, reject)
-  );
-};
-const whereAmI = async function () {
-  try {
-    // Geolocation
-    const pos = await getPosition();
-    const { latitude: lat, longitude: lng } = pos.coords;
+// const getPosition = function () {
+//   return new Promise((resolve, reject) =>
+//     navigator.geolocation.getCurrentPosition(resolve, reject)
+//   );
+// };
+// const whereAmI = async function () {
+//   try {
+//     // Geolocation
+//     const pos = await getPosition();
+//     const { latitude: lat, longitude: lng } = pos.coords;
 
-    // Reverse geocoding
-    const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
-    if (!resGeo.ok) throw new Error(`(${resGeo.status})`);
-    const dataGeo = await resGeo.json();
+//     // Reverse geocoding
+//     const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+//     if (!resGeo.ok) throw new Error(`(${resGeo.status})`);
+//     const dataGeo = await resGeo.json();
 
-    // Country data
-    const resCountry = await fetch(
-      `https://restcountries.eu/rest/v2/name/${dataGeo.countryy}`
-    );
-    if (!resCountry.ok) throw new Error(`(${resCountry.status})`);
-    const dataCountry = await resCountry.json();
-    renderCountry(dataCountry[0]);
+//     // Country data
+//     const resCountry = await fetch(
+//       `https://restcountries.eu/rest/v2/name/${dataGeo.countryy}`
+//     );
+//     if (!resCountry.ok) throw new Error(`(${resCountry.status})`);
+//     const dataCountry = await resCountry.json();
+//     renderCountry(dataCountry[0]);
 
-    // Manually setting string to the fulfilled value of the Promise
-    return `You are in ${dataGeo.city}, ${dataGeo.country}`;
-  } catch (err) {
-    console.error(`${err} --CAUGHT WITH CATCH--`);
-    renderError(`${err.message}`);
+//     // Manually setting string to the fulfilled value of the Promise
+//     return `You are in ${dataGeo.city}, ${dataGeo.country}`;
+//   } catch (err) {
+//     console.error(`${err} --CAUGHT WITH CATCH--`);
+//     renderError(`${err.message}`);
 
-    // Manually rejecting Promise returned from async function
-    throw err;
-  }
-};
+//     // Manually rejecting Promise returned from async function
+//     throw err;
+//   }
+// };
+
+// // console.log(`1: Will get location`);
+// // const city = whereAmI()
+// //   .then((city) => console.log(`2: ${city}`))
+// //   .catch((err) => console.log(`2: ${err.message}`))
+// //   .finally(() => console.log(`3: Finished getting location`));
+// // console.log(city);
 
 // console.log(`1: Will get location`);
-// const city = whereAmI()
-//   .then((city) => console.log(`2: ${city}`))
-//   .catch((err) => console.log(`2: ${err.message}`))
-//   .finally(() => console.log(`3: Finished getting location`));
-// console.log(city);
-
-console.log(`1: Will get location`);
-(async function () {
-  try {
-    const where = await whereAmI();
-    console.log(`2: ${where}`);
-  } catch (err) {
-    console.log(`2: ${err.message}`);
-  }
-  console.log(`3: Finished getting location`);
-})();
+// (async function () {
+//   try {
+//     const where = await whereAmI();
+//     console.log(`2: ${where}`);
+//   } catch (err) {
+//     console.log(`2: ${err.message}`);
+//   }
+//   console.log(`3: Finished getting location`);
+// })();
 
 // *******************************
 // Error Handling With try...catch
