@@ -29,6 +29,64 @@ const renderError = function (msg) {
 
 ///////////////////////////////////////
 
+// *******************************
+// Error Handling With try...catch
+// *******************************
+
+/*
+ What is try...catch?
+
+   The try...catch statement marks a block of statements to try and specifies a response should an exception be thrown.
+
+   NOTE: try catch statement is actually used in regular JavaScript. So try...catch has techincally nothing to do with async/await.
+
+ BELOW: 
+
+   Added error handling to our async/await version of the 'whereAmI' function by using the 'try' and 'catch' statements!!
+*/
+
+// Promisifying geolocationAPI
+const getPosition = function () {
+  return new Promise((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject)
+  );
+};
+
+const whereAmI = async function () {
+  // Checking for errors in encompassed 'try' block...
+  try {
+    const pos = await getPosition();
+    const { latitude: lat, longitude: lng } = pos.coords;
+
+    const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+    if (!resGeo.ok) throw new Error(`(${resGeo.status})`);
+    const dataGeo = await resGeo.json();
+
+    const resCountry = await fetch(
+      `https://restcountries.eu/rest/v2/name/${dataGeo.country}`
+    );
+    if (!resCountry.ok) throw new Error(`(${resCountry.status})`);
+
+    const dataCountry = await resCountry.json();
+
+    const neighbor = dataCountry[0].borders[0];
+    const resNeighbor = await fetch(
+      `https://restcountries.eu/rest/v2/alpha/${neighbor}`
+    );
+    if (!resNeighbor.ok) throw new Error(`(${resNeighbor.status})`);
+
+    const dataNeighbor = await resNeighbor.json();
+
+    renderCountry(dataCountry[0]);
+    renderCountry(dataNeighbor, "neighbour");
+    // If error occurs, it gets handled with 'catch' method...
+  } catch (err) {
+    console.error(`${err} --CAUGHT WITH CATCH--`);
+    renderError(`${err.message}`);
+  }
+};
+whereAmI();
+
 // ********************************************
 // Consuming Promises with Async/Await (ES2017)
 // ********************************************
@@ -45,34 +103,39 @@ const renderError = function (msg) {
  BELOW: We are replacing the Promise chain methods (then()) with the async/await features to re-create our 'whereAmI' function. (NO error handling YET -- next lecture)
 */
 
-// Promisifying geolocationAPI
-const getPosition = function () {
-  return new Promise((resolve, reject) =>
-    navigator.geolocation.getCurrentPosition(resolve, reject)
-  );
-};
+// // Promisifying geolocationAPI
+// const getPosition = function () {
+//   return new Promise((resolve, reject) =>
+//     navigator.geolocation.getCurrentPosition(resolve, reject)
+//   );
+// };
 
-const whereAmI = async function () {
-  // Geolocation
-  const pos = await getPosition();
-  const { latitude: lat, longitude: lng } = pos.coords;
+// const whereAmI = async function () {
+//   // Geolocation
+//   const pos = await getPosition();
+//   const { latitude: lat, longitude: lng } = pos.coords;
 
-  // Reverse geocoding
-  const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
-  const dataGeo = await resGeo.json();
+//   // Reverse geocoding
+//   const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+//   const dataGeo = await resGeo.json();
 
-  // Country data (rest API)
-  const resCountry = await fetch(
-    `https://restcountries.eu/rest/v2/name/${dataGeo.country}`
-  );
-  const dataCountry = await resCountry.json();
+//   // Country data (rest API)
+//   const resCountry = await fetch(
+//     `https://restcountries.eu/rest/v2/name/${dataGeo.country}`
+//   );
+//   const dataCountry = await resCountry.json();
 
-  // Neighbors
-  const neighbor = await fetch();
+//   // Neighbors
+//   const neighbor = dataCountry[0].borders[0];
+//   const resNeighbor = await fetch(
+//     `https://restcountries.eu/rest/v2/alpha/${neighbor}`
+//   );
+//   const dataNeighbor = await resNeighbor.json();
 
-  renderCountry(dataCountry[0]);
-};
-whereAmI();
+//   renderCountry(dataCountry[0]);
+//   renderCountry(dataNeighbor, "neighbour");
+// };
+// whereAmI();
 
 // ********************************
 // Promisifying the Geolocation API
@@ -172,8 +235,6 @@ whereAmI();
    “Promisification” is a long word for a simple transformation. It’s the conversion of a function that accepts a callback into a function that returns a promise.
 
    PRACTICE: Such transformations are often required in real-life, as many functions and libraries are callback-based.
-
-
 
    So it basically means to convert callback based asynchronous behavior to promise based.
 
