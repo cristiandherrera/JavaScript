@@ -38,6 +38,52 @@
        And these are called JavaScript bundlers because well, as the name says they take our raw code and transform it into a JavaScript bundle.
 
      Now Webpack is the more popular one, but it can be really hard and confusing to set it up. So that's because there's a lot of stuff that we need to configure manually, in order to make it work properly. Parcel, on the other hand is a zero configuration bundler, which simply works out of the box.
+*/
 
+// ************************************
+// An Overview of Modules in JavaScript
+// ************************************
 
+/*
+ An overview of modules...
+
+   A module is a reusable piece of code that ENCAPSULATES implementation details of a certain part of our project. Now that sounds a bit like a function or even a class, but the difference is that a module is usually a standalone file. (but doesn't have to be)
+
+   A module also has imports and exports:
+
+     With (exports), we can export values out of a module, for example, simple values or even entire functions. And whatever we export from a module is called the public API. So this is just like classes where we can also expose a public API for other codes to consume. Now, in the case of modules, this public API is actually consumed by (importing) values into a module.
+
+     So just like we can export values in modules, we can usually also import values from other modules. And these other modules from which we import are then called "dependencies" of the importing module because the code that is in the module that is importing cannot work without the code, that it is importing from the external module.
+
+ What are the advantages of using modules?
+
+   Compose software: Modules are small building blocks that we put together to build complex applications.
+   Isolate components: Modules can be developed in isolation without thinking about the entire codebase.
+   Abstract code: Implement low-level code in modules and import these abstractions into modules.
+   Organized code: Modules naturally lead to a more organized codebase.
+   Reuse code: Modules allow us to easily reuse the same code, even across multiple projects.
+
+ Native JavaScript (ES6) Modules...
+
+   As of ES6, JavaScript has a native built-in module system. So ES6 modules are modules that are actually stored in files and each file is one module. well, scripts are usually also files, right?
+
+     NOTE: Now we did have modules before ES6, but we had to implement them ourselves or use external libraries
+
+   Scripts vs. (ES6) Modules...
+
+     1. In modules, all top level variables are scooped to the module. And the only way an outside module can access a value that's inside of a module is by exporting that value. Now in scripts, on the other hand, all top level variables are always global. This can lead to problems like global namespace pollution. So PRIVATE VARIABLES are the solution to this problem.
+
+     2. ES modules are always executed in STRICT MODE while scripts on the other hand are executed in sloppy mode by default. So with modules, there is no more need to manually declare strict mode.
+    
+     3. The 'this' keyword is always UNDEFINED at the top level while in scripts it points at the window object.
+    
+     4. What's really special about modules is that we can export and import values between them using this ES6 import and experts syntax. In regular scripts, importing and exporting values is just completely impossible.
+      
+       Imports and exports can only happen at the top level. So outside of any function or any 'if' block.
+
+       Also all imports are hoisted. So no matter where in a code you're importing values, it's like the import statement will be moved to the top of the file.
+
+     5. In order to LINK A MODULE to an HTML file, we need to use the script tag with the type attribute set to module, instead of just a plain script tag.
+
+     6. And finally, DOWNLOADING the MODULE will always happen automatically in an ASYNCHRONOUS way. And this is true for a module loaded from HTML as well as for modules that are loaded by importing one module into another, using the import syntax. Now regular scripts on the other hand are downloaded by DEFAULT in a blocking synchronous way.
 */
