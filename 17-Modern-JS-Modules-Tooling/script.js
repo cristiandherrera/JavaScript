@@ -87,3 +87,87 @@
 
      6. And finally, DOWNLOADING the MODULE will always happen automatically in an ASYNCHRONOUS way. And this is true for a module loaded from HTML as well as for modules that are loaded by importing one module into another, using the import syntax. Now regular scripts on the other hand are downloaded by DEFAULT in a blocking synchronous way.
 */
+
+// **************************************
+// Exporting and Importing in ES6 Modules
+// **************************************
+
+/*
+ SYNTAX: './' points to the current location of the file path.
+ CONVENTION: In module names it is a convention to use camelCase names.
+
+ In ES modules, there are two types of exports, Named Exports and Default Exports.
+
+   Named Exports is actually the simplest way of exporting something from a module, because all we have to do is to put export in front of anything, that we might want to export. Couple thing we can do with Named Exports are: 
+
+     - Exporting/Importing a single value
+     - Exporting/Importing multiple values 
+     - Change the name of the Named Exports/Imports
+     - Importing everything at same time with the '*' syntax
+    
+   Default Exports are used when we only want to export ONE per module, and so that's the reason why they are called default.
+
+   NOTE: While you can mix default and named exports in the same line, AVOID that to reduce complexity
+
+ REMEMBER: 
+
+   Imports are not copies of the export. They are instead like a live connection, and so what that means is that I point to the same place in memory
+ 
+   In order to LINK A MODULE to an HTML file, we need to use the script tag with the type attribute set to 'module'.
+   
+   The exporting module will always be executed BEFORE the importing module. So the cart in this module here is passed, and before it is executed, all the cart in the modules that it imports is executed first.
+
+   All the importing statements are basically hoisted to the top.
+
+   All modules are executed in strict mode by default.
+
+   Variables that are declared inside of a module are actually SCOPED to THAT module. So basically inside a module, the module itself is like the top level scope. And so by default, this means that all top level (global) variables are private inside of this variable.
+
+     If we wanted to use them in the script.js module then we would have to use exports.
+
+*/
+/*
+// -- EXPORTING MODULE -- This is code from 'shoppingCart.js' --
+
+// Exporting module
+console.log(`Exporting module`);
+
+const shippingCost = 10;
+export const cart = [];
+
+export const addToCart = function (item, quantity) {
+  cart.push({ item, quantity });
+  console.log(`${quantity} ${item} added to cart`);
+};
+
+const totalPrice = 237;
+const totalQuantity = 23;
+
+export { totalPrice as price, totalQuantity };
+
+export default function (item, quantity) {
+  cart.push({ item, quantity });
+  console.log(`${quantity} ${item} added to cart`);
+}
+*/
+
+// // Importing module
+// // import { addToCart, price, totalQuantity as quantity } from "./shoppingCart.js";
+// // addToCart("bread", 5);
+// // console.log(price, quantity);
+
+// console.log(`Importing module`);
+// // console.log(shippingCost);
+
+// // import * as ShoppingCart from "./shoppingCart.js";
+// // ShoppingCart.addToCart("bread", 5);
+// // console.log(ShoppingCart.price);
+
+// //=> You can mix default and named exports
+// // import add, { addToCart, price, totalQuantity as quantity} from "./shoppingCart.js";
+// import add, { cart } from "./shoppingCart.js";
+// add("pizza", 2);
+// add("bread", 5);
+// add("apples", 4);
+
+// console.log(cart);
