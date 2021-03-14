@@ -210,34 +210,73 @@ export default function (item, quantity) {
    In order to store that returned public value we assign the IFFE to a new variable. ('ShoppingCart2')
 */
 
-const ShoppingCart2 = (function () {
-  const cart = [];
-  const totalPrice = 237;
-  const totalQuantity = 23;
+// const ShoppingCart2 = (function () {
+//   const cart = [];
+//   const totalPrice = 237;
+//   const totalQuantity = 23;
 
-  const shippingCost = 10; //=> Private because NOT returned
+//   const shippingCost = 10; //=> Private because NOT returned
 
-  const addToCart = function (product, quantity) {
-    cart.push({ product, quantity });
-    console.log(
-      `${quantity} ${product} added to cart (shipping costs is ${shippingCost})`
-    );
-  };
+//   const addToCart = function (product, quantity) {
+//     cart.push({ product, quantity });
+//     console.log(
+//       `${quantity} ${product} added to cart (shipping costs is ${shippingCost})`
+//     );
+//   };
 
-  const orderStock = function (product, quantity) {
-    console.log(`${quantity} ${product} added to cart`);
-  };
+//   const orderStock = function (product, quantity) {
+//     console.log(`${quantity} ${product} added to cart`);
+//   };
 
-  // Our Public API
-  return {
-    addToCart,
-    cart,
-    totalPrice,
-    totalQuantity,
-  };
-})();
+//   // Our Public API
+//   return {
+//     addToCart,
+//     cart,
+//     totalPrice,
+//     totalQuantity,
+//   };
+// })();
 
-ShoppingCart2.addToCart("apple", 2);
-ShoppingCart2.addToCart("pizza", 4);
-console.log(ShoppingCart2); //=> shows our public API
-console.log(ShoppingCart2.shippingCost); //=> undefined
+// ShoppingCart2.addToCart("apple", 2);
+// ShoppingCart2.addToCart("pizza", 4);
+// console.log(ShoppingCart2); //=> shows our public API
+// console.log(ShoppingCart2.shippingCost); //=> undefined
+
+// *****************
+// CommonJS Modules
+// *****************
+
+/*
+ Are there other types of modules?
+
+   Yes, besides native ES Modules, and the module pattern, there are also other module systems, that have been used by JavaScript in the past. But they are not native JavaScript. An example is commonJS..
+
+ What is CommonJS?
+
+   CommonJS is a module formatting system. CJS assists in the server-side development of apps and it’s format has heavily influenced NodeJS module management.
+
+   Now CommonJS modules are important for us because they have been used in Node.js for almost all of its existence. So only until very recently ES6 Modules have actually been implemented in Node.js.
+
+     Now the big consequence of this, is that almost all the modules, in the npm repository, that we can use in our own code, still use the CommonJS module system. (npm was originally only intended for node)
+
+ How do you use CommonJS?
+  
+   CommonJS wraps each module in a function called ‘require’, and includes an object called ‘module.exports’, which exports code for availability to be required by other modules. 
+
+   NOTE: so just like ES6 modules, in CommonJS, one file, is one module.
+
+ REMEMBER: Node.js is a way of running JavaScript on a web server, outside of a browser.
+*/
+
+// -- DOES NOT WORK IN THE BROWSER -- //
+
+// // Export
+// export.addToCart =  function (product, quantity) {
+//       cart.push({ product, quantity });
+//       console.log(
+//         `${quantity} ${product} added to cart (shipping costs is ${shippingCost})`
+//       );
+//     };
+
+// // Import
+// const {addToCart} = require('./shoppingCart.js');
