@@ -171,3 +171,73 @@ export default function (item, quantity) {
 // add("apples", 4);
 
 // console.log(cart);
+
+// ******************
+// The Module Pattern
+// ******************
+
+/*
+ What is the Module Pattern?
+
+   It is a commonly used Design Pattern which is used to wrap a set of variables and functions together in a single scope. (Pre-ES6 Modules)
+
+     The main goal of the module pattern is to encapsulate functionality, to hide private data, and to expose a public API.
+
+     The best way of achieving all that is by simply using a function, because functions give us private data by default (via scopes and closures) and allow us to return values, which can become our public API.
+
+ How do we implement it exactly?
+
+   Usually we write an IIFE, and the reason for that is because this way we don't have to call it separately and we can also ensure that it's only called once.
+
+   It is very important that this function is only created once because the goal of this function is not to reuse code by running it multiple times.
+
+     * The only purpose of these function is to create a new scope and return data just once.
+
+ Modules Pattern vs. ES6 Modules
+
+   The problem with the module pattern is that if we wanted one module per file, like we have with ES6 modules, then we would have to create different scripts and link all of them in the HTML file. 
+   
+     That then creates a couple of problems, like we have to be careful with the order in which we declare them in HTML, and we would have all of the variables living in the global scope, and finally, we also couldn't bundle them together using a module bundler (Parcel).
+
+ REMEMBER: 
+ 
+   Closures allow a function to have access to all the variables that were present at its birthplace.
+
+ BELOW:
+
+   We created an IIFE with all of its data private to its scope UNTIL we 'return' some of it in order to basically return a public API. (addToCart,cart,totalPrice,totalQuantity)
+
+   In order to store that returned public value we assign the IFFE to a new variable. ('ShoppingCart2')
+*/
+
+const ShoppingCart2 = (function () {
+  const cart = [];
+  const totalPrice = 237;
+  const totalQuantity = 23;
+
+  const shippingCost = 10; //=> Private because NOT returned
+
+  const addToCart = function (product, quantity) {
+    cart.push({ product, quantity });
+    console.log(
+      `${quantity} ${product} added to cart (shipping costs is ${shippingCost})`
+    );
+  };
+
+  const orderStock = function (product, quantity) {
+    console.log(`${quantity} ${product} added to cart`);
+  };
+
+  // Our Public API
+  return {
+    addToCart,
+    cart,
+    totalPrice,
+    totalQuantity,
+  };
+})();
+
+ShoppingCart2.addToCart("apple", 2);
+ShoppingCart2.addToCart("pizza", 4);
+console.log(ShoppingCart2); //=> shows our public API
+console.log(ShoppingCart2.shippingCost); //=> undefined
