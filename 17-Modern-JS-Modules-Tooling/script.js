@@ -280,3 +280,40 @@ export default function (item, quantity) {
 
 // // Import
 // const {addToCart} = require('./shoppingCart.js');
+
+// ****************************************
+// A Brief Introduction to the Command Line
+// ****************************************
+
+/*
+ Commands in terminal --BASH--
+
+   // LIST
+   "ls" - list the contents of the current folder.
+
+   // CHANGE FILE PATH
+   "cd _file" - changes directory.
+   "cd .." - moves up once in the file tree.
+   "cd ../.." - moves up up file tree twice.
+
+   // CREATE DIRECTORY
+   "mkdir _folder" - create folder.
+
+   // DELETE DIRECTORY
+   "rmdir _folder" - deletes EMPTY directories.
+   "rm -R _folder" - (R stands for recursive, deletes all files in dir then dir itself)
+
+   // CREATE FILES
+   "touch _file" - create file.
+   "touch _file _file" - create multiple files.
+
+   // DELETE FILES
+   "rm _file" - delete file.
+   "rm _file _file" - delete multiple files.
+   "mv _file _folder" - move file to different directory
+
+   // EXTRA
+   "clear" - clears console.
+
+ TIP: Use 'tab' to auto complete long file names.
+*/
