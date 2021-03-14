@@ -317,3 +317,70 @@ export default function (item, quantity) {
 
  TIP: Use 'tab' to auto complete long file names.
 */
+
+// *******************
+// Introduction to NPM
+// *******************
+
+/*
+ What is NPM again?
+
+   NPM stands for Node Package Manager, and it's both a software on our computer and a package repository.
+
+ Why do we need NPM?
+
+   A way to manage our dependencies in a better and more modern way. And NPM is exactly how we do that.
+
+ How do we use NPM?
+
+   First, in each project in which we want to use NPM, we need to start by initializing it. And so for that, we write "npm init".
+
+   It then creates a package.json file that you'll need to fill out with details on your project. This is the file that NPM just created for our project here. Now, this file here is basically what stores the entire configuration of our project.
+
+   When you install a package three thing will happen:
+   
+     First: package.json will have a new field "dependencies" with the name of the new package in it. 
+     Second: a folder is created containing all the code of the installed package called node_modules.
+     Third: a package-lock.json file is created. 
+
+   IMPORTANT: When you copy your project to somewhere else, there is NO REASON to include this huge node modules folder, because in a real project, it will actually be really, really huge. INSTEAD delete the node_modules folder, and then re-download it by using just "npm i".
+
+   NPM COMMANDS:
+
+     "npm -v" - current version of node.
+     "npm init" - Initializes npm. 
+     "npm i" - reinstalls all dependencies. 
+     "npm i _package" - installs an NPM package.
+     "npm i _package _package" - install multiple NPM packages.
+     "npm i _package -g" - installs package globally.
+     "npm uninstall _package" - uninstalls package.
+
+ Difference between package.json and package-lock.json?
+
+   The package.json is used for more than dependencies - like defining project properties, description, author & license information, scripts, etc. The package-lock.json is solely used to lock dependencies to a specific version number.  
+
+ REMEMBER: The Object.assign() method copies all enumerable own properties from one or more source objects to a target object. It returns the target object.
+*/
+
+// Importing from NPM package
+import cloneDeep from "./node_modules/lodash-es/cloneDeep.js";
+
+// Creating a nested object
+const state = {
+  cart: [
+    { product: "bread", quantity: 5 },
+    { product: "butter", quantity: 2 },
+  ],
+  user: { loggedIn: true },
+};
+
+// Created a FULL clone
+const stateDeepClone = cloneDeep(state);
+console.log(stateDeepClone); //=> true
+
+// Created a SHALLOW clone
+const stateClone = Object.assign({}, state);
+state.user.loggedIn = false;
+
+console.log(stateClone); //=> false
+console.log(stateDeepClone); //=> STILL true
