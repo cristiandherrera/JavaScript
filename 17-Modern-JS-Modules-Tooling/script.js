@@ -571,3 +571,53 @@ export default function (item, quantity) {
 
 // // Polyfilling async functions
 // import "regenerator-runtime/runtime";
+
+// *****************************
+// Review: Modern and Clean Code
+// *****************************
+
+/*
+ General: 
+   
+   Use DRY principle (refactor your code)
+   Don't pollute global namespace, encapsulate instead 
+   Don't use var
+   Use strong type checks (=== and !==)
+
+ Readable Code: 
+
+   Write code so OTHERS can understand it 
+   Write code so the YOU can understand it in 1 year
+   Avoid too "clever" and over complicated solutions
+   Use descriptive variable names: what they CONTAIN
+   Use descriptive function names: what they DO
+
+ Functions: 
+
+   Generally, functions should do only ONE thing
+   Don't use more than 3 function parameters
+   Use default parameters whenever possible
+   Generally, return same data type as received 
+   Use arrow function when they make code more readable 
+
+ OOP: 
+ 
+   Use ES6 classes 
+   Encapsulates data and DON'T MUTATE it from outside the class
+   Implement method chaining 
+   Do NOT use arrow functions as methods (in regular objects)
+
+ AVOID nested code: 
+
+   Use early RETURN (guard clause)
+   Use ternary (conditional) or logical operators instead of if
+   Use multiple 'if' INSTEAD of 'if/else-if'
+   Avoid for loops, use array methods instead 
+   Avoid callback-based asynchronous API
+
+ Asynchronous Code: 
+
+   Consume Promises with async/await for best readability
+   Whenever possible, rum Promises in PARALLEL (Promise.all)
+   Handle errors and Promise rejection
+*/
