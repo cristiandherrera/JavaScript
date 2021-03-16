@@ -678,3 +678,15 @@ export default function (item, quantity) {
      - Use the ternary (conditional) operator
      - Use template literals
 */
+
+// ***********************************
+// Let's Fix Some Bad Code: Part 1 & 2
+// ***********************************
+
+/*
+ ALL WORK DONE IN "clean.js"...
+
+   Summary: Transformed our initial code, which looked pretty bad first by applying some general guidelines for a modern and clean code. And then now in this video, we made our code functional and took out all of the impure functions and side effects and data mutations.
+
+   NOTE: Keep in mind, that these are more like guidelines and not really hard rules. So large applications, they are very hard to make 100% functional.
+*/
