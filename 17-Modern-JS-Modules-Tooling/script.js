@@ -27,7 +27,7 @@
 
      Now, a build process can be something really complex, but we gonna keep it simple here and only include two steps:
 
-       The first step, we'll BUNDLE all our modules together into one big file. This is a pretty complex process which can eliminate unused code and compress or code as well. Now this step is super important for two big reasons. 1. older browsers don't support modules at all and 2. it's better for performance to send less files to the browser, and it's also beneficial that the bundling step compresses our code. 
+       The first step, we'll BUNDLE all our modules together into one big file (using Parcel, WebPack, etc). This is a pretty complex process which can eliminate unused code and compress or code as well. Now this step is super important for two big reasons. 1. older browsers don't support modules at all and 2. it's better for performance to send less files to the browser, and it's also beneficial that the bundling step compresses our code. 
         
        The second step, we do something called transpiling and polyfilling, which is basically to convert all modern JavaScript syntax and features back to old ES5 syntax, so that even older browsers can understand our code without breaking. And this is usually done using a tool called BABEL.
 
@@ -447,7 +447,7 @@ export default function (item, quantity) {
 
    Deleted created files in lesson (to big for Github) to get back run:
 
-     1. "npm i"
+     1. "npm install parcel-bundler@1.12.3 --save-dev"
      2. "npm run dev" or "npx parcel index.html"
      3. "npm run build"
 */
@@ -484,3 +484,90 @@ export default function (item, quantity) {
 // if (module.hot) {
 //   module.hot.accept();
 // }
+
+// **********************************
+// Configuring Babel and Polyfilling
+// **********************************
+
+/*
+ What is Babel?
+
+   Babel is a toolchain that is mainly used to convert ECMAScript 2015+ code into a backwards compatible version of JavaScript in current and older browsers or environments. You can use it for BOTH transpiling and polyfilling. 
+
+     A toolchain is a set of programming tools that is used to perform a complex software development task or to create a software product, which is typically another computer program or a set of related programs.
+
+     NOTE: Parcel AUTOMATICALLY uses Babel to TRANSPILES code.
+
+ Transpiling vs. Polyfilling
+
+   Transpiling is the subset of compiling where the source code of one language is converted into other language or in different version of same language. Compiling also means not to introduce new functionality while conversion.
+   
+   Polyfilling basically recreate defined function and to make it available in this bundle so that the codes can then use it. It is a way to include functionality which is not present natively. This means if you are using a native functionality which is available on one browser but not in other browser or in the legacy browsers then you need to add the polyfill to have that functionality to work in all the browsers.
+
+     BELOW: Promises CANNOT be transpiled because its a completely new functionality in JavaScript with no equivalent syntax to turn back too. Where as syntax like arrow functions and const keywords have function expressions and var keywords. SO Promises MUST be polyfilled.
+
+ How does Babel work?
+
+   So basically Babel works with plugins and presets that can both be configured. 
+   
+     Now a plugin is basically a specific JavaScript feature that we want to transpile. So to convert. So for example let's say we only wanted to convert arrow functions back to ES5 but leave everything else in ES6 for example, const and var declarations. 
+     
+     And so a preset is basically a bunch of plugins bundled together. And this preset will automatically select which JavaScript features should be compiled based on browser support. 
+
+     Babel DOES NOT polyfill out of the box we have to use 3rd party libraries for that like core-js,  
+
+ What is core-js?
+
+   Modular standard library for JavaScript. Includes polyfills for ECMAScript up to 2021
+
+ What is regenerator-runtime?
+
+   It is the runtime support for compiled/transpiled async functions.
+
+ BELOW: 
+
+   Downloaded npm package core-js and regenerator-runtime to polyfill our code.
+ 
+   Deleted created files in lesson (to big for Github) to get back run:
+
+     1. "npm install parcel-bundler@1.12.3 --save-dev"
+     2. "npm run dev" or "npx parcel index.html"
+     3. "npm run build"
+*/
+
+// // import cloneDeep from "lodash-es";
+// import cloneDeep from "./node_modules/lodash-es/cloneDeep.js";
+// import add, { cart } from "./shoppingCart.js";
+
+// add("pizza", 2);
+// add("bread", 5);
+// add("apples", 4);
+// console.log(cart);
+
+// const state = {
+//   cart: [
+//     { product: "bread", quantity: 5 },
+//     { product: "butter", quantity: 2 },
+//   ],
+//   user: { loggedIn: true },
+// };
+// const stateDeepClone = cloneDeep(state);
+// console.log(stateDeepClone); // => true
+// const stateClone = Object.assign({}, state);
+// state.user.loggedIn = false;
+// console.log(stateClone); //=> false
+// console.log(stateDeepClone); //=> STILL true
+
+// // Implementing "Hot Module Replacement"
+// if (module.hot) {
+//   module.hot.accept();
+// }
+// // ============================================ //
+// // POLYFILLING
+
+// import "core-js/stable";
+// console.log(cart.find((el) => el.quantity >= 2));
+// Promise.resolve("TEST").then((x) => console.log(x));
+
+// // Polyfilling async functions
+// import "regenerator-runtime/runtime";
