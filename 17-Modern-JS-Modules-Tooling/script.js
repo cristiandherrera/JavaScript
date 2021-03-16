@@ -571,3 +571,122 @@ export default function (item, quantity) {
 
 // // Polyfilling async functions
 // import "regenerator-runtime/runtime";
+
+// *****************************
+// Review: Modern and Clean Code
+// *****************************
+
+/*
+ General: 
+   
+   Use DRY principle (refactor your code)
+   Don't pollute global namespace, encapsulate instead 
+   Don't use var
+   Use strong type checks (=== and !==)
+
+ Readable Code: 
+
+   Write code so OTHERS can understand it 
+   Write code so the YOU can understand it in 1 year
+   Avoid too "clever" and over complicated solutions
+   Use descriptive variable names: what they CONTAIN
+   Use descriptive function names: what they DO
+
+ Functions: 
+
+   Generally, functions should do only ONE thing
+   Don't use more than 3 function parameters
+   Use default parameters whenever possible
+   Generally, return same data type as received 
+   Use arrow function when they make code more readable 
+
+ OOP: 
+ 
+   Use ES6 classes 
+   Encapsulates data and DON'T MUTATE it from outside the class
+   Implement method chaining 
+   Do NOT use arrow functions as methods (in regular objects)
+
+ AVOID nested code: 
+
+   Use early RETURN (guard clause)
+   Use ternary (conditional) or logical operators instead of if
+   Use multiple 'if' INSTEAD of 'if/else-if'
+   Avoid for loops, use array methods instead 
+   Avoid callback-based asynchronous API
+
+ Asynchronous Code: 
+
+   Consume Promises with async/await for best readability
+   Whenever possible, rum Promises in PARALLEL (Promise.all)
+   Handle errors and Promise rejection
+*/
+
+// ************************************************
+// Declarative and Functional JavaScript Principles
+// ************************************************
+
+/*
+ Two fundamentally different ways of writing code (paradigms)...
+
+   Imperative:
+
+     - Programmer explains "HOW to do things"
+     - We explain the computer every single step it has to follow to achieve a result
+     - Example: Step-by-step recipe
+
+       const arr = [2, 4, 6, 8];
+       const doubled = [];
+       for (let i = 0; i < arr.length; i++) doubled[i] = arr[i] * 2
+
+   Declarative:
+
+     - Programmer tells "WHAT to do"
+     - We simply describe the way the computer should achieve the result
+     - The HOW gets abstracted away
+     - Example: Description of a cake
+
+       const arr = [2, 4, 6, 8];
+       const doubled = arr.map(n => n * 2);
+
+ Functional Programming
+
+   General:
+
+     - Declarative programming paradigm 
+     - Based on the idea of writing software by combining many pure functions, avoiding side effects.
+
+     - Side effect: Modification (mutation) of any data outside of the function (mutating external variables, logging to console, writing to DOM, etc)
+
+     - Pure function: Function without side effects. Does not depend on external variables. Given the same inputs, always return the same outputs.
+
+     - Immutability: State (data) is never modified! Instead, state is copied and the copy is mutated and returned.
+
+     - Examples: React, redux...
+
+   Techniques:
+
+     - Try to avoid data mutations
+     - Use built-in methods that don't produce side effects
+     - Do data transformations with methods such as 'map()', 'filter()', and 'reduce()'
+     - Try to avoid side effects in functions: this is of course not always possible!
+  
+   Declarative Syntax:
+     
+     - Use array and object destructuring
+     - Use the spread operator(...)
+     - Use the ternary (conditional) operator
+     - Use template literals
+*/
+
+// ***********************************
+// Let's Fix Some Bad Code: Part 1 & 2
+// ***********************************
+
+/*
+ ALL WORK DONE IN "clean.js"...
+
+   Summary: Transformed our initial code, which looked pretty bad first by applying some general guidelines for a modern and clean code. And then now in this video, we made our code functional and took out all of the impure functions and side effects and data mutations.
+
+   NOTE: Keep in mind, that these are more like guidelines and not really hard rules. So large applications, they are very hard to make 100% functional.
+*/
