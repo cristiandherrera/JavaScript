@@ -8,7 +8,8 @@ import "regenerator-runtime";
 
 ///////////////////////////////////////
 
-console.log("test");
+const init = () => recipeView.addRenderHandler(controlRecipes);
+init();
 
 const controlRecipes = async function () {
   try {
@@ -31,9 +32,3 @@ const controlRecipes = async function () {
     console.error(err);
   }
 };
-
-["hashchange", "load"].forEach((event) =>
-  window.addEventListener(event, controlRecipes)
-);
-// window.addEventListener('load', controlRecipes);
-// window.addEventListener('hashchange', controlRecipes);

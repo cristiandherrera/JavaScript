@@ -1,3 +1,5 @@
+# NOTES: Forkify Application
+
 ## Project Overview and Planning (I)
 
 ### USER STORIES

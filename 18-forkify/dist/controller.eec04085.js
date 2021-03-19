@@ -459,7 +459,9 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 // https://forkify-api.herokuapp.com/v2
 ///////////////////////////////////////
-console.log("test");
+const init = () => _recipeViews.default.addRenderHandler(controlRecipes);
+
+init();
 
 const controlRecipes = async function () {
   try {
@@ -479,10 +481,7 @@ const controlRecipes = async function () {
     console.error(err);
   }
 };
-
-["hashchange", "load"].forEach(event => window.addEventListener(event, controlRecipes)); // window.addEventListener('load', controlRecipes);
-// window.addEventListener('hashchange', controlRecipes);
-},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
 var $ = require('../internals/export');
 
 var global = require('../internals/global');
@@ -3736,7 +3735,50 @@ $({ target: 'URL', proto: true, enumerable: true }, {
   }
 });
 
-},{"../internals/export":"10044f24ecae4059b4af184e71d3fba2"}],"e155e0d3930b156f86c48e8d05522b16":[function(require,module,exports) {
+},{"../internals/export":"10044f24ecae4059b4af184e71d3fba2"}],"aabf248f40f7693ef84a0cb99f385d1f":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.loadRecipe = exports.state = void 0;
+
+var _regeneratorRuntime = require("regenerator-runtime");
+
+var _config = require("./config.js");
+
+var _helpers = require("./helpers.js");
+
+const state = {
+  recipe: {}
+};
+exports.state = state;
+
+const loadRecipe = async function (id) {
+  try {
+    console.log(id);
+    const data = await (0, _helpers.getJSON)(`${_config.API_URL}/${id}`);
+    const {
+      recipe
+    } = data.data;
+    state.recipe = {
+      id: recipe.id,
+      title: recipe.title,
+      publisher: recipe.publisher,
+      sourceUrl: recipe.source_url,
+      image: recipe.image_url,
+      servings: recipe.servings,
+      cookingTime: recipe.cooking_time,
+      ingredients: recipe.ingredients
+    };
+    console.log(state.recipe);
+  } catch (err) {
+    console.error(`*****${err}*****`);
+  }
+};
+
+exports.loadRecipe = loadRecipe;
+},{"regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./config.js":"09212d541c5c40ff2bd93475a904f8de","./helpers.js":"0e8dcd8a4e1c61cf18f78e1c2563655d"}],"e155e0d3930b156f86c48e8d05522b16":[function(require,module,exports) {
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -4486,50 +4528,7 @@ try {
   Function("r", "regeneratorRuntime = r")(runtime);
 }
 
-},{}],"aabf248f40f7693ef84a0cb99f385d1f":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.loadRecipe = exports.state = void 0;
-
-var _regeneratorRuntime = require("regenerator-runtime");
-
-var _config = require("./config.js");
-
-var _helpers = require("./helpers.js");
-
-const state = {
-  recipe: {}
-};
-exports.state = state;
-
-const loadRecipe = async function (id) {
-  try {
-    console.log(id);
-    const data = await (0, _helpers.getJSON)(`${_config.API_URL}/${id}`);
-    const {
-      recipe
-    } = data.data;
-    state.recipe = {
-      id: recipe.id,
-      title: recipe.title,
-      publisher: recipe.publisher,
-      sourceUrl: recipe.source_url,
-      image: recipe.image_url,
-      servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-      ingredients: recipe.ingredients
-    };
-    console.log(state.recipe);
-  } catch (err) {
-    console.error(`*****${err}*****`);
-  }
-};
-
-exports.loadRecipe = loadRecipe;
-},{"regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./config.js":"09212d541c5c40ff2bd93475a904f8de","./helpers.js":"0e8dcd8a4e1c61cf18f78e1c2563655d"}],"09212d541c5c40ff2bd93475a904f8de":[function(require,module,exports) {
+},{}],"09212d541c5c40ff2bd93475a904f8de":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4548,7 +4547,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getJSON = void 0;
 
-var _helpers = require("./helpers.js");
+var _config = require("./config.js");
 
 const timeout = function (s) {
   return new Promise(function (_, reject) {
@@ -4560,7 +4559,7 @@ const timeout = function (s) {
 
 const getJSON = async function (url) {
   try {
-    const res = await Promise.race([fetch(url), timeout(_helpers.TIMEOUT_SEC)]);
+    const res = await Promise.race([fetch(url), timeout(_config.TIMEOUT_SEC)]);
     const data = await res.json();
     if (!res.ok) throw new Error(`${data.message} ${res.status}`);
     return data;
@@ -4570,7 +4569,7 @@ const getJSON = async function (url) {
 };
 
 exports.getJSON = getJSON;
-},{"./helpers.js":"0e8dcd8a4e1c61cf18f78e1c2563655d"}],"1456c5eca75d05407cf4193dc0faba14":[function(require,module,exports) {
+},{"./config.js":"09212d541c5c40ff2bd93475a904f8de"}],"1456c5eca75d05407cf4193dc0faba14":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4649,6 +4648,10 @@ class RecipeView {
     _classPrivateMethodGet(this, _clear, _clear2).call(this);
 
     _classPrivateFieldGet(this, _parentElement).insertAdjacentHTML("afterbegin", markup);
+  }
+
+  addRenderHandler(handler) {
+    ["hashchange", "load"].forEach(event => window.addEventListener(event, handler));
   }
 
 }
