@@ -8,9 +8,6 @@ import "regenerator-runtime";
 
 ///////////////////////////////////////
 
-const init = () => recipeView.addRenderHandler(controlRecipes);
-init();
-
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1);
@@ -26,9 +23,12 @@ const controlRecipes = async function () {
     // Load recipe
     await model.loadRecipe(id);
 
-    // Rendering recipe
+    // Render recipe
     recipeView.render(model.state.recipe);
   } catch (err) {
-    console.error(err);
+    recipeView.renderError();
   }
 };
+
+const init = () => recipeView.addRenderHandler(controlRecipes);
+init();

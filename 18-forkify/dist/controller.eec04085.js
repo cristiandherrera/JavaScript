@@ -459,10 +459,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 // https://forkify-api.herokuapp.com/v2
 ///////////////////////////////////////
-const init = () => _recipeViews.default.addRenderHandler(controlRecipes);
-
-init();
-
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1);
@@ -474,13 +470,17 @@ const controlRecipes = async function () {
     _recipeViews.default.renderSpinner(); // Load recipe
 
 
-    await model.loadRecipe(id); // Rendering recipe
+    await model.loadRecipe(id); // Render recipe
 
     _recipeViews.default.render(model.state.recipe);
   } catch (err) {
-    console.error(err);
+    _recipeViews.default.renderError();
   }
 };
+
+const init = () => _recipeViews.default.addRenderHandler(controlRecipes);
+
+init();
 },{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
 var $ = require('../internals/export');
 
@@ -3774,6 +3774,7 @@ const loadRecipe = async function (id) {
     console.log(state.recipe);
   } catch (err) {
     console.error(`*****${err}*****`);
+    throw err;
   }
 };
 
@@ -4601,6 +4602,10 @@ var _parentElement = new WeakMap();
 
 var _data = new WeakMap();
 
+var _errorMessage = new WeakMap();
+
+var _successMessage = new WeakMap();
+
 var _clear = new WeakSet();
 
 var _generateMarkup = new WeakSet();
@@ -4625,6 +4630,16 @@ class RecipeView {
       value: void 0
     });
 
+    _errorMessage.set(this, {
+      writable: true,
+      value: "We could not find that recipe. Please try another one."
+    });
+
+    _successMessage.set(this, {
+      writable: true,
+      value: ""
+    });
+
     _defineProperty(this, "renderSpinner", function () {
       const markup = `
     <div class="spinner">
@@ -4644,6 +4659,40 @@ class RecipeView {
     _classPrivateFieldSet(this, _data, data);
 
     const markup = _classPrivateMethodGet(this, _generateMarkup, _generateMarkup2).call(this);
+
+    _classPrivateMethodGet(this, _clear, _clear2).call(this);
+
+    _classPrivateFieldGet(this, _parentElement).insertAdjacentHTML("afterbegin", markup);
+  }
+
+  renderError(message = _classPrivateFieldGet(this, _errorMessage)) {
+    const markup = `
+      <div class="error">
+        <div>
+          <svg>
+            <use href="${_icons.default}#icon-alert-triangle"></use>
+          </svg>
+        </div>
+        <p>${message}</p>
+      </div>
+    `;
+
+    _classPrivateMethodGet(this, _clear, _clear2).call(this);
+
+    _classPrivateFieldGet(this, _parentElement).insertAdjacentHTML("afterbegin", markup);
+  }
+
+  renderMessage(message = _classPrivateFieldGet(this, _successMessage)) {
+    const markup = `
+      <div class="message">
+        <div>
+          <svg>
+            <use href="${_icons.default}#icon-smile"></use>
+          </svg>
+        </div>
+        <p>${message}</p>
+      </div>
+    `;
 
     _classPrivateMethodGet(this, _clear, _clear2).call(this);
 
