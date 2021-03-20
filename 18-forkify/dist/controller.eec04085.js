@@ -449,6 +449,8 @@ var model = _interopRequireWildcard(require("./model.js"));
 
 var _recipeViews = _interopRequireDefault(require("./views/recipeViews.js"));
 
+var _searchView = _interopRequireDefault(require("./views/searchView.js"));
+
 require("regenerator-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -461,9 +463,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 ///////////////////////////////////////
 const controlRecipes = async function () {
   try {
-    const id = window.location.hash.slice(1);
-    console.log(id);
-    console.log(window.location); // Guard clause
+    const id = window.location.hash.slice(1); // Guard clause
 
     if (!id) return; // Render spinner
 
@@ -478,10 +478,28 @@ const controlRecipes = async function () {
   }
 };
 
-const init = () => _recipeViews.default.addRenderHandler(controlRecipes);
+const controlSearchResults = async function () {
+  try {
+    // Get search query
+    const query = _searchView.default.getQuery();
+
+    if (!query) return; // Load search results
+
+    await model.loadSearchResults(query);
+    console.log(model.state.search.results);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const init = function () {
+  _recipeViews.default.addRenderHandler(controlRecipes);
+
+  _searchView.default.addSearchHandler(controlSearchResults);
+};
 
 init();
-},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./views/searchView.js":"c5d792f7cac03ef65de30cc0fbb2cae7"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
 var $ = require('../internals/export');
 
 var global = require('../internals/global');
@@ -3741,7 +3759,7 @@ $({ target: 'URL', proto: true, enumerable: true }, {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.loadRecipe = exports.state = void 0;
+exports.loadSearchResults = exports.loadRecipe = exports.state = void 0;
 
 var _regeneratorRuntime = require("regenerator-runtime");
 
@@ -3750,14 +3768,18 @@ var _config = require("./config.js");
 var _helpers = require("./helpers.js");
 
 const state = {
-  recipe: {}
+  recipe: {},
+  search: {
+    query: "",
+    results: []
+  }
 };
 exports.state = state;
 
 const loadRecipe = async function (id) {
   try {
     console.log(id);
-    const data = await (0, _helpers.getJSON)(`${_config.API_URL}/${id}`);
+    const data = await (0, _helpers.getJSON)(`${_config.API_URL}${id}`);
     const {
       recipe
     } = data.data;
@@ -3779,6 +3801,25 @@ const loadRecipe = async function (id) {
 };
 
 exports.loadRecipe = loadRecipe;
+
+const loadSearchResults = async function (query) {
+  try {
+    const data = await (0, _helpers.getJSON)(`${_config.API_URL}?search=${query}`);
+    state.search.results = data.data.recipes.map(rec => {
+      return {
+        id: rec.id,
+        title: rec.title,
+        publisher: rec.publisher,
+        image: rec.image_url
+      };
+    });
+  } catch (err) {
+    console.error(`*****${err}*****`);
+    throw err;
+  }
+};
+
+exports.loadSearchResults = loadSearchResults;
 },{"regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./config.js":"09212d541c5c40ff2bd93475a904f8de","./helpers.js":"0e8dcd8a4e1c61cf18f78e1c2563655d"}],"e155e0d3930b156f86c48e8d05522b16":[function(require,module,exports) {
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -4536,7 +4577,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.TIMEOUT_SEC = exports.API_URL = void 0;
-const API_URL = `https://forkify-api.herokuapp.com/api/v2/recipes`;
+const API_URL = `https://forkify-api.herokuapp.com/api/v2/recipes/`;
 exports.API_URL = API_URL;
 const TIMEOUT_SEC = 10;
 exports.TIMEOUT_SEC = TIMEOUT_SEC;
@@ -5287,6 +5328,60 @@ Fraction.primeFactors = function(n)
 
 module.exports.Fraction = Fraction
 
+},{}],"c5d792f7cac03ef65de30cc0fbb2cae7":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+var _parentEl = new WeakMap();
+
+var _clearInput = new WeakSet();
+
+class SearchView {
+  constructor() {
+    _clearInput.add(this);
+
+    _parentEl.set(this, {
+      writable: true,
+      value: document.querySelector(".search")
+    });
+  }
+
+  getQuery() {
+    const query = _classPrivateFieldGet(this, _parentEl).querySelector(".search__field").value;
+
+    _classPrivateMethodGet(this, _clearInput, _clearInput2).call(this);
+
+    return query;
+  }
+
+  addSearchHandler(handler) {
+    _classPrivateFieldGet(this, _parentEl).addEventListener("submit", function (e) {
+      e.preventDefault();
+      handler();
+    });
+  }
+
+}
+
+function _clearInput2() {
+  _classPrivateFieldGet(this, _parentEl).querySelector(".search__field").value = "";
+}
+
+var _default = new SearchView();
+
+exports.default = _default;
 },{}]},{},["1c3b64d627aa78f40fb8ad1114942a59","6a27a885ec060ddcefff573e74409043","175e469a7ea7db1c8c0744d04372621f"], null)
 
 //# sourceMappingURL=controller.eec04085.js.map
