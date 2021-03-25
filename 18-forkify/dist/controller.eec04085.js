@@ -453,6 +453,8 @@ var _searchView = _interopRequireDefault(require("./views/searchView.js"));
 
 var _resultsView = _interopRequireDefault(require("./views/resultsView.js"));
 
+var _paginationView = _interopRequireDefault(require("./views/paginationView.js"));
+
 var _regeneratorRuntime = require("regenerator-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -487,9 +489,8 @@ const controlRecipes = async function () {
 const controlSearchResults = async function () {
   try {
     // Render results spinner
-    _resultsView.default.renderSpinner();
+    _resultsView.default.renderSpinner(); // Get search query
 
-    console.log(_resultsView.default); // Get search query
 
     const query = _searchView.default.getQuery();
 
@@ -497,9 +498,10 @@ const controlSearchResults = async function () {
 
     await model.loadSearchResults(query); // Render results
 
-    _resultsView.default.render(model.getSearchResultsPage());
+    _resultsView.default.render(model.getSearchResultsPage(2)); // Render initial pagination buttons
 
-    console.log(model.state.search.results);
+
+    _paginationView.default.render(model.state.search);
   } catch (err) {
     console.log(err);
   }
@@ -512,7 +514,7 @@ const init = function () {
 };
 
 init();
-},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","./views/searchView.js":"c5d792f7cac03ef65de30cc0fbb2cae7","./views/resultsView.js":"eacdbc0d50ee3d2819f3ee59366c2773","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","./views/searchView.js":"c5d792f7cac03ef65de30cc0fbb2cae7","./views/resultsView.js":"eacdbc0d50ee3d2819f3ee59366c2773","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./views/paginationView.js":"d2063f3e7de2e4cdacfcb5eb6479db05"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
 var $ = require('../internals/export');
 
 var global = require('../internals/global');
@@ -5433,6 +5435,55 @@ class ResultsView extends _view.default {
 var _default = new ResultsView();
 
 exports.default = _default;
-},{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59","url:../../img/icons.svg":"2aac7ec55258eebc2c0a9db007a84447"}]},{},["1c3b64d627aa78f40fb8ad1114942a59","6a27a885ec060ddcefff573e74409043","175e469a7ea7db1c8c0744d04372621f"], null)
+},{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59","url:../../img/icons.svg":"2aac7ec55258eebc2c0a9db007a84447"}],"d2063f3e7de2e4cdacfcb5eb6479db05":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _view = _interopRequireDefault(require("./view.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+class PaginationView extends _view.default {
+  constructor(...args) {
+    super(...args);
+
+    _defineProperty(this, "_parentEl", document.querySelector(".pagination"));
+  }
+
+  _generateMarkup() {
+    console.log(this._data);
+    const numPages = Math.ceil(this._data.results.length / this._data.resultsPerPage);
+    console.log(numPages); // Page 1, and there are other pages
+
+    if (this._data.page === 1 && numPages > 1) {
+      return "page 1 with other pages";
+    } // Last page
+
+
+    if (this._data.page === numPages && numPages > 1) {
+      return "last page";
+    } // Other page
+
+
+    if (this._data.page < numPages) {
+      return "more pages";
+    } // Page 1, and there are no other pages
+
+
+    return "only one page";
+  }
+
+}
+
+var _default = new PaginationView();
+
+exports.default = _default;
+},{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59"}]},{},["1c3b64d627aa78f40fb8ad1114942a59","6a27a885ec060ddcefff573e74409043","175e469a7ea7db1c8c0744d04372621f"], null)
 
 //# sourceMappingURL=controller.eec04085.js.map
