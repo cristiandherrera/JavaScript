@@ -465,17 +465,19 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 // https://forkify-api.herokuapp.com/v2
 ///////////////////////////////////////
-if (module.hot) {
-  module.hot.accept();
-}
-
+// if (module.hot) {
+//   module.hot.accept();
+// }
 const controlRecipes = async function () {
   try {
     // Get hash query
     const id = window.location.hash.slice(1);
     if (!id) return; // Render recipe spinner
 
-    _recipeViews.default.renderSpinner(); // Load recipe
+    _recipeViews.default.renderSpinner(); // Update results to have a selected style
+
+
+    _resultsView.default.update(model.getSearchResultsPage()); // Load recipe
 
 
     await model.loadRecipe(id); // Render recipe
@@ -519,7 +521,7 @@ const controlServings = function (servings) {
   // Update the recipe servings (in state)
   model.updateServings(servings); // Update the recipe view
 
-  _recipeViews.default.render(model.state.recipe);
+  _recipeViews.default.update(model.state.recipe);
 };
 
 const init = function () {
@@ -4707,7 +4709,7 @@ class RecipeView extends _view.default {
       if (!btn) return;
       const {
         updateTo
-      } = +btn.dataset;
+      } = btn.dataset;
       if (+updateTo > 0) handler(+updateTo);
     });
   }
@@ -4853,6 +4855,31 @@ class View {
     this._clear();
 
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
+  }
+
+  update(data) {
+    this._data = data; // A string of our html markup
+
+    const markup = this._generateMarkup(); // A "virtual" object (#document.fragment) of our html
+
+
+    const newDOM = document.createRange().createContextualFragment(markup); // A NodeList (turned array) of our 'newDom' html object
+
+    const newElements = Array.from(newDOM.querySelectorAll("*")); // A NodeList (turned array) of all our '_parentElement' html
+
+    const curElements = Array.from(this._parentElement.querySelectorAll("*"));
+    newElements.forEach((newEl, i) => {
+      const curEl = curElements[i]; // Updates TEXT content
+
+      if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== "") {
+        curEl.textContent = newEl.textContent;
+      } // Updates changed ATTRIBUTES
+
+
+      if (!newEl.isEqualNode(curEl)) {
+        Array.from(newEl.attributes).forEach(attr => curEl.setAttribute(attr.name, attr.value));
+      }
+    });
   }
 
   _clear() {
@@ -5455,9 +5482,10 @@ class ResultsView extends _view.default {
   }
 
   _generateMarkupPreview(results) {
+    const id = window.location.hash.slice(1);
     return `
       <li class="preview">
-        <a class="preview__link" href="#${results.id}">
+        <a class="preview__link ${results.id === id ? "preview__link--active" : ""}" href="#${results.id}">
           <figure class="preview__fig">
             <img src="${results.image}" alt="${results.title}" />
           </figure>

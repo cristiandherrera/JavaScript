@@ -12,9 +12,9 @@ import { async } from "regenerator-runtime";
 
 ///////////////////////////////////////
 
-if (module.hot) {
-  module.hot.accept();
-}
+// if (module.hot) {
+//   module.hot.accept();
+// }
 
 const controlRecipes = async function () {
   try {
@@ -24,6 +24,9 @@ const controlRecipes = async function () {
 
     // Render recipe spinner
     recipeView.renderSpinner();
+
+    // Update results to have a selected style
+    resultsView.update(model.getSearchResultsPage());
 
     // Load recipe
     await model.loadRecipe(id);
@@ -70,7 +73,7 @@ const controlServings = function (servings) {
   model.updateServings(servings);
 
   // Update the recipe view
-  recipeView.render(model.state.recipe);
+  recipeView.update(model.state.recipe);
 };
 
 const init = function () {
