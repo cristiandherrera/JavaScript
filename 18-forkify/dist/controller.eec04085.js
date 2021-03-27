@@ -498,7 +498,7 @@ const controlSearchResults = async function () {
 
     await model.loadSearchResults(query); // Render results
 
-    _resultsView.default.render(model.getSearchResultsPage(2)); // Render initial pagination buttons
+    _resultsView.default.render(model.getSearchResultsPage()); // Render initial pagination buttons
 
 
     _paginationView.default.render(model.state.search);
@@ -507,14 +507,24 @@ const controlSearchResults = async function () {
   }
 };
 
+const controlPagination = function (goToPage) {
+  // Render NEW results
+  _resultsView.default.render(model.getSearchResultsPage(goToPage)); // Render NEW pagination buttons
+
+
+  _paginationView.default.render(model.state.search);
+};
+
 const init = function () {
   _recipeViews.default.addRenderHandler(controlRecipes);
 
   _searchView.default.addSearchHandler(controlSearchResults);
+
+  _paginationView.default.addPaginationHandler(controlPagination);
 };
 
 init();
-},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","./views/searchView.js":"c5d792f7cac03ef65de30cc0fbb2cae7","./views/resultsView.js":"eacdbc0d50ee3d2819f3ee59366c2773","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./views/paginationView.js":"d2063f3e7de2e4cdacfcb5eb6479db05"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","./views/searchView.js":"c5d792f7cac03ef65de30cc0fbb2cae7","./views/resultsView.js":"eacdbc0d50ee3d2819f3ee59366c2773","./views/paginationView.js":"d2063f3e7de2e4cdacfcb5eb6479db05","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
 var $ = require('../internals/export');
 
 var global = require('../internals/global');
@@ -5445,6 +5455,8 @@ exports.default = void 0;
 
 var _view = _interopRequireDefault(require("./view.js"));
 
+var _icons = _interopRequireDefault(require("url:../../img/icons.svg"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -5453,30 +5465,67 @@ class PaginationView extends _view.default {
   constructor(...args) {
     super(...args);
 
-    _defineProperty(this, "_parentEl", document.querySelector(".pagination"));
+    _defineProperty(this, "_parentElement", document.querySelector(".pagination"));
+  }
+
+  addPaginationHandler(handler) {
+    this._parentElement.addEventListener("click", function (e) {
+      const btn = e.target.closest(".btn--inline");
+      if (!btn) return;
+      const goToPage = +btn.dataset.goto;
+      console.log(goToPage);
+      handler(goToPage);
+    });
   }
 
   _generateMarkup() {
-    console.log(this._data);
+    const currPage = this._data.page;
     const numPages = Math.ceil(this._data.results.length / this._data.resultsPerPage);
     console.log(numPages); // Page 1, and there are other pages
 
-    if (this._data.page === 1 && numPages > 1) {
-      return "page 1 with other pages";
+    if (currPage === 1 && numPages > 1) {
+      return `
+        <button data-goto="${currPage + 1}" class="btn--inline pagination__btn--next">
+          <span>Page ${currPage + 1}</span>
+          <svg class="search__icon">
+            <use href="${_icons.default}#icon-arrow-right"></use>
+          </svg>
+        </button>
+      `;
     } // Last page
 
 
-    if (this._data.page === numPages && numPages > 1) {
-      return "last page";
-    } // Other page
+    if (currPage === numPages && numPages > 1) {
+      return `
+        <button data-goto="${currPage - 1}" class="btn--inline pagination__btn--prev">
+          <svg class="search__icon">
+            <use href="${_icons.default}#icon-arrow-left"></use>
+          </svg>
+          <span>Page ${currPage - 1}</span>
+        </button>
+      `;
+    } // Other pages
 
 
-    if (this._data.page < numPages) {
-      return "more pages";
+    if (currPage < numPages) {
+      return `
+        <button data-goto="${currPage - 1}" class="btn--inline pagination__btn--prev">
+          <svg class="search__icon">
+            <use href="${_icons.default}#icon-arrow-left"></use>
+          </svg>
+          <span>Page ${currPage - 1}</span>
+        </button>
+        <button data-goto="${currPage + 1}" class="btn--inline pagination__btn--next">
+          <span>Page ${currPage + 1}</span>
+          <svg class="search__icon">
+            <use href="${_icons.default}#icon-arrow-right"></use>
+          </svg>
+        </button>
+      `;
     } // Page 1, and there are no other pages
 
 
-    return "only one page";
+    return "";
   }
 
 }
@@ -5484,6 +5533,6 @@ class PaginationView extends _view.default {
 var _default = new PaginationView();
 
 exports.default = _default;
-},{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59"}]},{},["1c3b64d627aa78f40fb8ad1114942a59","6a27a885ec060ddcefff573e74409043","175e469a7ea7db1c8c0744d04372621f"], null)
+},{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59","url:../../img/icons.svg":"2aac7ec55258eebc2c0a9db007a84447"}]},{},["1c3b64d627aa78f40fb8ad1114942a59","6a27a885ec060ddcefff573e74409043","175e469a7ea7db1c8c0744d04372621f"], null)
 
 //# sourceMappingURL=controller.eec04085.js.map
