@@ -515,8 +515,17 @@ const controlPagination = function (goToPage) {
   _paginationView.default.render(model.state.search);
 };
 
+const controlServings = function (servings) {
+  // Update the recipe servings (in state)
+  model.updateServings(servings); // Update the recipe view
+
+  _recipeViews.default.render(model.state.recipe);
+};
+
 const init = function () {
   _recipeViews.default.addRenderHandler(controlRecipes);
+
+  _recipeViews.default.addServingHandler(controlServings);
 
   _searchView.default.addSearchHandler(controlSearchResults);
 
@@ -3784,7 +3793,7 @@ $({ target: 'URL', proto: true, enumerable: true }, {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getSearchResultsPage = exports.loadSearchResults = exports.loadRecipe = exports.state = void 0;
+exports.updateServings = exports.getSearchResultsPage = exports.loadSearchResults = exports.loadRecipe = exports.state = void 0;
 
 var _regeneratorRuntime = require("regenerator-runtime");
 
@@ -3805,7 +3814,6 @@ exports.state = state;
 
 const loadRecipe = async function (id) {
   try {
-    console.log(id);
     const data = await (0, _helpers.getJSON)(`${_config.API_URL}${id}`);
     const {
       recipe
@@ -3820,7 +3828,7 @@ const loadRecipe = async function (id) {
       cookingTime: recipe.cooking_time,
       ingredients: recipe.ingredients
     };
-    console.log(state.recipe);
+    console.log("LOADED RECIPE:", state.recipe);
   } catch (err) {
     console.error(`*****${err}*****`);
     throw err;
@@ -3840,6 +3848,7 @@ const loadSearchResults = async function (query) {
         image: rec.image_url
       };
     });
+    console.log("SEARCH RESULTS:", state.search.results);
   } catch (err) {
     console.error(`*****${err}*****`);
     throw err;
@@ -3856,6 +3865,16 @@ const getSearchResultsPage = function (page = state.search.page) {
 };
 
 exports.getSearchResultsPage = getSearchResultsPage;
+
+const updateServings = function (newServings) {
+  state.recipe.ingredients.forEach(ing => {
+    ing.quantity = ing.quantity * newServings / state.recipe.servings;
+  });
+  state.recipe.servings = newServings;
+  console.log("UPDATED SERVINGS:", newServings);
+};
+
+exports.updateServings = updateServings;
 },{"regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./config.js":"09212d541c5c40ff2bd93475a904f8de","./helpers.js":"0e8dcd8a4e1c61cf18f78e1c2563655d"}],"e155e0d3930b156f86c48e8d05522b16":[function(require,module,exports) {
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -4682,6 +4701,17 @@ class RecipeView extends _view.default {
     ["hashchange", "load"].forEach(event => window.addEventListener(event, handler));
   }
 
+  addServingHandler(handler) {
+    this._parentElement.addEventListener("click", function (e) {
+      const btn = e.target.closest(".btn--update-servings");
+      if (!btn) return;
+      const {
+        updateTo
+      } = +btn.dataset;
+      if (+updateTo > 0) handler(+updateTo);
+    });
+  }
+
   _generateMarkup() {
     return `
       <figure class="recipe__fig">
@@ -4707,12 +4737,12 @@ class RecipeView extends _view.default {
           <span class="recipe__info-text">servings</span>
 
           <div class="recipe__info-buttons">
-            <button class="btn--tiny btn--increase-servings">
+            <button class="btn--tiny btn--update-servings" data-update-to="${this._data.servings - 1}">
               <svg>
                 <use href="${_icons.default}#icon-minus-circle"></use>
               </svg>
             </button>
-            <button class="btn--tiny btn--increase-servings">
+            <button class="btn--tiny btn--update-servings" data-update-to="${this._data.servings + 1}">
               <svg>
                 <use href="${_icons.default}#icon-plus-circle"></use>
               </svg>
@@ -5480,8 +5510,7 @@ class PaginationView extends _view.default {
 
   _generateMarkup() {
     const currPage = this._data.page;
-    const numPages = Math.ceil(this._data.results.length / this._data.resultsPerPage);
-    console.log(numPages); // Page 1, and there are other pages
+    const numPages = Math.ceil(this._data.results.length / this._data.resultsPerPage); // Page 1, and there are other pages
 
     if (currPage === 1 && numPages > 1) {
       return `
