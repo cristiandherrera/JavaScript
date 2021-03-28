@@ -479,7 +479,10 @@ const controlRecipes = async function () {
     _recipeViews.default.renderSpinner(); // Update results to have a selected style
 
 
-    _resultsView.default.update(model.getSearchResultsPage()); // Load recipe
+    _resultsView.default.update(model.getSearchResultsPage()); // Update bookmarks view
+
+
+    _bookmarkView.default.update(model.state.bookmarks); // Load recipe
 
 
     await model.loadRecipe(id); // Render recipe
@@ -487,6 +490,8 @@ const controlRecipes = async function () {
     _recipeViews.default.render(model.state.recipe);
   } catch (err) {
     _recipeViews.default.renderError();
+
+    console.error(err);
   }
 };
 
@@ -536,7 +541,13 @@ const controlAddBookmark = function () {
   _bookmarkView.default.render(model.state.bookmarks);
 };
 
+const controlBookmarkRender = function () {
+  _bookmarkView.default.render(model.state.bookmarks);
+};
+
 const init = function () {
+  _bookmarkView.default.addBookmarkRenderHandler(controlBookmarkRender);
+
   _recipeViews.default.addRenderHandler(controlRecipes);
 
   _recipeViews.default.addServingHandler(controlServings);
@@ -549,7 +560,11 @@ const init = function () {
 };
 
 init();
-},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","./views/searchView.js":"c5d792f7cac03ef65de30cc0fbb2cae7","./views/resultsView.js":"eacdbc0d50ee3d2819f3ee59366c2773","./views/paginationView.js":"d2063f3e7de2e4cdacfcb5eb6479db05","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./views/bookmarkView.js":"42ef80d2f6558be67c0065d1c2f740f3"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
+
+const clearBookmarks = function () {
+  localStorage.clear("bookmarks");
+}; // clearBookmarks();
+},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","./views/searchView.js":"c5d792f7cac03ef65de30cc0fbb2cae7","./views/resultsView.js":"eacdbc0d50ee3d2819f3ee59366c2773","./views/paginationView.js":"d2063f3e7de2e4cdacfcb5eb6479db05","./views/bookmarkView.js":"42ef80d2f6558be67c0065d1c2f740f3","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
 var $ = require('../internals/export');
 
 var global = require('../internals/global');
@@ -3895,11 +3910,16 @@ const updateServings = function (newServings) {
 
 exports.updateServings = updateServings;
 
+const persistBookmarks = function () {
+  localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
+};
+
 const addBookmark = function (recipe) {
   // Add bookmark
   state.bookmarks.push(recipe); // Mark current recipe as bookmarked
 
   if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+  persistBookmarks();
 };
 
 exports.addBookmark = addBookmark;
@@ -3910,9 +3930,18 @@ const deleteBookmark = function (id) {
   state.bookmarks.splice(index, 1); // Mark current recipe as NOT bookmarked
 
   if (id === state.recipe.id) state.recipe.bookmarked = false;
+  persistBookmarks();
 };
 
 exports.deleteBookmark = deleteBookmark;
+
+const init = function () {
+  const storage = localStorage.getItem("bookmarks");
+  if (storage) state.bookmarks = JSON.parse(storage);
+  console.log("BOOKMARKS:", state.bookmarks);
+};
+
+init();
 },{"regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./config.js":"09212d541c5c40ff2bd93475a904f8de","./helpers.js":"0e8dcd8a4e1c61cf18f78e1c2563655d"}],"e155e0d3930b156f86c48e8d05522b16":[function(require,module,exports) {
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -5534,7 +5563,7 @@ class ResultsView extends _view.default {
 var _default = new ResultsView();
 
 exports.default = _default;
-},{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59","url:../../img/icons.svg":"2aac7ec55258eebc2c0a9db007a84447","./previewView.js":"e4d6583325a8b6c9380670c4f233bf07"}],"e4d6583325a8b6c9380670c4f233bf07":[function(require,module,exports) {
+},{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59","./previewView.js":"e4d6583325a8b6c9380670c4f233bf07","url:../../img/icons.svg":"2aac7ec55258eebc2c0a9db007a84447"}],"e4d6583325a8b6c9380670c4f233bf07":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5695,6 +5724,10 @@ class BookmarkView extends _view.default {
     _defineProperty(this, "_successMessage", "");
   }
 
+  addBookmarkRenderHandler(handler) {
+    window.addEventListener("load", handler);
+  }
+
   _generateMarkup() {
     return this._data.map(bookmark => _previewView.default.render(bookmark, false)).join("");
   }
@@ -5704,6 +5737,6 @@ class BookmarkView extends _view.default {
 var _default = new BookmarkView();
 
 exports.default = _default;
-},{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59","url:../../img/icons.svg":"2aac7ec55258eebc2c0a9db007a84447","./previewView.js":"e4d6583325a8b6c9380670c4f233bf07"}]},{},["1c3b64d627aa78f40fb8ad1114942a59","6a27a885ec060ddcefff573e74409043","175e469a7ea7db1c8c0744d04372621f"], null)
+},{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59","./previewView.js":"e4d6583325a8b6c9380670c4f233bf07","url:../../img/icons.svg":"2aac7ec55258eebc2c0a9db007a84447"}]},{},["1c3b64d627aa78f40fb8ad1114942a59","6a27a885ec060ddcefff573e74409043","175e469a7ea7db1c8c0744d04372621f"], null)
 
 //# sourceMappingURL=controller.eec04085.js.map
