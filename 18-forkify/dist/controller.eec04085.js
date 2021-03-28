@@ -455,6 +455,8 @@ var _resultsView = _interopRequireDefault(require("./views/resultsView.js"));
 
 var _paginationView = _interopRequireDefault(require("./views/paginationView.js"));
 
+var _bookmarkView = _interopRequireDefault(require("./views/bookmarkView.js"));
+
 var _regeneratorRuntime = require("regenerator-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -525,9 +527,13 @@ const controlServings = function (servings) {
 };
 
 const controlAddBookmark = function () {
-  if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);else model.deleteBookmark(model.state.recipe.id);
+  // Add/remove bookmark
+  if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);else model.deleteBookmark(model.state.recipe.id); // Update recipe view
 
-  _recipeViews.default.update(model.state.recipe);
+  _recipeViews.default.update(model.state.recipe); // Render bookmarks
+
+
+  _bookmarkView.default.render(model.state.bookmarks);
 };
 
 const init = function () {
@@ -543,7 +549,7 @@ const init = function () {
 };
 
 init();
-},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","./views/searchView.js":"c5d792f7cac03ef65de30cc0fbb2cae7","./views/resultsView.js":"eacdbc0d50ee3d2819f3ee59366c2773","./views/paginationView.js":"d2063f3e7de2e4cdacfcb5eb6479db05","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","./views/searchView.js":"c5d792f7cac03ef65de30cc0fbb2cae7","./views/resultsView.js":"eacdbc0d50ee3d2819f3ee59366c2773","./views/paginationView.js":"d2063f3e7de2e4cdacfcb5eb6479db05","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./views/bookmarkView.js":"42ef80d2f6558be67c0065d1c2f740f3"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
 var $ = require('../internals/export');
 
 var global = require('../internals/global');
@@ -4884,11 +4890,13 @@ class View {
     });
   }
 
-  render(data) {
+  render(data, render = true) {
     if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
     this._data = data;
 
     const markup = this._generateMarkup();
+
+    if (!render) return markup;
 
     this._clear();
 
@@ -5498,6 +5506,8 @@ exports.default = void 0;
 
 var _view = _interopRequireDefault(require("./view.js"));
 
+var _previewView = _interopRequireDefault(require("./previewView.js"));
+
 var _icons = _interopRequireDefault(require("url:../../img/icons.svg"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -5516,20 +5526,48 @@ class ResultsView extends _view.default {
   }
 
   _generateMarkup() {
-    return this._data.map(this._generateMarkupPreview).join("");
+    return this._data.map(result => _previewView.default.render(result, false)).join("");
   }
 
-  _generateMarkupPreview(results) {
+}
+
+var _default = new ResultsView();
+
+exports.default = _default;
+},{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59","url:../../img/icons.svg":"2aac7ec55258eebc2c0a9db007a84447","./previewView.js":"e4d6583325a8b6c9380670c4f233bf07"}],"e4d6583325a8b6c9380670c4f233bf07":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _view = _interopRequireDefault(require("./view.js"));
+
+var _icons = _interopRequireDefault(require("url:../../img/icons.svg"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+class PreviewView extends _view.default {
+  constructor(...args) {
+    super(...args);
+
+    _defineProperty(this, "_parentElement", "");
+  }
+
+  _generateMarkup() {
     const id = window.location.hash.slice(1);
     return `
       <li class="preview">
-        <a class="preview__link ${results.id === id ? "preview__link--active" : ""}" href="#${results.id}">
+        <a class="preview__link ${this._data.id === id ? "preview__link--active" : ""}" href="#${this._data.id}">
           <figure class="preview__fig">
-            <img src="${results.image}" alt="${results.title}" />
+            <img src="${this._data.image}" alt="${this._data.title}" />
           </figure>
           <div class="preview__data">
-            <h4 class="preview__title">${results.title}</h4>
-            <p class="preview__publisher">${results.publisher}</p>
+            <h4 class="preview__title">${this._data.title}</h4>
+            <p class="preview__publisher">${this._data.publisher}</p>
           </div>
         </a>
       </li>
@@ -5538,7 +5576,7 @@ class ResultsView extends _view.default {
 
 }
 
-var _default = new ResultsView();
+var _default = new PreviewView();
 
 exports.default = _default;
 },{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59","url:../../img/icons.svg":"2aac7ec55258eebc2c0a9db007a84447"}],"d2063f3e7de2e4cdacfcb5eb6479db05":[function(require,module,exports) {
@@ -5628,6 +5666,44 @@ class PaginationView extends _view.default {
 var _default = new PaginationView();
 
 exports.default = _default;
-},{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59","url:../../img/icons.svg":"2aac7ec55258eebc2c0a9db007a84447"}]},{},["1c3b64d627aa78f40fb8ad1114942a59","6a27a885ec060ddcefff573e74409043","175e469a7ea7db1c8c0744d04372621f"], null)
+},{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59","url:../../img/icons.svg":"2aac7ec55258eebc2c0a9db007a84447"}],"42ef80d2f6558be67c0065d1c2f740f3":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _view = _interopRequireDefault(require("./view.js"));
+
+var _previewView = _interopRequireDefault(require("./previewView.js"));
+
+var _icons = _interopRequireDefault(require("url:../../img/icons.svg"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+class BookmarkView extends _view.default {
+  constructor(...args) {
+    super(...args);
+
+    _defineProperty(this, "_parentElement", document.querySelector(".bookmarks__list"));
+
+    _defineProperty(this, "_errorMessage", "No recipes bookmarked!");
+
+    _defineProperty(this, "_successMessage", "");
+  }
+
+  _generateMarkup() {
+    return this._data.map(bookmark => _previewView.default.render(bookmark, false)).join("");
+  }
+
+}
+
+var _default = new BookmarkView();
+
+exports.default = _default;
+},{"./view.js":"6a3957d8744bf1d70b2b44f3726dda59","url:../../img/icons.svg":"2aac7ec55258eebc2c0a9db007a84447","./previewView.js":"e4d6583325a8b6c9380670c4f233bf07"}]},{},["1c3b64d627aa78f40fb8ad1114942a59","6a27a885ec060ddcefff573e74409043","175e469a7ea7db1c8c0744d04372621f"], null)
 
 //# sourceMappingURL=controller.eec04085.js.map

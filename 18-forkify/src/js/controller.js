@@ -3,6 +3,7 @@ import recipeView from "./views/recipeViews.js";
 import searchView from "./views/searchView.js";
 import resultsView from "./views/resultsView.js";
 import paginationView from "./views/paginationView.js";
+import bookmarkView from "./views/bookmarkView.js";
 
 import "core-js/stable";
 import "regenerator-runtime";
@@ -77,10 +78,15 @@ const controlServings = function (servings) {
 };
 
 const controlAddBookmark = function () {
+  // Add/remove bookmark
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
   else model.deleteBookmark(model.state.recipe.id);
 
+  // Update recipe view
   recipeView.update(model.state.recipe);
+
+  // Render bookmarks
+  bookmarkView.render(model.state.bookmarks);
 };
 
 const init = function () {
