@@ -1,4 +1,6 @@
-# NOTES: Forkify Application
+# Forkify Application
+
+Recipe application with custom recipe uploads.
 
 ## Project Overview and Planning (I)
 
