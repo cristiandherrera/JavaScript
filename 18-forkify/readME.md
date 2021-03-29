@@ -40,5 +40,3 @@ Common format: As a [type of user], I want [an action] so that [a benefit]
    - On page load, read saved bookmarks form local storage and display
 
 <br />
-
-## Loading a Recipe from API
