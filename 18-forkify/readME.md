@@ -1,3 +1,5 @@
+# NOTES: Forkify Application
+
 ## Project Overview and Planning (I)
 
 ### USER STORIES
@@ -36,3 +38,7 @@ Common format: As a [type of user], I want [an action] so that [a benefit]
 1. **Come back later** =>
    - Store bookmark data in the browser using local storage
    - On page load, read saved bookmarks form local storage and display
+
+<br />
+
+## Loading a Recipe from API
