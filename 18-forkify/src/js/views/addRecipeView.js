@@ -3,13 +3,13 @@ import icons from "url:../../img/icons.svg";
 
 class AddRecipeView extends View {
   _parentElement = document.querySelector(".upload");
+  _successMessage = "Recipe was successfully uploaded!";
+  _errorMessage = "No recipes bookmarked!";
+
   _window = document.querySelector(".add-recipe-window");
   _overlay = document.querySelector(".overlay");
   _btnOpen = document.querySelector(".nav__btn--add-recipe");
   _btnClose = document.querySelector(".btn--close-modal");
-
-  _errorMessage = "No recipes bookmarked!";
-  _successMessage = "";
 
   constructor() {
     super();
