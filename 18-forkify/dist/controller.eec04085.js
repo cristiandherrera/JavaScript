@@ -561,8 +561,13 @@ const controlAddRecipe = async function (newRecipe) {
     _recipeViews.default.render(model.state.recipe); // Success message
 
 
-    _addRecipeView.default.renderMessage(); // Close from window
+    _addRecipeView.default.renderMessage(); // Render bookmark view
 
+
+    _bookmarkView.default.render(model.state.bookmarks); // Change ID in URL
+
+
+    window.history.pushState(null, "", `${model.state.recipe.id}`); // Close from window
 
     setTimeout(function () {
       _addRecipeView.default._toggleWindow();
@@ -591,7 +596,7 @@ const init = function () {
 };
 
 init();
-},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","./views/searchView.js":"c5d792f7cac03ef65de30cc0fbb2cae7","./views/resultsView.js":"eacdbc0d50ee3d2819f3ee59366c2773","./views/paginationView.js":"d2063f3e7de2e4cdacfcb5eb6479db05","./views/bookmarkView.js":"42ef80d2f6558be67c0065d1c2f740f3","./views/addRecipeView.js":"4dd83c2a08c1751220d223c54dc70016","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./config.js":"09212d541c5c40ff2bd93475a904f8de"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","core-js/modules/web.url.js":"a66c25e402880ea6b966ee8ece30b6df","core-js/modules/web.url.to-json.js":"6357c5a053a36e38c0e24243e550dd86","core-js/modules/web.url-search-params.js":"2494aebefd4ca447de0ef4cfdd47509e","./model.js":"aabf248f40f7693ef84a0cb99f385d1f","./config.js":"09212d541c5c40ff2bd93475a904f8de","./views/recipeViews.js":"1456c5eca75d05407cf4193dc0faba14","./views/searchView.js":"c5d792f7cac03ef65de30cc0fbb2cae7","./views/resultsView.js":"eacdbc0d50ee3d2819f3ee59366c2773","./views/paginationView.js":"d2063f3e7de2e4cdacfcb5eb6479db05","./views/bookmarkView.js":"42ef80d2f6558be67c0065d1c2f740f3","./views/addRecipeView.js":"4dd83c2a08c1751220d223c54dc70016","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
 var $ = require('../internals/export');
 
 var global = require('../internals/global');
@@ -3859,6 +3864,7 @@ var _config = require("./config.js");
 
 var _helpers = require("./helpers.js");
 
+// import { getJSON, sendJSON } from "./helpers.js";
 const state = {
   recipe: {},
   search: {
@@ -3892,7 +3898,7 @@ const createRecipeObject = function (data) {
 
 const loadRecipe = async function (id) {
   try {
-    const data = await (0, _helpers.getJSON)(`${_config.API_URL}${id}`);
+    const data = await (0, _helpers.AJAX)(`${_config.API_URL}${id}?key=${_config.KEY}`);
     state.recipe = createRecipeObject(data);
     if (state.bookmarks.some(bookmark => bookmark.id === id)) state.recipe.bookmarked = true;else state.recipe.bookmarked = false;
     console.log("LOADED RECIPE:", state.recipe);
@@ -3906,14 +3912,17 @@ exports.loadRecipe = loadRecipe;
 
 const loadSearchResults = async function (query) {
   try {
-    const data = await (0, _helpers.getJSON)(`${_config.API_URL}?search=${query}`);
+    const data = await (0, _helpers.AJAX)(`${_config.API_URL}?search=${query}&key=${_config.KEY}`);
     console.log(data);
     state.search.results = data.data.recipes.map(rec => {
       return {
         id: rec.id,
         title: rec.title,
         publisher: rec.publisher,
-        image: rec.image_url
+        image: rec.image_url,
+        ...(rec.key && {
+          key: rec.key
+        })
       };
     });
     state.search.page = 1;
@@ -3973,7 +3982,8 @@ exports.deleteBookmark = deleteBookmark;
 const uploadRecipe = async function (newRecipe) {
   try {
     const ingredients = Object.entries(newRecipe).filter(entry => entry[0].startsWith("ingredient") && entry[1] !== "").map(ing => {
-      const ingArr = ing[1].replaceAll(" ", "").split(",");
+      const ingArr = ing[1].split(",").map(el => el.trim()); // const ingArr = ing[1].replaceAll(" ", "").split(",");
+
       if (ingArr.length !== 3) throw new Error("Wrong ingredient format! Please use the correct format.");
       const [quantity, unit, description] = ingArr;
       return {
@@ -3992,7 +4002,7 @@ const uploadRecipe = async function (newRecipe) {
       ingredients
     };
     console.log(recipe);
-    const data = await (0, _helpers.sendJSON)(`${_config.API_URL}?key=${_config.KEY}`, recipe);
+    const data = await (0, _helpers.AJAX)(`${_config.API_URL}?key=${_config.KEY}`, recipe);
     state.recipe = createRecipeObject(data);
     addBookmark(state.recipe);
     console.log(data);
@@ -4787,7 +4797,7 @@ exports.MODAL_CLOSE_SEC = MODAL_CLOSE_SEC;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.sendJSON = exports.getJSON = void 0;
+exports.AJAX = void 0;
 
 var _config = require("./config.js");
 
@@ -4799,29 +4809,15 @@ const timeout = function (s) {
   });
 };
 
-const getJSON = async function (url) {
+const AJAX = async function (url, uploadData = undefined) {
   try {
-    const fetchPro = fetch(url);
-    const res = await Promise.race([fetchPro, timeout(_config.TIMEOUT_SEC)]);
-    const data = await res.json();
-    if (!res.ok) throw new Error(`${data.message} ${res.status}`);
-    return data;
-  } catch (err) {
-    throw err;
-  }
-};
-
-exports.getJSON = getJSON;
-
-const sendJSON = async function (url, uploadData) {
-  try {
-    const fetchPro = fetch(url, {
+    const fetchPro = uploadData ? fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(uploadData)
-    });
+    }) : fetch(url);
     const res = await Promise.race([fetchPro, timeout(_config.TIMEOUT_SEC)]);
     const data = await res.json();
     if (!res.ok) throw new Error(`${data.message} ${res.status}`);
@@ -4830,8 +4826,42 @@ const sendJSON = async function (url, uploadData) {
     throw err;
   }
 };
+/*
+export const getJSON = async function (url) {
+  try {
+    const fetchPro = fetch(url);
+    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+    const data = await res.json();
 
-exports.sendJSON = sendJSON;
+    if (!res.ok) throw new Error(`${data.message} ${res.status}`);
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const sendJSON = async function (url, uploadData) {
+  try {
+    const fetchPro = fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(uploadData),
+    });
+    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(`${data.message} ${res.status}`);
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+*/
+
+
+exports.AJAX = AJAX;
 },{"./config.js":"09212d541c5c40ff2bd93475a904f8de"}],"1456c5eca75d05407cf4193dc0faba14":[function(require,module,exports) {
 "use strict";
 
@@ -4922,12 +4952,11 @@ class RecipeView extends _view.default {
           </div>
         </div>
 
-        <div class="recipe__user-generated">
+        <div class="recipe__user-generated ${this._data.key ? "" : "hidden"}">
           <svg>
             <use href="${_icons.default}#icon-user"></use>
           </svg>
         </div>
-        
         <button class="btn--round btn--bookmark">
           <svg class="">
             <use href="${_icons.default}#icon-bookmark${this._data.bookmarked ? "-fill" : ""}"></use>
@@ -5694,6 +5723,11 @@ class PreviewView extends _view.default {
           <div class="preview__data">
             <h4 class="preview__title">${this._data.title}</h4>
             <p class="preview__publisher">${this._data.publisher}</p>
+            <div class="preview__user-generated ${this._data.key ? "" : "hidden"}">
+              <svg>
+                <use href="${_icons.default}#icon-user"></use>
+              </svg>
+            </div>
           </div>
         </a>
       </li>
